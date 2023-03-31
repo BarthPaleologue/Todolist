@@ -1,24 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { CreateTask } from './components/CreateTask';
+import { Task } from './task';
 
 function App() {
+  function handleCreateTask(newTask: Task) {
+    console.table(newTask);
+    // Perform any other logic with the new task title
+  }
+
+  function handleCancelTaskCreation() {
+    console.log('Canceling task creation');
+    // Perform any other logic
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} />
     </div>
   );
 }
