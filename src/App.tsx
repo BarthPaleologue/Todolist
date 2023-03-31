@@ -49,8 +49,8 @@ function App() {
 
   return (
     <div className="App">
-      <Presentation></Presentation>
-      {/* {
+      <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)}/>
+      {
         {
           [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories />,
           [AppStatus.LIST_VIEW_MOBILE]: <div>List view mobile</div>,
@@ -58,7 +58,7 @@ function App() {
           [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
           [AppStatus.FIRST_PRESENTATION_MOBILE]: <div>First presentation mobile</div>,
         }[appStatus]
-      } */}
+       }
       <Categories></Categories>
     </div>
   );

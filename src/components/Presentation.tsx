@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import logo from '../assets/logo.png';
 
 
-export function Presentation() {
+export function Presentation({onOK}: { onOK: () => void}) {
     return (
         <div className='verticalView'>
             <h1>How to use the App </h1>
@@ -12,7 +12,7 @@ export function Presentation() {
             <li>Click on a category to display its tasks</li>
             <li>Click on your photo to edit your profile</li>
             <li>Click on the "..." button to edit a category</li>
-
+            <button onClick = {onOK} style={{width: '50px'}}> OK </button>
         </div>
     );
 }
