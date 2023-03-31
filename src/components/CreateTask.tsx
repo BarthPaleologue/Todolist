@@ -3,11 +3,13 @@ import DatePicker from "react-datepicker";
 import { Task } from '../task';
 import "react-datepicker/dist/react-datepicker.css";
 
-export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (task: Task) => void, onCancelCreation: () => void; }) {
+export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (task: Task, listName: string) => void, onCancelCreation: () => void; }) {
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
 
     const [startDate, setStartDate] = useState(new Date());
+
+    const [listName, setListName] = useState('Pro');
 
     function handleChangeTitle(event: React.ChangeEvent<HTMLInputElement>) {
         setNewTaskTitle(event.target.value);
@@ -26,7 +28,7 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
             location: undefined,
             sharedWith: undefined
         };
-        onCreateTask(task);
+        onCreateTask(task, listName);
         setNewTaskTitle('');
     }
 
@@ -49,9 +51,15 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
                 onChange={handleChangeDescription}
             />
 
-            <select>
-                <option value="1">Pro</option>
-                <option value="2">Perso</option>
+            <select
+                value={listName}
+                onChange={(event) => {
+                    setListName(event.target.value);
+                    console.log(event.target.value);
+                }}
+            >
+                <option value="Pro">Pro</option>
+                <option value="Perso">Perso</option>
             </select>
 
             <DatePicker selected={startDate} onChange={(date) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { CreateTask } from './components/CreateTask';
-import { Task } from './task';
+import { Task, TaskList } from './task';
 import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from './utils/localStorage';
 
 enum AppStatus {
@@ -16,12 +16,21 @@ function App() {
 
   const isOnMobile = window.innerWidth < 768;
 
-  const todoList: Task[] = loadTodosFromLocalStorage();
+  const todoList: TaskList[] = loadTodosFromLocalStorage();
 
-  function handleCreateTask(newTask: Task) {
+  function handleCreateTask(newTask: Task, listName: string) {
     console.table(newTask);
 
-    todoList.push(newTask);
+    const list = todoList.find((list) => list.title === listName);
+    if (list === undefined) {
+      todoList.push({
+        title: listName,
+        tasks: [newTask]
+      });
+    } else {
+      list.tasks.push(newTask);
+    }
+
     saveTodosToLocalStorage(todoList);
 
     setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
