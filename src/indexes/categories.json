@@ -1,0 +1,66 @@
+[
+    {
+        "title": "Personnal",
+        "tasks": [
+            {
+                "title": "Task 1",
+	 	 	 	 "details": "To define", 
+                "isComplete": false,
+                "date": null,
+                "location": null,
+                "sharedWith":null
+            },
+            {
+                "title": "Task 2",
+	 	 	 	 "details": "To define", 
+                "isComplete": false,
+                "date": null,
+                "location": null,
+                "sharedWith":null
+                }
+        ]
+    }, 
+    {
+        "title": "Professionnal",
+        "tasks": [
+            {
+                "title": "Task 1",
+	 	 	 	 "details": "To define", 
+                "isComplete": false,
+                "date": null,
+                "location": null,
+                "sharedWith":null
+            },
+            {
+                "title": "Task 2",
+	 	 	 	 "details": "To define", 
+                "isComplete": false,
+                "date": null,
+                "location": null,
+                "sharedWith":null
+                }
+        ]
+    },
+    {
+        "title": "School",
+        "tasks": [
+            {
+                "title": "Task 1",
+	 	 	 	 "details": "To define", 
+                "isComplete": false,
+                "date": null,
+                "location": null,
+                "sharedWith":null
+            },
+            {
+                "title": "Task 2",
+	 	 	 	 "details": "To define", 
+                "isComplete": false,
+                "date": null,
+                "location": null,
+                "sharedWith":null
+                }
+        ]
+    }
+
+]

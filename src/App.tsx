@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import Categories from './components/Categories';
 import { CreateTask } from './components/CreateTask';
 import { Task, TaskList } from './task';
 import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from './utils/localStorage';
@@ -47,7 +48,7 @@ function App() {
 
   return (
     <div className="App">
-      {
+      {/* {
         {
           [AppStatus.CATEGORY_VIEW_MOBILE]: <div>Category view mobile</div>,
           [AppStatus.LIST_VIEW_MOBILE]: <div>List view mobile</div>,
@@ -55,7 +56,8 @@ function App() {
           [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
           [AppStatus.FIRST_PRESENTATION_MOBILE]: <div>First presentation mobile</div>,
         }[appStatus]
-      }
+      } */}
+      <Categories></Categories>
     </div>
   );
 }
