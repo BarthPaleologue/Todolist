@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { CreateTask } from './components/CreateTask';
 import { Task } from './task';
-import { loadTodosFromLocalStorage } from './utils/localStorage';
+import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from './utils/localStorage';
 
 enum AppStatus {
   CATEGORY_VIEW_MOBILE,
@@ -20,7 +20,10 @@ function App() {
 
   function handleCreateTask(newTask: Task) {
     console.table(newTask);
-    // Perform any other logic with the new task title
+
+    todoList.push(newTask);
+    saveTodosToLocalStorage(todoList);
+
     setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
   }
 
