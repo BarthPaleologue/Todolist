@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Categories from './components/Categories';
+import {Presentation} from './components/Presentation';
 import { CreateTask } from './components/CreateTask';
 import { Task, TaskList } from './task';
 import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from './utils/localStorage';
@@ -48,6 +49,7 @@ function App() {
 
   return (
     <div className="App">
+      <Presentation></Presentation>
       {/* {
         {
           [AppStatus.CATEGORY_VIEW_MOBILE]: <div>Category view mobile</div>,
