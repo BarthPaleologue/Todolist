@@ -13,14 +13,18 @@ enum AppStatus {
 function App() {
   const [appStatus, setAppStatus] = React.useState(AppStatus.CREATE_TASK_VIEW_MOBILE);
 
+  const isOnMobile = window.innerWidth < 768;
+
   function handleCreateTask(newTask: Task) {
     console.table(newTask);
     // Perform any other logic with the new task title
+    setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
   }
 
   function handleCancelTaskCreation() {
     console.log('Canceling task creation');
     // Perform any other logic
+    setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
   }
 
   return (
