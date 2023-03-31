@@ -4,7 +4,7 @@ import { Task } from '../task';
 
 function getTasks(): Task[] { // Hard-coded for now
     return [
-        { title: 'Task 1', details: 'Task 1 description', isComplete: false, date: new Date('2021-01-01'), location: null, sharedWith: null },
+        { title: 'Task 1', details: 'Task 1 description', isComplete: false, date: new Date('2021-01-01') },
         { title: 'Task 2', details: 'Task 2 description', isComplete: true, date: new Date('2021-01-03'), location: 'Paris', sharedWith: ['John'] },
         {
             title: 'Task 3',

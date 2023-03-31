@@ -23,8 +23,8 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
             details: newTaskDescription,
             date: startDate,
             isComplete: false,
-            location: null,
-            sharedWith: null
+            location: undefined,
+            sharedWith: undefined
         };
         onCreateTask(task);
         setNewTaskTitle('');

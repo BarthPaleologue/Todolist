@@ -1,8 +1,8 @@
 export interface Task {
     title: string;
-    details: string | null;
+    details?: string;
     isComplete: boolean;
-    date: Date | null;
-    location: string | null;
-    sharedWith: string[] | null;
+    date?: Date;
+    location?: string;
+    sharedWith?: string[];
 }
