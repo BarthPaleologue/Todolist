@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { CreateTask } from './components/CreateTask';
 import { Task } from './task';
+import { loadTodosFromLocalStorage } from './utils/localStorage';
 
 enum AppStatus {
   CATEGORY_VIEW_MOBILE,
@@ -14,6 +15,8 @@ function App() {
   const [appStatus, setAppStatus] = React.useState(AppStatus.CREATE_TASK_VIEW_MOBILE);
 
   const isOnMobile = window.innerWidth < 768;
+
+  const todoList: Task[] = loadTodosFromLocalStorage();
 
   function handleCreateTask(newTask: Task) {
     console.table(newTask);
