@@ -13,10 +13,11 @@ export function Presentation({ onOK }: { onOK: () => void }) {
             <li>Click on a category to display its tasks</li>
             <li>Click on your photo to edit your profile</li>
             <li>Click on the "..." button to edit a category</li>
-            <button onClick={onOK} style={{ width: "50px" }}>
-                {" "}
-                OK{" "}
-            </button>
+            <div className="buttonBlock">
+                <button onClick={onOK} style={{ width: "50px" }}>
+                    OK
+                </button>
+            </div>
         </div>
     );
 }

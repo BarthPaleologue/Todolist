@@ -16,7 +16,7 @@ enum AppStatus {
 }
 
 function App() {
-    const [appStatus, setAppStatus] = React.useState(AppStatus.LIST_VIEW_MOBILE);
+    const [appStatus, setAppStatus] = React.useState(AppStatus.CREATE_TASK_VIEW_MOBILE);
 
     const isOnMobile = window.innerWidth < 768;
 
