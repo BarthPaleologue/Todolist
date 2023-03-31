@@ -33,6 +33,8 @@ function App() {
 
     saveTodosToLocalStorage(todoList);
 
+    console.log(todoList);
+
     setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
   }
 

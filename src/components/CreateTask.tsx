@@ -53,19 +53,31 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
 
             <select
                 value={listName}
-                onChange={(event) => {
-                    setListName(event.target.value);
-                    console.log(event.target.value);
+                onChange={(e) => {
+                    setListName(e.target.value);
+                    console.log(e.target.value);
                 }}
             >
+                {listName !== 'New List' && <option value={listName}>{listName}</option>}
                 <option value="Pro">Pro</option>
                 <option value="Perso">Perso</option>
+                <option value="Other">Other</option>
+                <option value="New List">New List</option>
             </select>
 
             <DatePicker selected={startDate} onChange={(date) => {
                 if (date === null) throw new Error('Date is null');
                 setStartDate(date);
             }} />
+
+            {listName === 'New List' && <input type="text" placeholder="New list name"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') setListName(e.currentTarget.value);
+                }}
+                onBlur={(e) => {
+                    setListName(e.target.value);
+                }}
+            />}
 
             <button onClick={handleCancelCreateTask}>Cancel</button>
             <button type="button" onClick={handleClickCreateTask}>
