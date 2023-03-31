@@ -80,4 +80,9 @@
   padding: 10px;
   cursor: pointer;
   border-radius: var(--border-radius);
+  border: 1px solid gray;
+}
+
+.verticalView .buttonBlock button:hover {
+  border: 1px solid black;
 }
