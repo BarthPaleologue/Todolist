@@ -50,7 +50,7 @@ function App() {
     <div className="App">
       {/* {
         {
-          [AppStatus.CATEGORY_VIEW_MOBILE]: <div>Category view mobile</div>,
+          [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories />,
           [AppStatus.LIST_VIEW_MOBILE]: <div>List view mobile</div>,
           [AppStatus.CREATE_TASK_VIEW_MOBILE]: <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} />,
           [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
