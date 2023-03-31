@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DatePicker from "react-datepicker";
 import { Task } from '../task';
 import "react-datepicker/dist/react-datepicker.css";
+import { loadCategoriesNamesFromLocalStorage } from '../utils/localStorage';
 
 export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (task: Task, listName: string) => void, onCancelCreation: () => void; }) {
     const [newTaskTitle, setNewTaskTitle] = useState('');
@@ -37,7 +38,10 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
     }
 
     return (
-        <div>
+        <div className="verticalView">
+            <header>
+                <h1>Create Task</h1>
+            </header>
             <input
                 type="text"
                 placeholder="What todo?"
@@ -59,9 +63,11 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
                 }}
             >
                 {listName !== 'New List' && <option value={listName}>{listName}</option>}
-                <option value="Pro">Pro</option>
-                <option value="Perso">Perso</option>
-                <option value="Other">Other</option>
+                {
+                    loadCategoriesNamesFromLocalStorage().map((categoryName) => {
+                        return <option key={categoryName} value={categoryName}>{categoryName}</option>;
+                    })
+                }
                 <option value="New List">New List</option>
             </select>
 
@@ -79,10 +85,12 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
                 }}
             />}
 
-            <button onClick={handleCancelCreateTask}>Cancel</button>
-            <button type="button" onClick={handleClickCreateTask}>
-                Ok
-            </button>
+            <div className="buttonBlock">
+                <button onClick={handleCancelCreateTask}>Cancel</button>
+                <button type="button" onClick={handleClickCreateTask}>
+                    Ok
+                </button>
+            </div>
         </div>
     );
 }

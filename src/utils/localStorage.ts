@@ -8,6 +8,11 @@ export function loadTodosFromLocalStorage(): TaskList[] {
     return todos ? JSON.parse(todos) : [];
 }
 
+export function loadCategoriesNamesFromLocalStorage(): string[] {
+    const todos = loadTodosFromLocalStorage();
+    return todos.map((todo) => todo.title);
+}
+
 export function saveTodosToLocalStorage(todos: TaskList[]): void {
     localStorage.setItem(TODO_KEY, JSON.stringify(todos));
 }

@@ -1,38 +1,83 @@
-.App {
+:root {
+  --border-radius: 5px;
+}
+
+.verticalView {
+  row-gap: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.verticalView header {
+  background-color: #f1f1f1;
+  padding: 10px;
+  height: 100px;
+}
+
+.verticalView header h1 {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.verticalView input {
+  display: block;
+  margin: 0 10px;
+  padding: 10px;
+  outline: none;
+  border-radius: var(--border-radius);
+  border: 1px solid grey;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.verticalView input:focus {
+  border: 1px solid black;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.verticalView textarea {
+  display: block;
+  margin: 0 10px;
+  padding: 10px;
+  outline: none;
+  border-radius: var(--border-radius);
+  border: 1px solid grey;
+}
+
+.verticalView textarea:focus {
+  border: 1px solid black;
+}
+
+.verticalView select {
+  display: block;
+  margin: 0 10px;
+  padding: 10px;
+  outline: none;
+  border-radius: var(--border-radius);
+}
+
+.verticalView .react-datepicker__input-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.verticalView .react-datepicker__input-container input {
+  flex: 1;
+  border-radius: var(--border-radius);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.verticalView .buttonBlock {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.verticalView .buttonBlock button {
+  flex: 1;
+  outline: none;
+  margin: 0 10px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
 }
