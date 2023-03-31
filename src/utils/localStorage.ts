@@ -18,6 +18,7 @@ export function saveTodosToLocalStorage(todos: TaskList[]): void {
 }
 
 export function saveTaskListToLocalStorage(taskList: TaskList): void {
+    console.log(taskList.title);
     const todos = loadTodosFromLocalStorage();
     // find the index of the task list with the same title
     const index = todos.findIndex((todo) => todo.title === taskList.title);
@@ -26,4 +27,5 @@ export function saveTaskListToLocalStorage(taskList: TaskList): void {
     } else { // if found, replace it
         todos[index] = taskList;
     }
+    saveTodosToLocalStorage(todos);
 }
