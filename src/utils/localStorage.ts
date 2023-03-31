@@ -1,6 +1,6 @@
 import { Task, TaskList } from "../task";
 
-const TODO_KEY = 'todo_lists';
+export const TODO_KEY = 'todo_lists';
 
 export function loadTodosFromLocalStorage(): TaskList[] {
     const todos = localStorage.getItem(TODO_KEY);
