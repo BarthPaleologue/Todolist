@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DatePicker from "react-datepicker";
 import { Task } from '../task';
 import "react-datepicker/dist/react-datepicker.css";
+import { loadCategoriesNamesFromLocalStorage } from '../utils/localStorage';
 
 export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (task: Task, listName: string) => void, onCancelCreation: () => void; }) {
     const [newTaskTitle, setNewTaskTitle] = useState('');
@@ -59,9 +60,11 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
                 }}
             >
                 {listName !== 'New List' && <option value={listName}>{listName}</option>}
-                <option value="Pro">Pro</option>
-                <option value="Perso">Perso</option>
-                <option value="Other">Other</option>
+                {
+                    loadCategoriesNamesFromLocalStorage().map((categoryName) => {
+                        return <option key={categoryName} value={categoryName}>{categoryName}</option>;
+                    })
+                }
                 <option value="New List">New List</option>
             </select>
 
