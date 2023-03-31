@@ -38,7 +38,10 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
     }
 
     return (
-        <div>
+        <div className="verticalView">
+            <header>
+                <h1>Create Task</h1>
+            </header>
             <input
                 type="text"
                 placeholder="What todo?"
@@ -82,10 +85,12 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
                 }}
             />}
 
-            <button onClick={handleCancelCreateTask}>Cancel</button>
-            <button type="button" onClick={handleClickCreateTask}>
-                Ok
-            </button>
+            <div className="buttonBlock">
+                <button onClick={handleCancelCreateTask}>Cancel</button>
+                <button type="button" onClick={handleClickCreateTask}>
+                    Ok
+                </button>
+            </div>
         </div>
     );
 }
