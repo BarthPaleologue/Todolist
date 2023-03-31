@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import { Task } from '../task';
+import { Task } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
-import { loadCategoriesNamesFromLocalStorage } from '../utils/localStorage';
+import { loadCategoriesNamesFromLocalStorage } from "../utils/localStorage";
 
-export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: { onCreateTask: (task: Task, listName: string) => void, onCancelCreation: () => void, defaultListName?: string; }) {
-    const [newTaskTitle, setNewTaskTitle] = useState('');
-    const [newTaskDescription, setNewTaskDescription] = useState('');
+export function CreateTask({
+    onCreateTask,
+    onCancelCreation,
+    defaultListName
+}: {
+    onCreateTask: (task: Task, listName: string) => void;
+    onCancelCreation: () => void;
+    defaultListName?: string;
+}) {
+    const [newTaskTitle, setNewTaskTitle] = useState("");
+    const [newTaskDescription, setNewTaskDescription] = useState("");
 
     const [startDate, setStartDate] = useState(new Date());
 
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState("");
 
-    const [listName, setListName] = useState(defaultListName ? defaultListName : 'Pro');
+    const [listName, setListName] = useState(defaultListName ? defaultListName : "Pro");
 
     function handleChangeTitle(event: React.ChangeEvent<HTMLInputElement>) {
         setNewTaskTitle(event.target.value);
@@ -32,7 +40,7 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             sharedWith: undefined
         };
         onCreateTask(task, listName);
-        setNewTaskTitle('');
+        setNewTaskTitle("");
     }
 
     function handleCancelCreateTask() {
@@ -44,18 +52,9 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             <header>
                 <h1>Create Task</h1>
             </header>
-            <input
-                type="text"
-                placeholder="What todo?"
-                value={newTaskTitle}
-                onChange={handleChangeTitle}
-            />
+            <input type="text" placeholder="What todo?" value={newTaskTitle} onChange={handleChangeTitle} />
 
-            <textarea
-                placeholder="Description"
-                value={newTaskDescription}
-                onChange={handleChangeDescription}
-            />
+            <textarea placeholder="Description" value={newTaskDescription} onChange={handleChangeDescription} />
 
             <select
                 value={listName}
@@ -64,32 +63,45 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
                     console.log(e.target.value);
                 }}
             >
-                {listName !== 'New List' && <option value={listName}>{listName}</option>}
-                {
-                    loadCategoriesNamesFromLocalStorage().map((categoryName) => {
-                        return <option key={categoryName} value={categoryName}>{categoryName}</option>;
-                    })
-                }
+                {listName !== "New List" && <option value={listName}>{listName}</option>}
+                {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
+                    return (
+                        <option key={categoryName} value={categoryName}>
+                            {categoryName}
+                        </option>
+                    );
+                })}
                 <option value="New List">New List</option>
             </select>
 
-            {listName === 'New List' && <input type="text" placeholder="New list name"
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') setListName(e.currentTarget.value);
-                }}
-                onBlur={(e) => {
-                    setListName(e.target.value);
-                }}
-            />}
+            {listName === "New List" && (
+                <input
+                    type="text"
+                    placeholder="New list name"
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") setListName(e.currentTarget.value);
+                    }}
+                    onBlur={(e) => {
+                        setListName(e.target.value);
+                    }}
+                />
+            )}
 
-            <DatePicker placeholderText="Choose a date" onChange={(date) => {
-                if (date === null) throw new Error('Date is null');
-                setStartDate(date);
-            }} />
+            <DatePicker
+                placeholderText="Choose a date"
+                onChange={(date) => {
+                    if (date === null) throw new Error("Date is null");
+                    setStartDate(date);
+                }}
+            />
 
-            <input type="text" placeholder='Location' onChange={(location) => {
-                setLocation(location.target.value);
-            }} />
+            <input
+                type="text"
+                placeholder="Location"
+                onChange={(location) => {
+                    setLocation(location.target.value);
+                }}
+            />
 
             <div className="buttonBlock">
                 <button onClick={handleCancelCreateTask}>Cancel</button>

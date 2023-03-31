@@ -1,88 +1,88 @@
 :root {
-  --border-radius: 5px;
+    --border-radius: 5px;
 }
 
 .verticalView {
-  row-gap: 10px;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: relative;
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
 }
 
 .verticalView header {
-  background-color: #f1f1f1;
-  padding: 10px;
-  height: 100px;
+    background-color: #f1f1f1;
+    padding: 10px;
+    height: 100px;
 }
 
 .verticalView header h1 {
-  text-align: center;
+    text-align: center;
 }
 
 .verticalView input {
-  display: block;
-  margin: 0 10px;
-  padding: 10px;
-  outline: none;
-  border-radius: var(--border-radius);
-  border: 1px solid grey;
+    display: block;
+    margin: 0 10px;
+    padding: 10px;
+    outline: none;
+    border-radius: var(--border-radius);
+    border: 1px solid grey;
 }
 
 .verticalView input:focus {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
 .verticalView textarea {
-  display: block;
-  margin: 0 10px;
-  padding: 10px;
-  outline: none;
-  border-radius: var(--border-radius);
-  border: 1px solid grey;
+    display: block;
+    margin: 0 10px;
+    padding: 10px;
+    outline: none;
+    border-radius: var(--border-radius);
+    border: 1px solid grey;
 }
 
 .verticalView textarea:focus {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
 .verticalView select {
-  display: block;
-  margin: 0 10px;
-  padding: 10px;
-  outline: none;
-  border-radius: var(--border-radius);
+    display: block;
+    margin: 0 10px;
+    padding: 10px;
+    outline: none;
+    border-radius: var(--border-radius);
 }
 
 .verticalView .react-datepicker__input-container {
-  display: flex;
+    display: flex;
 }
 
 .verticalView .react-datepicker__input-container input {
-  flex: 1;
-  border-radius: var(--border-radius);
+    flex: 1;
+    border-radius: var(--border-radius);
 }
 
 .verticalView .buttonBlock {
-  position: absolute;
-  bottom: 20px;
-  right: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
 }
 
 .verticalView .buttonBlock button {
-  flex: 1;
-  outline: none;
-  margin: 0 10px;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-  border: 1px solid gray;
+    flex: 1;
+    outline: none;
+    margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    border: 1px solid gray;
 }
 
 .verticalView .buttonBlock button:hover {
-  border: 1px solid black;
+    border: 1px solid black;
 }
