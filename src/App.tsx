@@ -5,6 +5,7 @@ import { Presentation } from './components/Presentation';
 import { CreateTask } from './components/CreateTask';
 import { Task, TaskList } from './task';
 import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from './utils/localStorage';
+import {displayTasks} from './components/tasksListing';
 
 enum AppStatus {
   CATEGORY_VIEW_MOBILE,
@@ -15,7 +16,7 @@ enum AppStatus {
 }
 
 function App() {
-  const [appStatus, setAppStatus] = React.useState(AppStatus.CREATE_TASK_VIEW_MOBILE);
+  const [appStatus, setAppStatus] = React.useState(AppStatus.LIST_VIEW_MOBILE);
 
   const isOnMobile = window.innerWidth < 768;
 
@@ -53,7 +54,7 @@ function App() {
       {
         {
           [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories />,
-          [AppStatus.LIST_VIEW_MOBILE]: <div>List view mobile</div>,
+          [AppStatus.LIST_VIEW_MOBILE]: displayTasks(),
           [AppStatus.CREATE_TASK_VIEW_MOBILE]: <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} />,
           [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
           [AppStatus.FIRST_PRESENTATION_MOBILE]: <Presentation />,

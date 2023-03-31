@@ -7,7 +7,7 @@ export function Presentation() {
     return (
         <div className='verticalView'>
             <h1>How to use the App </h1>
-            <img src={logo} />
+            <img src = {logo} width="15%"/>
             <li>Click on the "+" button at the button to add a category</li>
             <li>Click on a category to display its tasks</li>
             <li>Click on your photo to edit your profile</li>

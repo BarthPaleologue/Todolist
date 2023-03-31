@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import {Task} from '../task';
 
 function getTasks(): Task[] { // Hard-coded for now
@@ -29,24 +28,24 @@ function getTasks(): Task[] { // Hard-coded for now
     ];
 }
 
-function displayTasks() {
+export function displayTasks() {
     const tasks = getTasks();
+    console.log(tasks);
     return (
         <div>
             {
-                tasks.map((task: any, index: any) => {
-                    return (
-                        <div key={index} style={{borderRadius: '20px'}}>
-                            <input type={'checkbox'} checked={task.isComplete}/>
-                            <h3>{task.title}</h3>
-                            {task.details && <p style={{color: 'grey'}}>{task.details}</p>}
-                            {task.date && <p>{task.date}</p>}
-                            {task.location && <p>{task.location}</p>}
-                            {task.sharedWith && <p>{task.sharedWith.join(', ')}</p>}
-                        </div>
-                    );
-                })
-            }
+                tasks.map((task: any, index: any) => (
+
+                <div key={index} style={{borderRadius: '20px'}}>
+            <h3>{task.title}</h3>
+            {task.details && <p style={{color: 'grey'}}>{task.details}</p>}
+            {task.date && <p>{task.date.toString()}</p>}
+            <p>Completed? {("yes" && task.completed) || ("no" && !task.completed)}</p>
+            {task.location && <p>At {task.location}</p>}
+            {task.sharedWith && <p> Shared with {task.sharedWith.join(', ')}</p>}
         </div>
-    );
+    ))}
+</div>
+)
+    ;
 }
