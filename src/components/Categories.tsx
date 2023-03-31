@@ -1,4 +1,4 @@
-import React,  {useState} from 'react';
+import React,  {useState, useRef} from 'react';
 import fs from 'fs'
 import categories from '../indexes/categories.json'
 import { Task, TaskList } from '../task';
@@ -17,17 +17,12 @@ import {TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskLi
 //     }))
 // }));
 // saveTodosToLocalStorage(local_categories);
-console.log(localStorage[TODO_KEY]);
+// console.log(localStorage[TODO_KEY]);
 
-
+// Load localSotrage
 const lst_categories: TaskList[] = loadTodosFromLocalStorage();
 
 const Categories = () => {
-    // Render all categories 
-    const newArr = lst_categories.map( (cat) => {
-            return <div key={cat.title} className="category-item" > {cat.title}</div>;
-        });
-
     // SearchBar
     const [searchInput, setSearchInput] = useState("");
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +36,10 @@ const Categories = () => {
     //     });
     // }
 
-    // Add Category function
+    // Variables of the input field for a new category
+    const inputRef = useRef<HTMLInputElement>(null);
+  
+    // Add a category to the local Storage
     function addCategory(name: string){
         console.log("Adding category", name);
         const newCategory: TaskList = {
@@ -56,10 +54,15 @@ const Categories = () => {
         saveTaskListToLocalStorage(newCategory);
     }
 
+    // Make visible the input field to add a new category
     function createCategory(){
         (document.getElementById('new-category') as HTMLInputElement).hidden = false;
+        if (inputRef.current){
+            inputRef.current.focus();
+        }
     }
 
+    // Handle 'Enter' key pressed when entering a new category
     function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>){
         if (e.key === "Enter"){
             let name =  (document.getElementById('new-category') as HTMLInputElement).value.trim();
@@ -72,19 +75,32 @@ const Categories = () => {
     }
 
 
+    
+    
+    // Render all categories 
+    const newArr = lst_categories.map( (cat) => {
+        return <div key={cat.title} className="category-item" > {cat.title}</div>;
+    });
     return (
-    <div className='category'>
-        <div className='category-header'> Tasks </div>
+    <div className='categoryView'>
+        <h1 className='category-header'> Tasks </h1>
         <input
             type="search"
             placeholder="Search here"
             onChange={handleChange}
             value={searchInput} />
-        <div className='today'> Today </div>
+        <div className='category-item'> Today </div>
         <div id='category-list'>
             {newArr}
         </div>
-        <input id='new-category'  type="text" onKeyDown={handleKeyPress}/>
+        <input
+            hidden id='new-category'
+            className='category-item'
+            ref={inputRef}
+            onBlur={() => {(document.getElementById('new-category') as HTMLInputElement).value = '';
+                            (document.getElementById('new-category') as HTMLInputElement).hidden = true}}
+            type="text"
+            onKeyDown={handleKeyPress}/>
         <button className='addCatBtn' type="button" onClick={createCategory}> New List </button>
     </div>
     )

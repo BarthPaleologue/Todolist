@@ -87,3 +87,33 @@
 .verticalView .buttonBlock button:hover {
     border: 1px solid black;
 }
+
+.categoryView {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: auto;
+    border-right: 1px solid black;
+}
+
+.category-header{
+    text-align: center;
+}
+
+.category-item{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 15px;
+    padding: 0.5em;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.category-item:hover{
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
+#new-category:hover{
+    background-color: inherit;
+}
