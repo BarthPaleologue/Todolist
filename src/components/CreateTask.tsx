@@ -3,11 +3,13 @@ import DatePicker from "react-datepicker";
 import { Task } from '../task';
 import "react-datepicker/dist/react-datepicker.css";
 
-export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (task: Task) => void, onCancelCreation: () => void; }) {
+export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (task: Task, listName: string) => void, onCancelCreation: () => void; }) {
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
 
     const [startDate, setStartDate] = useState(new Date());
+
+    const [listName, setListName] = useState('Pro');
 
     function handleChangeTitle(event: React.ChangeEvent<HTMLInputElement>) {
         setNewTaskTitle(event.target.value);
@@ -26,7 +28,7 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
             location: undefined,
             sharedWith: undefined
         };
-        onCreateTask(task);
+        onCreateTask(task, listName);
         setNewTaskTitle('');
     }
 
@@ -49,15 +51,33 @@ export function CreateTask({ onCreateTask, onCancelCreation }: { onCreateTask: (
                 onChange={handleChangeDescription}
             />
 
-            <select>
-                <option value="1">Pro</option>
-                <option value="2">Perso</option>
+            <select
+                value={listName}
+                onChange={(e) => {
+                    setListName(e.target.value);
+                    console.log(e.target.value);
+                }}
+            >
+                {listName !== 'New List' && <option value={listName}>{listName}</option>}
+                <option value="Pro">Pro</option>
+                <option value="Perso">Perso</option>
+                <option value="Other">Other</option>
+                <option value="New List">New List</option>
             </select>
 
             <DatePicker selected={startDate} onChange={(date) => {
                 if (date === null) throw new Error('Date is null');
                 setStartDate(date);
             }} />
+
+            {listName === 'New List' && <input type="text" placeholder="New list name"
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') setListName(e.currentTarget.value);
+                }}
+                onBlur={(e) => {
+                    setListName(e.target.value);
+                }}
+            />}
 
             <button onClick={handleCancelCreateTask}>Cancel</button>
             <button type="button" onClick={handleClickCreateTask}>

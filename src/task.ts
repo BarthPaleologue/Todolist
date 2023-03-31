@@ -6,3 +6,8 @@ export interface Task {
     location?: string;
     sharedWith?: string[];
 }
+
+export interface TaskList {
+    title: string;
+    tasks: Task[];
+}
