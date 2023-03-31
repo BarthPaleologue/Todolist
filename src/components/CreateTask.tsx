@@ -10,6 +10,8 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
 
     const [startDate, setStartDate] = useState(new Date());
 
+    const [location, setLocation] = useState('');
+
     const [listName, setListName] = useState(defaultListName ? defaultListName : 'Pro');
 
     function handleChangeTitle(event: React.ChangeEvent<HTMLInputElement>) {
@@ -71,11 +73,6 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
                 <option value="New List">New List</option>
             </select>
 
-            <DatePicker selected={startDate} onChange={(date) => {
-                if (date === null) throw new Error('Date is null');
-                setStartDate(date);
-            }} />
-
             {listName === 'New List' && <input type="text" placeholder="New list name"
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') setListName(e.currentTarget.value);
@@ -84,6 +81,15 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
                     setListName(e.target.value);
                 }}
             />}
+
+            <DatePicker placeholderText="Choose a date" onChange={(date) => {
+                if (date === null) throw new Error('Date is null');
+                setStartDate(date);
+            }} />
+
+            <input type="text" placeholder='Location' onChange={(location) => {
+                setLocation(location.target.value);
+            }} />
 
             <div className="buttonBlock">
                 <button onClick={handleCancelCreateTask}>Cancel</button>
