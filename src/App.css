@@ -151,7 +151,7 @@
     align-content: center;
 }
 
-.listContainer .listElement {
+.listContainer li {
     width: 100%;
     min-height: 50px;
     background-color: var(--main-color);
@@ -165,7 +165,13 @@
     transition: var(--transition-duration);
 }
 
-.listContainer .listElement input {
+.listContainer li.finished {
+    background-color: var(--main-color-hover);
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.listContainer li input {
     width: 20px;
     height: 20px;
     cursor: pointer;
