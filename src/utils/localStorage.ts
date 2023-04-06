@@ -13,6 +13,16 @@ export function loadCategoriesNamesFromLocalStorage(): string[] {
     return todos.map((todo) => todo.title);
 }
 
+export function loadListFromLocalStorage(title: string): Task[] {
+    const todos = loadTodosFromLocalStorage();
+    const todo = todos.find((todo) => todo.title === title);
+    if (!todo) {
+        console.log("No todo found with title: " + title);
+        return [];
+    }
+    return todo.tasks;
+}
+
 export function saveTodosToLocalStorage(todos: TaskList[]): void {
     localStorage.setItem(TODO_KEY, JSON.stringify(todos));
 }
@@ -29,5 +39,71 @@ export function saveTaskListToLocalStorage(taskList: TaskList): void {
         // if found, replace it
         todos[index] = taskList;
     }
+    saveTodosToLocalStorage(todos);
+}
+
+export function emptyLocalStorage(): void {
+    localStorage.removeItem(TODO_KEY);
+}
+
+export function populateLocalStorage(): void {
+    // populates local storage with some data for testing
+    const todos = [
+        {
+            title: "Perso",
+            tasks: [
+                {
+                    title: "Faire les courses",
+                    details: "Task 1 description",
+                    isComplete: false,
+                    date: new Date("2021-01-01")
+                },
+                {
+                    title: "Faire la vaisselle",
+                    details: "Task 2 description",
+                    isComplete: true,
+                    date: new Date("2021-01-03"),
+                    location: "Paris",
+                    sharedWith: ["John"]
+                },
+                {
+                    title: "Respirer",
+                    details: "Task 3 description",
+                    isComplete: false,
+                    date: new Date("2021-01-05"),
+                    location: "London",
+                    sharedWith: ["John", "Jane"]
+                }
+            ]
+        },
+        {
+            title: "Pro",
+            tasks: [
+                {
+                    title: "Chercher un job",
+                    details: "Task 4 description",
+                    isComplete: false,
+                    date: new Date("2021-01-01")
+                },
+                {
+                    title: "Apprendre React",
+                    details: "Task 5 description",
+                    isComplete: true,
+                    date: new Date("2021-01-03"),
+                    location: "Paris",
+                    sharedWith: ["John"]
+                },
+                {
+                    title: "Organiser un meetup",
+                    details: "Task 6 description",
+                    isComplete: false,
+                    date: new Date("2021-01-05"),
+                    location: "London",
+                    sharedWith: ["John", "Jane"]
+                }
+            ]
+        }
+    ];
+
     saveTodosToLocalStorage(todos);
 }

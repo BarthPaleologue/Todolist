@@ -1,6 +1,7 @@
 :root {
     --border-radius: 5px;
     --main-color: #115905;
+    --main-color-light: #1f7c07;
     --main-hover-color: #0a3503;
     --transition-duration: 0.2s;
 }
@@ -115,13 +116,18 @@
     text-align: center;
 }
 
+#category-list {
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
 .category-item {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-left: 15px;
     padding: 0.5em;
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
+    cursor: pointer;
 }
 
 .category-item:hover {
