@@ -50,7 +50,7 @@ function App() {
 
     return (
         <div className="App">
-            {/* <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
+            <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
             {
                 {
                     [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories />,
@@ -59,7 +59,7 @@ function App() {
                     [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
                     [AppStatus.FIRST_PRESENTATION_MOBILE]: <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
                 }[appStatus]
-            } */}
+            }
             <Categories></Categories>
         </div>
     );

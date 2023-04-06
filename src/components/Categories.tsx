@@ -21,21 +21,21 @@ import {TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskLi
 
 // Load localSotrage
 const lst_categories: TaskList[] = loadTodosFromLocalStorage();
+let lst_tasks: Task[] = [];
+
 
 const Categories = () => {
-    // SearchBar
-    const [searchInput, setSearchInput] = useState("");
+    // Callback called when typing on the search bar
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            e.preventDefault();
-            setSearchInput(e.target.value);
+            console.log(dynamicSearch(e.target.value));
         };
-        
-    // if (searchInput.length > 0) {
-    //     lst_tasks.filter((task) => {
-    //         return task.title.match(searchInput);
-    //     });
-    // }
 
+    // Function to search all tasks that contain searchInput
+    const dynamicSearch = (searchInput: string) => (
+        lst_tasks.filter(task => task.title.toLowerCase().includes(searchInput))
+    );
+
+        
     // Variables of the input field for a new category
     const inputRef = useRef<HTMLInputElement>(null);
   
@@ -74,6 +74,16 @@ const Categories = () => {
         }
     }
 
+    // Load all tasks when the searchBar is focused
+    function loadAllTasks(){
+        console.log("Loading all tasks");
+        lst_tasks = [];
+        lst_categories.map((cat) =>
+            (cat.tasks.map( (elem) => lst_tasks.push(elem)))
+            )
+        console.log(lst_tasks);
+    }
+
 
     
     
@@ -88,7 +98,7 @@ const Categories = () => {
             type="search"
             placeholder="Search here"
             onChange={handleChange}
-            value={searchInput} />
+            onFocus={loadAllTasks} />
         <div className='category-item'> Today </div>
         <div id='category-list'>
             {newArr}
