@@ -16,13 +16,17 @@ export function TodoUnit({ task, onCompleteChange }: TodoUnitProps) {
     }
 
     return (
-        <li className={task.isComplete ? "finished" : ""} style={{ borderRadius: "20px" }}>
+        <li className={task.isComplete ? "finished" : ""}>
             <input type="checkbox" defaultChecked={task.isComplete} onChange={handleChangeComplete} />
             <label>{task.title}</label>
             {task.details && <sub style={{ color: "grey" }}>{task.details}</sub>}
             {task.date && <p>{task.date.toString()}</p>}
             {task.location && <p>At {task.location}</p>}
             {task.sharedWith && <p> Shared with {task.sharedWith.join(", ")}</p>}
+            <div className="editTrashBlock">
+                <div className="edit"></div>
+                <div className="trash"></div>
+            </div>
         </li>
     );
 }
