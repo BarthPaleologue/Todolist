@@ -5,7 +5,16 @@ export const TODO_KEY = "todo_lists";
 export function loadTodosFromLocalStorage(): TaskList[] {
     const todos = localStorage.getItem(TODO_KEY);
     if (todos === null) console.log("No todos found in local storage");
-    return todos ? JSON.parse(todos) : [];
+    const todosJSON = todos ? JSON.parse(todos) : [];
+
+    // convert the dates back to Date objects
+    for (const todo of todosJSON) {
+        for (const task of todo.tasks) {
+            task.date = new Date(task.date);
+        }
+    }
+
+    return todosJSON;
 }
 
 export function loadCategoriesNamesFromLocalStorage(): string[] {
