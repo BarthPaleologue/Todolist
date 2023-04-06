@@ -1,5 +1,8 @@
 :root {
     --border-radius: 5px;
+    --main-color: #115905;
+    --main-hover-color: #0a3503;
+    --transition-duration: 0.2s;
 }
 
 .verticalView {
@@ -11,7 +14,8 @@
 }
 
 .verticalView header {
-    background-color: #f1f1f1;
+    background-color: var(--main-color);
+    color: white;
     padding: 10px;
     height: 100px;
 }
@@ -54,6 +58,13 @@
     border-radius: var(--border-radius);
 }
 
+.verticalView ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    line-height: 1.5em;
+}
+
 .verticalView .react-datepicker__input-container {
     display: flex;
 }
@@ -76,16 +87,19 @@
 .verticalView .buttonBlock button {
     flex: 1;
     max-width: 200px;
+    background: var(--main-color);
+    color: white;
     outline: none;
     margin: 0 10px;
     padding: 10px;
     cursor: pointer;
     border-radius: var(--border-radius);
     border: 1px solid gray;
+    transition: var(--transition-duration);
 }
 
 .verticalView .buttonBlock button:hover {
-    border: 1px solid black;
+    background: var(--main-hover-color);
 }
 
 .categoryView {

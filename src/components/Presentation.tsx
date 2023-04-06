@@ -9,13 +9,15 @@ export function Presentation({ onOK }: { onOK: () => void }) {
                 <h1>How to use the App </h1>
             </header>
             <img src={logo} width="15%" />
-            <li>Click on the "+" button at the button to add a category</li>
-            <li>Click on a category to display its tasks</li>
-            <li>Click on your photo to edit your profile</li>
-            <li>Click on the "..." button to edit a category</li>
+            <ul>
+                <li>Click on the "+" button at the button to add a category</li>
+                <li>Click on a category to display its tasks</li>
+                <li>Click on your photo to edit your profile</li>
+                <li>Click on the "..." button to edit a category</li>
+            </ul>
             <div className="buttonBlock">
                 <button onClick={onOK} style={{ width: "50px" }}>
-                    OK
+                    Accept
                 </button>
             </div>
         </div>
