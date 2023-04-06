@@ -25,9 +25,10 @@ let lst_tasks: Task[] = [];
 
 interface CategoriesProps {
     onCreateTaskPressed: () => void;
+    onCategoryPressed: (category: string) => void;
 }
 
-const Categories = ({ onCreateTaskPressed }: CategoriesProps) => {
+const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps) => {
     // Callback called when typing on the search bar
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(dynamicSearch(e.target.value));
@@ -85,7 +86,7 @@ const Categories = ({ onCreateTaskPressed }: CategoriesProps) => {
     // Render all categories
     const newArr = lst_categories.map((cat) => {
         return (
-            <div key={cat.title} className="category-item">
+            <div key={cat.title} className="category-item" onClick={() => onCategoryPressed(cat.title)}>
                 {" "}
                 {cat.title}
             </div>

@@ -56,7 +56,15 @@ function App() {
         <div className="App">
             {
                 {
-                    [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories onCreateTaskPressed={() => setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE)} />,
+                    [AppStatus.CATEGORY_VIEW_MOBILE]: (
+                        <Categories
+                            onCreateTaskPressed={() => setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE)}
+                            onCategoryPressed={(categoryName) => {
+                                setCurrentListName(categoryName);
+                                setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                            }}
+                        />
+                    ),
                     [AppStatus.LIST_VIEW_MOBILE]: <ListView listName={currentListName} />,
                     [AppStatus.CREATE_TASK_VIEW_MOBILE]: <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} />,
                     [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
