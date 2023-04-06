@@ -65,8 +65,17 @@ function App() {
                             }}
                         />
                     ),
-                    [AppStatus.LIST_VIEW_MOBILE]: <ListView listName={currentListName} />,
-                    [AppStatus.CREATE_TASK_VIEW_MOBILE]: <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} />,
+                    [AppStatus.LIST_VIEW_MOBILE]: (
+                        <ListView
+                            listName={currentListName}
+                            onCreateTaskPressed={() => {
+                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                            }}
+                        />
+                    ),
+                    [AppStatus.CREATE_TASK_VIEW_MOBILE]: (
+                        <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} defaultListName={currentListName} />
+                    ),
                     [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
                     [AppStatus.FIRST_PRESENTATION_MOBILE]: <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
                 }[appStatus]
