@@ -117,10 +117,12 @@
 }
 
 #category-list {
+    overflow: auto;
     row-gap: 10px;
     display: flex;
     flex-direction: column;
     padding: 20px;
+    height: calc(100% - 320px);
 }
 
 .category-item {

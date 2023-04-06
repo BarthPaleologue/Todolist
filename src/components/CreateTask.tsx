@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { Task } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
 import { loadCategoriesNamesFromLocalStorage } from "../utils/localStorage";
+import { useState } from "react";
 
 interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
@@ -11,22 +11,17 @@ interface CreateTaskProps {
 }
 
 export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: CreateTaskProps) {
-    const [newTaskTitle, setNewTaskTitle] = useState("");
-    const [newTaskDescription, setNewTaskDescription] = useState("");
+    let [newTaskTitle, setNewTaskTitle] = useState<string>("");
 
-    const [startDate, setStartDate] = useState(new Date());
+    let [newTaskDescription, setNewTaskDescription] = useState<string>("");
 
-    const [location, setLocation] = useState("");
+    let [startDate, setStartDate] = useState<Date | undefined>(undefined);
 
-    const [listName, setListName] = useState(defaultListName ? defaultListName : "Pro");
+    let [location, setLocation] = useState<string | undefined>(undefined);
 
-    function handleChangeTitle(event: React.ChangeEvent<HTMLInputElement>) {
-        setNewTaskTitle(event.target.value);
-    }
+    let [listName, setListName] = useState<string>(defaultListName ?? "New List");
 
-    function handleChangeDescription(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        setNewTaskDescription(event.target.value);
-    }
+    let [newListName, setNewListName] = useState<string | undefined>(undefined);
 
     function handleClickCreateTask() {
         const task: Task = {
@@ -37,8 +32,8 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             location: undefined,
             sharedWith: undefined
         };
-        onCreateTask(task, listName);
-        setNewTaskTitle("");
+        console.log(task, newListName ?? listName);
+        onCreateTask(task, newListName ?? listName);
     }
 
     function handleCancelCreateTask() {
@@ -50,15 +45,27 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             <header>
                 <h1>Create Task</h1>
             </header>
-            <input type="text" placeholder="What todo?" value={newTaskTitle} onChange={handleChangeTitle} />
+            <input
+                type="text"
+                placeholder="What todo?"
+                value={newTaskTitle}
+                onChange={(e) => {
+                    setNewTaskTitle(e.target.value);
+                }}
+            />
 
-            <textarea placeholder="Description" value={newTaskDescription} onChange={handleChangeDescription} />
+            <textarea
+                placeholder="Description"
+                value={newTaskDescription}
+                onChange={(e) => {
+                    setNewTaskDescription(e.target.value);
+                }}
+            />
 
             <select
                 value={listName}
                 onChange={(e) => {
                     setListName(e.target.value);
-                    console.log(e.target.value);
                 }}
             >
                 {listName !== "New List" && <option value={listName}>{listName}</option>}
@@ -76,17 +83,16 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
                 <input
                     type="text"
                     placeholder="New list name"
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") setListName(e.currentTarget.value);
-                    }}
-                    onBlur={(e) => {
-                        setListName(e.target.value);
+                    value={newListName}
+                    onChange={(e) => {
+                        setNewListName(e.target.value);
                     }}
                 />
             )}
 
             <DatePicker
                 placeholderText="Choose a date"
+                value={startDate?.toDateString()}
                 onChange={(date) => {
                     if (date === null) throw new Error("Date is null");
                     setStartDate(date);
@@ -96,8 +102,9 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             <input
                 type="text"
                 placeholder="Location"
-                onChange={(location) => {
-                    setLocation(location.target.value);
+                defaultValue={location}
+                onChange={(e) => {
+                    setLocation(e.target.value);
                 }}
             />
 

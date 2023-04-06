@@ -18,7 +18,7 @@ enum AppStatus {
 function App() {
     const [appStatus, setAppStatus] = React.useState(AppStatus.FIRST_PRESENTATION_MOBILE);
 
-    const [currentListName, setCurrentListName] = React.useState("Pro");
+    const [currentListName, setCurrentListName] = React.useState<string | undefined>(undefined);
 
     const isOnMobile = window.innerWidth < 768;
 
@@ -43,13 +43,16 @@ function App() {
 
         console.log(todoList);
 
-        setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+        setCurrentListName(listName);
+
+        setAppStatus(AppStatus.LIST_VIEW_MOBILE);
     }
 
     function handleCancelTaskCreation() {
         console.log("Canceling task creation");
         // Perform any other logic
         setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+        setCurrentListName(undefined);
     }
 
     return (
@@ -67,7 +70,7 @@ function App() {
                     ),
                     [AppStatus.LIST_VIEW_MOBILE]: (
                         <ListView
-                            listName={currentListName}
+                            listName={currentListName ?? ""}
                             onCreateTaskPressed={() => {
                                 setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
                             }}
