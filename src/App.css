@@ -180,6 +180,40 @@
     cursor: pointer;
 }
 
+.listContainer li .taskTextContainer {
+    flex: 1;
+    flex-direction: column;
+    text-align: left;
+}
+
+.listContainer li .taskTextContainer p {
+    margin-block: 0;
+}
+
+.listContainer li .taskTextContainer .taskTitle {
+}
+
+.listContainer li .taskTextContainer .taskDate {
+    font-size: 60%;
+    line-height: 70%;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.listContainer li .taskTextContainer .taskDetails {
+    margin-top: 5px;
+    font-size: 70%;
+}
+
+.listContainer li .taskTextContainer .taskLocation {
+    font-size: 70%;
+    line-height: 100%;
+}
+
+.listContainer li .taskTextContainer .taskSharedWith {
+    font-size: 70%;
+    line-height: 100%;
+}
+
 .listContainer li .editTrashBlock {
     display: flex;
 }

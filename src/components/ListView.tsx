@@ -17,7 +17,7 @@ export function ListView({ listName, onCreateTaskPressed }: ListViewProps) {
                 <h1>{listName}</h1>
             </header>
             <ul className="listContainer">
-                {tasks.map((task: Task, index: any) => (
+                {tasks.map((task: Task, index: number) => (
                     <TodoUnit
                         key={index}
                         onCompleteChange={() => {
