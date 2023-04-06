@@ -1,10 +1,10 @@
-import React,  {useState, useRef} from 'react';
-import fs from 'fs'
-import categories from '../indexes/categories.json'
-import { Task, TaskList } from '../task';
-import {TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskListToLocalStorage} from '../utils/localStorage';
+import React, { useState, useRef } from "react";
+import fs from "fs";
+import categories from "../indexes/categories.json";
+import { Task, TaskList } from "../task";
+import { TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 
- // Load local data for testing
+// Load local data for testing
 // const local_categories: TaskList[] = categories.map( (cat) => ({
 //     title: cat.title,
 //     tasks: cat.tasks.map( (task) =>  ({
@@ -22,14 +22,18 @@ import {TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskLi
 // Load localSotrage
 const lst_categories: TaskList[] = loadTodosFromLocalStorage();
 
-const Categories = () => {
+interface CategoriesProps {
+    onCreateTaskPressed: () => void;
+}
+
+const Categories = ({ onCreateTaskPressed }: CategoriesProps) => {
     // SearchBar
     const [searchInput, setSearchInput] = useState("");
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            e.preventDefault();
-            setSearchInput(e.target.value);
-        };
-        
+        e.preventDefault();
+        setSearchInput(e.target.value);
+    };
+
     // if (searchInput.length > 0) {
     //     lst_tasks.filter((task) => {
     //         return task.title.match(searchInput);
@@ -38,73 +42,81 @@ const Categories = () => {
 
     // Variables of the input field for a new category
     const inputRef = useRef<HTMLInputElement>(null);
-  
+
     // Add a category to the local Storage
-    function addCategory(name: string){
+    function addCategory(name: string) {
         console.log("Adding category", name);
         const newCategory: TaskList = {
             title: name,
             tasks: []
         };
-        let lst_cat = (document.getElementById('category-list') as HTMLInputElement);
+        let lst_cat = document.getElementById("category-list") as HTMLInputElement;
         const newDivCat = document.createElement("div");
-        newDivCat.className="category-item";
-        newDivCat.innerText= name;
+        newDivCat.className = "category-item";
+        newDivCat.innerText = name;
         lst_cat.appendChild(newDivCat);
         saveTaskListToLocalStorage(newCategory);
     }
 
     // Make visible the input field to add a new category
-    function createCategory(){
-        (document.getElementById('new-category') as HTMLInputElement).hidden = false;
-        if (inputRef.current){
+    function createCategory() {
+        (document.getElementById("new-category") as HTMLInputElement).hidden = false;
+        if (inputRef.current) {
             inputRef.current.focus();
         }
     }
 
     // Handle 'Enter' key pressed when entering a new category
-    function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>){
-        if (e.key === "Enter"){
-            let name =  (document.getElementById('new-category') as HTMLInputElement).value.trim();
-            if (name.length > 0){
+    function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === "Enter") {
+            let name = (document.getElementById("new-category") as HTMLInputElement).value.trim();
+            if (name.length > 0) {
                 addCategory(name);
-            } 
-            (document.getElementById('new-category') as HTMLInputElement).value = '';
-            (document.getElementById('new-category') as HTMLInputElement).hidden = true;
+            }
+            (document.getElementById("new-category") as HTMLInputElement).value = "";
+            (document.getElementById("new-category") as HTMLInputElement).hidden = true;
         }
     }
 
-
-    
-    
-    // Render all categories 
-    const newArr = lst_categories.map( (cat) => {
-        return <div key={cat.title} className="category-item" > {cat.title}</div>;
+    // Render all categories
+    const newArr = lst_categories.map((cat) => {
+        return (
+            <div key={cat.title} className="category-item">
+                {" "}
+                {cat.title}
+            </div>
+        );
     });
     return (
-    <div className='categoryView'>
-        <h1 className='category-header'> Tasks </h1>
-        <input
-            type="search"
-            placeholder="Search here"
-            onChange={handleChange}
-            value={searchInput} />
-        <div className='category-item'> Today </div>
-        <div id='category-list'>
-            {newArr}
-        </div>
-        <input
-            hidden id='new-category'
-            className='category-item'
-            ref={inputRef}
-            onBlur={() => {(document.getElementById('new-category') as HTMLInputElement).value = '';
-                            (document.getElementById('new-category') as HTMLInputElement).hidden = true}}
-            type="text"
-            onKeyDown={handleKeyPress}/>
-        <button className='addCatBtn' type="button" onClick={createCategory}> New List </button>
-    </div>
-    )
-}
+        <div className="verticalView">
+            <header>
+                <h1>Tasks</h1>
+            </header>
+            <input type="search" placeholder="Search here" onChange={handleChange} value={searchInput} />
+            <div className="category-item"> Today </div>
+            <div id="category-list">{newArr}</div>
+            <input
+                hidden
+                id="new-category"
+                className="category-item"
+                ref={inputRef}
+                onBlur={() => {
+                    (document.getElementById("new-category") as HTMLInputElement).value = "";
+                    (document.getElementById("new-category") as HTMLInputElement).hidden = true;
+                }}
+                type="text"
+                onKeyDown={handleKeyPress}
+            />
 
+            <div className="buttonBlock">
+                <button onClick={onCreateTaskPressed}>New Task</button>
+                <button className="addCatBtn" type="button" onClick={createCategory}>
+                    {" "}
+                    New List{" "}
+                </button>
+            </div>
+        </div>
+    );
+};
 
 export default Categories;

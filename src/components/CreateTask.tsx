@@ -4,15 +4,13 @@ import { Task } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
 import { loadCategoriesNamesFromLocalStorage } from "../utils/localStorage";
 
-export function CreateTask({
-    onCreateTask,
-    onCancelCreation,
-    defaultListName
-}: {
+interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
     onCancelCreation: () => void;
     defaultListName?: string;
-}) {
+}
+
+export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: CreateTaskProps) {
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [newTaskDescription, setNewTaskDescription] = useState("");
 

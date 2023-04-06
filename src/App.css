@@ -97,11 +97,11 @@
     border-right: 1px solid black;
 }
 
-.category-header{
+.category-header {
     text-align: center;
 }
 
-.category-item{
+.category-item {
     margin-top: 8px;
     margin-bottom: 8px;
     margin-left: 15px;
@@ -110,10 +110,10 @@
     border-bottom: 1px solid gray;
 }
 
-.category-item:hover{
+.category-item:hover {
     background-color: rgba(128, 128, 128, 0.5);
 }
 
-#new-category:hover{
+#new-category:hover {
     background-color: inherit;
 }

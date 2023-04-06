@@ -16,7 +16,7 @@ enum AppStatus {
 }
 
 function App() {
-    const [appStatus, setAppStatus] = React.useState(AppStatus.CREATE_TASK_VIEW_MOBILE);
+    const [appStatus, setAppStatus] = React.useState(AppStatus.FIRST_PRESENTATION_MOBILE);
 
     const isOnMobile = window.innerWidth < 768;
 
@@ -39,28 +39,26 @@ function App() {
 
         console.log(todoList);
 
-        setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
+        setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
     }
 
     function handleCancelTaskCreation() {
         console.log("Canceling task creation");
         // Perform any other logic
-        setAppStatus(isOnMobile ? AppStatus.CATEGORY_VIEW_MOBILE : AppStatus.VIEW_DESKTOP);
+        setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
     }
 
     return (
         <div className="App">
-            {/* <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
             {
                 {
-                    [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories />,
+                    [AppStatus.CATEGORY_VIEW_MOBILE]: <Categories onCreateTaskPressed={() => setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE)} />,
                     [AppStatus.LIST_VIEW_MOBILE]: displayTasks(),
                     [AppStatus.CREATE_TASK_VIEW_MOBILE]: <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} />,
                     [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
                     [AppStatus.FIRST_PRESENTATION_MOBILE]: <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
                 }[appStatus]
-            } */}
-            <Categories></Categories>
+            }
         </div>
     );
 }
