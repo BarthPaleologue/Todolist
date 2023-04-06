@@ -132,6 +132,12 @@
     cursor: pointer;
 }
 
+.category-length {
+    position: absolute;
+    right: 10%;
+    text-align: right;
+}
+
 .category-item:hover {
     background-color: rgba(128, 128, 128, 0.5);
 }

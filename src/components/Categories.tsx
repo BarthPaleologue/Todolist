@@ -89,6 +89,7 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps)
             <div key={cat.title} className="category-item" onClick={() => onCategoryPressed(cat.title)}>
                 {" "}
                 {cat.title}
+                <span className="category-length"> {cat.tasks.length} </span>
             </div>
         );
     });
@@ -98,7 +99,10 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps)
                 <h1>Tasks</h1>
             </header>
             <input type="search" placeholder="Search here" onChange={handleChange} onFocus={loadAllTasks} />
-            <div className="category-item"> Today </div>
+            <div className="category-item">
+                Today  
+                <span className="category-length"> 1 </span>
+            </div>
             <div id="category-list">{newArr}</div>
 
             <div className="buttonBlock">
