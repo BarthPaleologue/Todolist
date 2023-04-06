@@ -1,6 +1,6 @@
 import React from "react";
 import { Task } from "../task";
-import { loadListFromLocalStorage } from "../utils/localStorage";
+import { loadListFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 
 interface ListViewProps {
     listName: string;
@@ -15,16 +15,25 @@ export function ListView({ listName, onCreateTaskPressed }: ListViewProps) {
             <header>
                 <h1>{listName}</h1>
             </header>
-            {tasks.map((task: any, index: any) => (
-                <div key={index} style={{ borderRadius: "20px" }}>
-                    <h3>{task.title}</h3>
-                    {task.details && <p style={{ color: "grey" }}>{task.details}</p>}
-                    {task.date && <p>{task.date.toString()}</p>}
-                    <p>Completed? {("yes" && task.completed) || ("no" && !task.completed)}</p>
-                    {task.location && <p>At {task.location}</p>}
-                    {task.sharedWith && <p> Shared with {task.sharedWith.join(", ")}</p>}
-                </div>
-            ))}
+            <section className="listContainer">
+                {tasks.map((task: any, index: any) => (
+                    <div key={index} className="listElement" style={{ borderRadius: "20px" }}>
+                        <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={(e) => {
+                                task.completed = e.target.checked;
+                                saveTaskListToLocalStorage({ title: listName, tasks: tasks });
+                            }}
+                        />
+                        <label>{task.title}</label>
+                        {task.details && <sub style={{ color: "grey" }}>{task.details}</sub>}
+                        {task.date && <p>{task.date.toString()}</p>}
+                        {task.location && <p>At {task.location}</p>}
+                        {task.sharedWith && <p> Shared with {task.sharedWith.join(", ")}</p>}
+                    </div>
+                ))}
+            </section>
             <div className="buttonBlock">
                 <button onClick={onCreateTaskPressed}>New Task</button>
             </div>
