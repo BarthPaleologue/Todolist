@@ -3,6 +3,7 @@ import fs from "fs";
 import categories from "../indexes/categories.json";
 import { Task, TaskList } from "../task";
 import { TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
+import { TodoUnit } from "./TodoUnit";
 
 // Load local data for testing
 // const local_categories: TaskList[] = categories.map( (cat) => ({
@@ -21,7 +22,6 @@ import { TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskL
 
 // Load localSotrage
 const lst_categories: TaskList[] = loadTodosFromLocalStorage();
-let lst_tasks: Task[] = [];
 
 interface CategoriesProps {
     onCreateTaskPressed: () => void;
@@ -29,59 +29,10 @@ interface CategoriesProps {
 }
 
 const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps) => {
-    // Callback called when typing on the search bar
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(dynamicSearch(e.target.value));
-    };
+    const [searchQuery, setSearchQuery] = useState('');
+    const [lst_tasks, setListTask] = useState<Task[]>([]);
 
-    // Function to search all tasks that contain searchInput
-    const dynamicSearch = (searchInput: string) => lst_tasks.filter((task) => task.title.toLowerCase().includes(searchInput));
-
-    // Variables of the input field for a new category
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    // Add a category to the local Storage
-    function addCategory(name: string) {
-        console.log("Adding category", name);
-        const newCategory: TaskList = {
-            title: name,
-            tasks: []
-        };
-        let lst_cat = document.getElementById("category-list") as HTMLInputElement;
-        const newDivCat = document.createElement("div");
-        newDivCat.className = "category-item";
-        newDivCat.innerText = name;
-        lst_cat.appendChild(newDivCat);
-        saveTaskListToLocalStorage(newCategory);
-    }
-
-    // Make visible the input field to add a new category
-    function createCategory() {
-        (document.getElementById("new-category") as HTMLInputElement).hidden = false;
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    }
-
-    // Handle 'Enter' key pressed when entering a new category
-    function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.key === "Enter") {
-            let name = (document.getElementById("new-category") as HTMLInputElement).value.trim();
-            if (name.length > 0) {
-                addCategory(name);
-            }
-            (document.getElementById("new-category") as HTMLInputElement).value = "";
-            (document.getElementById("new-category") as HTMLInputElement).hidden = true;
-        }
-    }
-
-    // Load all tasks when the searchBar is focused
-    function loadAllTasks() {
-        console.log("Loading all tasks");
-        lst_tasks = [];
-        lst_categories.map((cat) => cat.tasks.map((elem) => lst_tasks.push(elem)));
-        console.log(lst_tasks);
-    }
+    const taskToDisplay = lst_tasks.filter((task) => task.title.toLowerCase().includes(searchQuery));
 
     // Render all categories
     const newArr = lst_categories.map((cat) => {
@@ -98,12 +49,27 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps)
             <header>
                 <h1>Tasks</h1>
             </header>
-            <input type="search" placeholder="Search here" onChange={handleChange} onFocus={loadAllTasks} />
-            <div className="category-item">
-                Today  
-                <span className="category-length"> 1 </span>
+            <input type="search" placeholder="Search here" onFocus={e => setListTask(lst_categories.flatMap((cat) => cat.tasks))} onChange={e => setSearchQuery(e.target.value.trim())} />
+            {(searchQuery.length == 0) &&
+            <div id="category-container">
+                <div className="category-item">
+                    Today  
+                    <span className="category-length"> 1 </span>
+                </div>
+                <div id="category-list">{newArr}</div>
             </div>
-            <div id="category-list">{newArr}</div>
+            }
+            {(searchQuery.length > 0) &&
+            <ul id="list-container" className="listContainer">
+                {taskToDisplay.map((task: Task, index: number) => (
+                    <TodoUnit
+                        key={index}
+                        onCompleteChange={() => {}}
+                        task={task}
+                    />
+                ))}
+            </ul>
+            }
 
             <div className="buttonBlock">
                 <button onClick={onCreateTaskPressed}>New Task</button>
