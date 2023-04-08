@@ -50,27 +50,28 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps)
                 <h1>Tasks</h1>
             </header>
             <input type="search" placeholder="Search here" onFocus={e => setListTask(lst_categories.flatMap((cat) => cat.tasks))} onChange={e => setSearchQuery(e.target.value.trim())} />
-            {(searchQuery.length == 0) &&
-            <div id="category-container">
-                <div className="category-item">
-                    Today  
-                    <span className="category-length"> 1 </span>
+            <div className="category-display">
+                {(searchQuery.length == 0) &&
+                <div id="category-container">
+                    <div className="category-item">
+                        Today  
+                        <span className="category-length"> 1 </span>
+                    </div>
+                    <div id="category-list">{newArr}</div>
                 </div>
-                <div id="category-list">{newArr}</div>
+                }
+                {(searchQuery.length > 0) &&
+                <ul className="listContainer">
+                    {taskToDisplay.map((task: Task, index: number) => (
+                        <TodoUnit
+                            key={index}
+                            onCompleteChange={() => {}}
+                            task={task}
+                        />
+                    ))}
+                </ul>
+                }
             </div>
-            }
-            {(searchQuery.length > 0) &&
-            <ul id="list-container" className="listContainer">
-                {taskToDisplay.map((task: Task, index: number) => (
-                    <TodoUnit
-                        key={index}
-                        onCompleteChange={() => {}}
-                        task={task}
-                    />
-                ))}
-            </ul>
-            }
-
             <div className="buttonBlock">
                 <button onClick={onCreateTaskPressed}>New Task</button>
             </div>
