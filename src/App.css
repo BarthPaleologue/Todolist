@@ -176,14 +176,14 @@
 .listContainer {
     list-style: none;
     padding: 10px 0;
-    margin: 10px 20px 20px 20px;
+    margin: 0 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     row-gap: 5px;
     font-family: sans-serif;
     font-size: 120%;
-    height: fit-content;
+    height: calc(100% - 180px);
     align-content: center;
     overflow-y: auto;
 }
