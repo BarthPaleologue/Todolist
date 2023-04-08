@@ -17,12 +17,33 @@
 .verticalView header {
     background-color: var(--main-color);
     color: white;
-    padding: 10px;
     height: 100px;
+    display: grid;
+    grid-template-columns: 70px auto 70px;
+    align-items: center;
+}
+
+.verticalView header .backButton {
+    text-align: center;
+    cursor: pointer;
+    font-size: 120%;
 }
 
 .verticalView header h1 {
     text-align: center;
+}
+
+.verticalView .logo {
+    display: block;
+    margin: 0 auto;
+    width: 250px;
+}
+
+.verticalView form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
 }
 
 .verticalView input {
@@ -45,6 +66,8 @@
     outline: none;
     border-radius: var(--border-radius);
     border: 1px solid grey;
+    font-family: sans-serif;
+    resize: none;
 }
 
 .verticalView textarea:focus {
@@ -138,7 +161,6 @@
 }
 
 .category-display {
-    height: 100vh;
     overflow-y: auto;
 }
 

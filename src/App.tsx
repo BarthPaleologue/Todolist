@@ -74,6 +74,10 @@ function App() {
                             onCreateTaskPressed={() => {
                                 setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
                             }}
+                            onBackPressed={() => {
+                                setCurrentListName(undefined);
+                                setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+                            }}
                         />
                     ),
                     [AppStatus.CREATE_TASK_VIEW_MOBILE]: (

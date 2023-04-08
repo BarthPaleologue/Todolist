@@ -4,6 +4,7 @@ import categories from "../indexes/categories.json";
 import { Task, TaskList } from "../task";
 import { TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { TodoUnit } from "./TodoUnit";
+import { Header } from "./Header";
 
 // Load local data for testing
 // const local_categories: TaskList[] = categories.map( (cat) => ({
@@ -29,7 +30,7 @@ interface CategoriesProps {
 }
 
 const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps) => {
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState("");
     const [lst_tasks, setListTask] = useState<Task[]>([]);
 
     const taskToDisplay = lst_tasks.filter((task) => task.title.toLowerCase().includes(searchQuery));
@@ -46,31 +47,30 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps)
     });
     return (
         <div className="verticalView">
-            <header>
-                <h1>Tasks</h1>
-            </header>
-            <input type="search" placeholder="Search here" onFocus={e => setListTask(lst_categories.flatMap((cat) => cat.tasks))} onChange={e => setSearchQuery(e.target.value.trim())} />
+            <Header title="Tasks" shouldHideBackButton={true} />
+            <input
+                type="search"
+                placeholder="Search here"
+                onFocus={(e) => setListTask(lst_categories.flatMap((cat) => cat.tasks))}
+                onChange={(e) => setSearchQuery(e.target.value.trim())}
+            />
             <div className="category-display">
-                {(searchQuery.length == 0) &&
-                <div id="category-container">
-                    <div className="category-item">
-                        Today  
-                        <span className="category-length"> 1 </span>
+                {searchQuery.length == 0 && (
+                    <div id="category-container">
+                        <div className="category-item">
+                            Today
+                            <span className="category-length"> 1 </span>
+                        </div>
+                        <div id="category-list">{newArr}</div>
                     </div>
-                    <div id="category-list">{newArr}</div>
-                </div>
-                }
-                {(searchQuery.length > 0) &&
-                <ul className="listContainer">
-                    {taskToDisplay.map((task: Task, index: number) => (
-                        <TodoUnit
-                            key={index}
-                            onCompleteChange={() => {}}
-                            task={task}
-                        />
-                    ))}
-                </ul>
-                }
+                )}
+                {searchQuery.length > 0 && (
+                    <ul className="listContainer">
+                        {taskToDisplay.map((task: Task, index: number) => (
+                            <TodoUnit key={index} onCompleteChange={() => {}} task={task} />
+                        ))}
+                    </ul>
+                )}
             </div>
             <div className="buttonBlock">
                 <button onClick={onCreateTaskPressed}>New Task</button>

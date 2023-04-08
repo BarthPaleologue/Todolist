@@ -3,6 +3,7 @@ import { Task } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
 import { loadCategoriesNamesFromLocalStorage } from "../utils/localStorage";
 import { useState } from "react";
+import { Header } from "./Header";
 
 interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
@@ -36,84 +37,85 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
         onCreateTask(task, newListName ?? listName);
     }
 
-    function handleCancelCreateTask() {
-        onCancelCreation();
-    }
-
     return (
         <div className="verticalView">
-            <header>
-                <h1>Create Task</h1>
-            </header>
-            <input
-                type="text"
-                placeholder="What todo?"
-                value={newTaskTitle}
-                onChange={(e) => {
-                    setNewTaskTitle(e.target.value);
-                }}
-            />
-
-            <textarea
-                placeholder="Description"
-                value={newTaskDescription}
-                onChange={(e) => {
-                    setNewTaskDescription(e.target.value);
-                }}
-            />
-
-            <select
-                value={listName}
-                onChange={(e) => {
-                    setListName(e.target.value);
+            <Header title="Create Task" onBackPressed={onCancelCreation} />
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    handleClickCreateTask();
                 }}
             >
-                {listName !== "New List" && <option value={listName}>{listName}</option>}
-                {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
-                    return (
-                        <option key={categoryName} value={categoryName}>
-                            {categoryName}
-                        </option>
-                    );
-                })}
-                <option value="New List">New List</option>
-            </select>
-
-            {listName === "New List" && (
                 <input
                     type="text"
-                    placeholder="New list name"
-                    value={newListName}
+                    placeholder="What todo?"
+                    value={newTaskTitle}
                     onChange={(e) => {
-                        setNewListName(e.target.value);
+                        setNewTaskTitle(e.target.value);
+                    }}
+                    required
+                />
+
+                <textarea
+                    placeholder="Description"
+                    value={newTaskDescription}
+                    onChange={(e) => {
+                        setNewTaskDescription(e.target.value);
                     }}
                 />
-            )}
 
-            <DatePicker
-                placeholderText="Choose a date"
-                value={startDate?.toDateString()}
-                onChange={(date) => {
-                    if (date === null) throw new Error("Date is null");
-                    setStartDate(date);
-                }}
-            />
+                <select
+                    value={listName}
+                    onChange={(e) => {
+                        setListName(e.target.value);
+                    }}
+                >
+                    {listName !== "New List" && <option value={listName}>{listName}</option>}
+                    {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
+                        return (
+                            <option key={categoryName} value={categoryName}>
+                                {categoryName}
+                            </option>
+                        );
+                    })}
+                    <option value="New List">New List</option>
+                </select>
 
-            <input
-                type="text"
-                placeholder="Location"
-                defaultValue={location}
-                onChange={(e) => {
-                    setLocation(e.target.value);
-                }}
-            />
+                {listName === "New List" && (
+                    <input
+                        type="text"
+                        placeholder="New list name"
+                        value={newListName}
+                        onChange={(e) => {
+                            setNewListName(e.target.value);
+                        }}
+                        required
+                    />
+                )}
 
-            <div className="buttonBlock">
-                <button onClick={handleCancelCreateTask}>Cancel</button>
-                <button type="button" onClick={handleClickCreateTask}>
-                    Ok
-                </button>
-            </div>
+                <DatePicker
+                    placeholderText="Choose a date"
+                    value={startDate?.toDateString()}
+                    onChange={(date) => {
+                        if (date === null) throw new Error("Date is null");
+                        setStartDate(date);
+                    }}
+                />
+
+                <input
+                    type="text"
+                    placeholder="Location"
+                    defaultValue={location}
+                    onChange={(e) => {
+                        setLocation(e.target.value);
+                    }}
+                />
+
+                <div className="buttonBlock">
+                    <button onClick={onCancelCreation}>Cancel</button>
+                    <button type="submit">Ok</button>
+                </div>
+            </form>
         </div>
     );
 }
