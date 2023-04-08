@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Task, TaskList } from "../task";
-import { loadTodosFromLocalStorage } from "../utils/localStorage";
+import { loadTodosFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { TodoUnit } from "./TodoUnit";
 import { Header } from "./Header";
+import {getCategory} from "../utils/taskFinding"
 
 // Load localSotrage
 interface CategoriesProps {
@@ -54,7 +55,7 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
                         {taskToDisplay.map((task: Task, index: number) => (
                             <TodoUnit
                                 key={index}
-                                onCompleteChange={() => {}}
+                                onCompleteChange={() => {let taskList = getCategory(task, lst_categories); saveTaskListToLocalStorage({ title: taskList?.title, tasks: taskList?.tasks });}}
                                 task={task}
                                 onEdit={(task: Task) => onEditTaskRequested(task)}
                                 onDelete={() => {
