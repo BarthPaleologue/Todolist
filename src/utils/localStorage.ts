@@ -10,7 +10,7 @@ export function loadTodosFromLocalStorage(): TaskList[] {
     // convert the dates back to Date objects
     for (const todo of todosJSON) {
         for (const task of todo.tasks) {
-            task.date = new Date(task.date);
+            if (task.date) task.date = new Date(task.date);
         }
     }
 

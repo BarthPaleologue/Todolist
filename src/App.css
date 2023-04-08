@@ -18,6 +18,7 @@
     background-color: var(--main-color);
     color: white;
     height: 100px;
+    padding: 0 10px;
     display: grid;
     grid-template-columns: 70px auto 70px;
     align-items: center;
@@ -216,12 +217,16 @@
 
 .listContainer li .taskTextContainer {
     flex: 1;
+    display: flex;
     flex-direction: column;
     text-align: left;
+    row-gap: 5px;
+    padding: 5px 0;
 }
 
 .listContainer li .taskTextContainer p {
     margin-block: 0;
+    line-height: 100%;
 }
 
 .listContainer li .taskTextContainer .taskTitle {
@@ -229,23 +234,19 @@
 
 .listContainer li .taskTextContainer .taskDate {
     font-size: 60%;
-    line-height: 70%;
     color: rgba(255, 255, 255, 0.5);
 }
 
 .listContainer li .taskTextContainer .taskDetails {
-    margin-top: 5px;
     font-size: 70%;
 }
 
 .listContainer li .taskTextContainer .taskLocation {
     font-size: 70%;
-    line-height: 100%;
 }
 
 .listContainer li .taskTextContainer .taskSharedWith {
     font-size: 70%;
-    line-height: 100%;
 }
 
 .listContainer li .editTrashBlock {
