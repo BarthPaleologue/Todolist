@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
-import fs from "fs";
-import categories from "../indexes/categories.json";
 import { Task, TaskList } from "../task";
-import { TODO_KEY, loadTodosFromLocalStorage } from "../utils/localStorage";
+import { loadTodosFromLocalStorage } from "../utils/localStorage";
 import { TodoUnit } from "./TodoUnit";
 import { Header } from "./Header";
 
