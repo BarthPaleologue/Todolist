@@ -4,9 +4,10 @@ import { Task } from "../task";
 interface TodoUnitProps {
     task: Task;
     onCompleteChange: (task: Task) => void;
+    onEdit: (task: Task) => void;
 }
 
-export function TodoUnit({ task, onCompleteChange }: TodoUnitProps) {
+export function TodoUnit({ task, onCompleteChange, onEdit }: TodoUnitProps) {
     const [isComplete, setIsComplete] = useState(task.isComplete);
 
     function handleChangeComplete() {
@@ -30,7 +31,12 @@ export function TodoUnit({ task, onCompleteChange }: TodoUnitProps) {
                 {task.sharedWith && <p className="taskSharedWith"> Shared with {task.sharedWith.join(", ")}</p>}
             </div>
             <div className="editTrashBlock">
-                <div className="edit"></div>
+                <div
+                    className="edit"
+                    onClick={() => {
+                        onEdit(task);
+                    }}
+                ></div>
                 <div className="trash"></div>
             </div>
         </li>

@@ -7,9 +7,10 @@ interface ListViewProps {
     listName: string;
     onCreateTaskPressed: () => void;
     onBackPressed: () => void;
+    onRequireTaskEdit: (task: Task) => void;
 }
 
-export function ListView({ listName, onCreateTaskPressed, onBackPressed }: ListViewProps) {
+export function ListView({ listName, onCreateTaskPressed, onBackPressed, onRequireTaskEdit }: ListViewProps) {
     const tasks = loadListFromLocalStorage(listName);
     console.log(tasks);
 
@@ -22,6 +23,9 @@ export function ListView({ listName, onCreateTaskPressed, onBackPressed }: ListV
                         key={index}
                         onCompleteChange={() => {
                             saveTaskListToLocalStorage({ title: listName, tasks: tasks });
+                        }}
+                        onEdit={(task: Task) => {
+                            onRequireTaskEdit(task);
                         }}
                         task={task}
                     />

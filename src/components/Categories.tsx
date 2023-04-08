@@ -27,9 +27,10 @@ const lst_categories: TaskList[] = loadTodosFromLocalStorage();
 interface CategoriesProps {
     onCreateTaskPressed: () => void;
     onCategoryPressed: (category: string) => void;
+    onEditTaskRequested: (task: Task) => void;
 }
 
-const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps) => {
+const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [lst_tasks, setListTask] = useState<Task[]>([]);
 
@@ -67,7 +68,14 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed }: CategoriesProps)
                 {searchQuery.length > 0 && (
                     <ul className="listContainer">
                         {taskToDisplay.map((task: Task, index: number) => (
-                            <TodoUnit key={index} onCompleteChange={() => {}} task={task} />
+                            <TodoUnit
+                                key={index}
+                                onCompleteChange={() => {}}
+                                task={task}
+                                onEdit={(task: Task) => {
+                                    onEditTaskRequested(task);
+                                }}
+                            />
                         ))}
                     </ul>
                 )}

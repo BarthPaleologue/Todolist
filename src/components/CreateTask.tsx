@@ -1,30 +1,58 @@
 import DatePicker from "react-datepicker";
 import { Task } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
-import { loadCategoriesNamesFromLocalStorage } from "../utils/localStorage";
+import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
 import { useState } from "react";
 import { Header } from "./Header";
+import { getIndexOfTaskInList } from "../utils/taskFinding";
 
 interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
+    onEditTask: (oldTask: Task, newTask: Task, listName: string) => void;
     onCancelCreation: () => void;
     defaultListName?: string;
+    taskToEdit?: Task;
 }
 
-export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: CreateTaskProps) {
-    let [newTaskTitle, setNewTaskTitle] = useState<string>("");
+export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit }: CreateTaskProps) {
+    let [newTaskTitle, setNewTaskTitle] = useState<string>(taskToEdit?.title ?? "");
 
-    let [newTaskDescription, setNewTaskDescription] = useState<string>("");
+    let [newTaskDescription, setNewTaskDescription] = useState<string>(taskToEdit?.details ?? "");
 
-    let [startDate, setStartDate] = useState<Date | undefined>(undefined);
+    let [startDate, setStartDate] = useState<Date | undefined>(taskToEdit?.date ?? undefined);
 
-    let [location, setLocation] = useState<string | undefined>(undefined);
+    let [location, setLocation] = useState<string | undefined>(taskToEdit?.location ?? undefined);
 
     let [listName, setListName] = useState<string>(defaultListName ?? "New List");
 
     let [newListName, setNewListName] = useState<string | undefined>(undefined);
 
-    function handleClickCreateTask() {
+    function handleEditTask() {
+        if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
+
+        const todos = loadTodosFromLocalStorage();
+        const list = todos.find((list) => list.title === (newListName ?? listName));
+
+        if (list === undefined) throw new Error("List is undefined");
+
+        const newTask: Task = {
+            title: newTaskTitle,
+            details: newTaskDescription,
+            date: startDate,
+            isComplete: false,
+            location: location,
+            sharedWith: undefined
+        };
+
+        list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
+        list.tasks.push(newTask);
+
+        saveTodosToLocalStorage(todos);
+
+        onEditTask(taskToEdit, newTask, listName);
+    }
+
+    function handleCreateTask() {
         const task: Task = {
             title: newTaskTitle,
             details: newTaskDescription,
@@ -33,7 +61,21 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             location: undefined,
             sharedWith: undefined
         };
-        console.log(task, newListName ?? listName);
+
+        const todoList = loadTodosFromLocalStorage();
+
+        const list = todoList.find((list) => list.title === (newListName ?? listName));
+        if (list === undefined) {
+            todoList.push({
+                title: newListName ?? listName,
+                tasks: [task]
+            });
+        } else {
+            list.tasks.push(task);
+        }
+
+        saveTodosToLocalStorage(todoList);
+
         onCreateTask(task, newListName ?? listName);
     }
 
@@ -43,7 +85,8 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
-                    handleClickCreateTask();
+                    if (taskToEdit !== undefined) handleEditTask();
+                    else handleCreateTask();
                 }}
             >
                 <input
@@ -112,7 +155,9 @@ export function CreateTask({ onCreateTask, onCancelCreation, defaultListName }: 
                 />
 
                 <div className="buttonBlock">
-                    <button onClick={onCancelCreation}>Cancel</button>
+                    <button type="reset" onClick={onCancelCreation}>
+                        Cancel
+                    </button>
                     <button type="submit">Ok</button>
                 </div>
             </form>

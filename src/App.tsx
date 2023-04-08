@@ -6,6 +6,7 @@ import { CreateTask } from "./components/CreateTask";
 import { Task, TaskList } from "./task";
 import { emptyLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "./utils/localStorage";
 import { ListView } from "./components/ListView";
+import { isTaskInList } from "./utils/taskFinding";
 
 enum AppStatus {
     CATEGORY_VIEW_MOBILE,
@@ -18,42 +19,13 @@ enum AppStatus {
 function App() {
     const [appStatus, setAppStatus] = React.useState(AppStatus.FIRST_PRESENTATION_MOBILE);
 
+    // The current list when in list view (can be passed to the creation view)
     const [currentListName, setCurrentListName] = React.useState<string | undefined>(undefined);
 
+    // The current task edited (can be passed to the creation view)
+    const [currentTask, setCurrentTask] = React.useState<Task | undefined>(undefined);
+
     const isOnMobile = window.innerWidth < 768;
-
-    const todoList: TaskList[] = loadTodosFromLocalStorage();
-
-    console.log(todoList);
-
-    function handleCreateTask(newTask: Task, listName: string) {
-        console.table(newTask);
-
-        const list = todoList.find((list) => list.title === listName);
-        if (list === undefined) {
-            todoList.push({
-                title: listName,
-                tasks: [newTask]
-            });
-        } else {
-            list.tasks.push(newTask);
-        }
-
-        saveTodosToLocalStorage(todoList);
-
-        console.log(todoList);
-
-        setCurrentListName(listName);
-
-        setAppStatus(AppStatus.LIST_VIEW_MOBILE);
-    }
-
-    function handleCancelTaskCreation() {
-        console.log("Canceling task creation");
-        // Perform any other logic
-        setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
-        setCurrentListName(undefined);
-    }
 
     return (
         <div className="App">
@@ -61,10 +33,20 @@ function App() {
                 {
                     [AppStatus.CATEGORY_VIEW_MOBILE]: (
                         <Categories
-                            onCreateTaskPressed={() => setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE)}
+                            onCreateTaskPressed={() => {
+                                setCurrentTask(undefined);
+                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                            }}
                             onCategoryPressed={(categoryName) => {
                                 setCurrentListName(categoryName);
                                 setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                            }}
+                            onEditTaskRequested={(task) => {
+                                const todos = loadTodosFromLocalStorage();
+                                const listName = todos.find((list) => isTaskInList(task, list))?.title;
+                                setCurrentListName(listName);
+                                setCurrentTask(task);
+                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
                             }}
                         />
                     ),
@@ -72,16 +54,36 @@ function App() {
                         <ListView
                             listName={currentListName ?? ""}
                             onCreateTaskPressed={() => {
+                                setCurrentTask(undefined);
                                 setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
                             }}
                             onBackPressed={() => {
                                 setCurrentListName(undefined);
                                 setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
                             }}
+                            onRequireTaskEdit={(task) => {
+                                setCurrentTask(task);
+                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                            }}
                         />
                     ),
                     [AppStatus.CREATE_TASK_VIEW_MOBILE]: (
-                        <CreateTask onCreateTask={handleCreateTask} onCancelCreation={handleCancelTaskCreation} defaultListName={currentListName} />
+                        <CreateTask
+                            onCreateTask={(newTask: Task, listName: string) => {
+                                setCurrentListName(listName);
+                                setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                            }}
+                            onEditTask={(oldTask: Task, newTask: Task, listName: string) => {
+                                setCurrentListName(listName);
+                                setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                            }}
+                            onCancelCreation={() => {
+                                setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+                                setCurrentListName(undefined);
+                            }}
+                            defaultListName={currentListName}
+                            taskToEdit={currentTask}
+                        />
                     ),
                     [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
                     [AppStatus.FIRST_PRESENTATION_MOBILE]: <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
