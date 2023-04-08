@@ -209,10 +209,25 @@
     text-decoration: line-through;
 }
 
-.listContainer li input {
+.listContainer li input[type="checkbox"] {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    appearance: none;
+    border-radius: 100%;
+    border: 1px solid white;
+    outline: none;
+    transition: var(--transition-duration);
+}
+
+.listContainer li input[type="checkbox"]:hover {
+    background-color: var(--main-color-light);
+    border: 1px solid white;
+}
+
+.listContainer li input[type="checkbox"]:checked {
+    background-color: white;
+    border: 1px solid white;
 }
 
 .listContainer li .taskTextContainer {
