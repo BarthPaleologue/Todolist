@@ -2,28 +2,11 @@ import React, { useState, useRef } from "react";
 import fs from "fs";
 import categories from "../indexes/categories.json";
 import { Task, TaskList } from "../task";
-import { TODO_KEY, loadTodosFromLocalStorage, saveTodosToLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
+import { TODO_KEY, loadTodosFromLocalStorage } from "../utils/localStorage";
 import { TodoUnit } from "./TodoUnit";
 import { Header } from "./Header";
 
-// Load local data for testing
-// const local_categories: TaskList[] = categories.map( (cat) => ({
-//     title: cat.title,
-//     tasks: cat.tasks.map( (task) =>  ({
-//         title: task.title,
-//         details: task.details,
-//         isComplete: task.isComplete,
-//         date: task.date ? new Date(task.date) : undefined,
-//         location: task.location ? task.location : undefined,
-//         sharedWith: task.sharedWith ? task.sharedWith : undefined,
-//     }))
-// }));
-// saveTodosToLocalStorage(local_categories);
-// console.log(localStorage[TODO_KEY]);
-
 // Load localSotrage
-const lst_categories: TaskList[] = loadTodosFromLocalStorage();
-
 interface CategoriesProps {
     onCreateTaskPressed: () => void;
     onCategoryPressed: (category: string) => void;
@@ -31,7 +14,9 @@ interface CategoriesProps {
 }
 
 const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
+
     const [lst_tasks, setListTask] = useState<Task[]>([]);
 
     const taskToDisplay = lst_tasks.filter((task) => task.title.toLowerCase().includes(searchQuery));
@@ -46,6 +31,7 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
             </div>
         );
     });
+
     return (
         <div className="verticalView">
             <Header title="Tasks" shouldHideBackButton={true} />
@@ -72,8 +58,10 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
                                 key={index}
                                 onCompleteChange={() => {}}
                                 task={task}
-                                onEdit={(task: Task) => {
-                                    onEditTaskRequested(task);
+                                onEdit={(task: Task) => onEditTaskRequested(task)}
+                                onDelete={() => {
+                                    setListTask(taskToDisplay.filter((t) => t !== task));
+                                    setLstCategories(loadTodosFromLocalStorage());
                                 }}
                             />
                         ))}

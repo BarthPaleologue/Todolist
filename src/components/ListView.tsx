@@ -1,4 +1,5 @@
-import { Task } from "../task";
+import { useState } from "react";
+import { Task, TaskList } from "../task";
 import { loadListFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { Header } from "./Header";
 import { TodoUnit } from "./TodoUnit";
@@ -11,7 +12,7 @@ interface ListViewProps {
 }
 
 export function ListView({ listName, onCreateTaskPressed, onBackPressed, onRequireTaskEdit }: ListViewProps) {
-    const tasks = loadListFromLocalStorage(listName);
+    const [tasks, setTasks] = useState<Task[]>(loadListFromLocalStorage(listName));
 
     return (
         <div className="verticalView">
@@ -26,6 +27,7 @@ export function ListView({ listName, onCreateTaskPressed, onBackPressed, onRequi
                         onEdit={(task: Task) => {
                             onRequireTaskEdit(task);
                         }}
+                        onDelete={(list: TaskList) => setTasks(list.tasks)}
                         task={task}
                     />
                 ))}

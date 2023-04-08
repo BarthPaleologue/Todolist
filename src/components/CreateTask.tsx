@@ -97,6 +97,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         setNewTaskTitle(e.target.value);
                     }}
                     required
+                    autoFocus
                 />
 
                 <textarea

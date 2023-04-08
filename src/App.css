@@ -183,7 +183,6 @@
     row-gap: 5px;
     font-family: sans-serif;
     font-size: 120%;
-    height: calc(100% - 180px);
     align-content: center;
     overflow-y: auto;
 }

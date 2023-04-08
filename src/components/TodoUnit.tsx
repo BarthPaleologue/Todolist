@@ -1,19 +1,33 @@
 import { useState } from "react";
-import { Task } from "../task";
+import { Task, TaskList } from "../task";
+import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
+import { getIndexOfTaskInList, isTaskInList } from "../utils/taskFinding";
 
 interface TodoUnitProps {
     task: Task;
     onCompleteChange: (task: Task) => void;
     onEdit: (task: Task) => void;
+    onDelete: (list: TaskList) => void;
 }
 
-export function TodoUnit({ task, onCompleteChange, onEdit }: TodoUnitProps) {
+export function TodoUnit({ task, onCompleteChange, onEdit, onDelete }: TodoUnitProps) {
     const [isComplete, setIsComplete] = useState(task.isComplete);
 
     function handleChangeComplete() {
         setIsComplete(!isComplete);
         task.isComplete = !isComplete;
         onCompleteChange(task);
+    }
+
+    function handleDelete(task: Task) {
+        const todos = loadTodosFromLocalStorage();
+        const list = todos.find((list) => isTaskInList(task, list));
+        if (list === undefined) throw new Error("List is undefined");
+        list.tasks.splice(getIndexOfTaskInList(task, list), 1);
+
+        saveTodosToLocalStorage(todos);
+
+        onDelete(list);
     }
 
     return (
@@ -31,13 +45,8 @@ export function TodoUnit({ task, onCompleteChange, onEdit }: TodoUnitProps) {
                 {task.sharedWith && <p className="taskSharedWith"> Shared with {task.sharedWith.join(", ")}</p>}
             </div>
             <div className="editTrashBlock">
-                <div
-                    className="edit"
-                    onClick={() => {
-                        onEdit(task);
-                    }}
-                ></div>
-                <div className="trash"></div>
+                <div className="edit" onClick={() => onEdit(task)}></div>
+                <div className="trash" onClick={() => handleDelete(task)}></div>
             </div>
         </li>
     );
