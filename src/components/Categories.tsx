@@ -22,23 +22,25 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
 
     const clickRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    useEffect( () => {
-            function handleClickOutside(e : MouseEvent) {
-                if (!clickRef.current.some(ref => ref?.contains(e.target as Node))) {
-                    // console.log('Clicked outside!');
-                    setDropdown(-1);
-                }
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (!clickRef.current.some((ref) => ref?.contains(e.target as Node))) {
+                // console.log('Clicked outside!');
+                setDropdown(-1);
             }
-        
-            document.addEventListener('mousedown', handleClickOutside);
-            return () => {
-                document.removeEventListener('mousedown', handleClickOutside);
-            };
-        }, [clickRef]);
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [clickRef]);
 
     const taskToDisplay = lst_tasks
         .filter((task) => task.title.toLowerCase().includes(searchQuery))
         .sort((taskA, taskB) => {
+            if (taskA.isComplete && !taskB.isComplete) return 1;
+            if (!taskA.isComplete && taskB.isComplete) return -1;
             return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
         });
 
@@ -48,21 +50,36 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
     const newArr = lst_categories.map((cat: TaskList, idx: number) => {
         return (
             <div key={cat.title} className="category-item">
-                <div className="category-name"  onClick={() => onCategoryPressed(cat.title)}>
+                <div className="category-name" onClick={() => onCategoryPressed(cat.title)}>
                     {" "}
                     {cat.title}
                     <span className="category-length"> {cat.tasks.length} </span>
                 </div>
-                <div className="category-options" ref={ (el) => (clickRef.current[idx]=el)} onClick={() => (dropDown == idx) ? setDropdown(-1) : setDropdown(idx)}> ... 
-                    {(dropDown == idx) ? (
+                <div className="category-options" ref={(el) => (clickRef.current[idx] = el)} onClick={() => (dropDown == idx ? setDropdown(-1) : setDropdown(idx))}>
+                    {" "}
+                    ...
+                    {dropDown == idx ? (
                         <ul className="category-menu" onBlur={() => setDropdown(-1)}>
-                            <li className="menu-item" onClick={() => {clearCompletedTasksInCategory(cat.title); setLstCategories(loadTodosFromLocalStorage())}}>
-                                Remove cleared tasks </li>
-                            <li className="menu-item" onClick={() => {removeTaskListFromStorage(cat.title); setLstCategories(loadTodosFromLocalStorage())} }>
-                                Delete </li>
+                            <li
+                                className="menu-item"
+                                onClick={() => {
+                                    clearCompletedTasksInCategory(cat.title);
+                                    setLstCategories(loadTodosFromLocalStorage());
+                                }}
+                            >
+                                Remove cleared tasks{" "}
+                            </li>
+                            <li
+                                className="menu-item"
+                                onClick={() => {
+                                    removeTaskListFromStorage(cat.title);
+                                    setLstCategories(loadTodosFromLocalStorage());
+                                }}
+                            >
+                                Delete{" "}
+                            </li>
                         </ul>
-                        ) : null
-                    }
+                    ) : null}
                 </div>
             </div>
         );

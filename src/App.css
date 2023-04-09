@@ -223,6 +223,7 @@ input[type="range" i] {
 
 .category-display {
     overflow-y: auto;
+    margin-top: 10px;
 }
 
 .category-item:hover {
