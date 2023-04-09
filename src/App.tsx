@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import {Categories, TODAY} from "./components/Categories";
+import { Categories, TODAY } from "./components/Categories";
 import { Presentation } from "./components/Presentation";
 import { CreateTask } from "./components/CreateTask";
 import { Task, TaskList } from "./task";
@@ -23,11 +23,9 @@ function App() {
     const [isOnMobile, setIsOnMobile] = React.useState(window.innerWidth < MOBILE_WIDTH_THRESHOLD);
 
     window.addEventListener("resize", () => {
-        setIsOnMobile(window.innerWidth < MOBILE_WIDTH_THRESHOLD);
-        if (isOnMobile) {
-            setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
-        } else {
-            setAppStatus(AppStatus.DESKTOP_VIEW);
+        const newIsOnMobile = window.innerWidth < MOBILE_WIDTH_THRESHOLD;
+        if (newIsOnMobile !== isOnMobile) {
+            setIsOnMobile(newIsOnMobile);
         }
     });
 
@@ -51,7 +49,12 @@ function App() {
                 onCategoryPressed={(categoryName) => {
                     setCurrentListName(categoryName);
                     if (categoryName === TODAY) {
-                        setCurrentTasks(getDayTask(new Date(), loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
                     }

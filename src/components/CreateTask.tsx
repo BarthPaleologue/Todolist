@@ -12,9 +12,10 @@ interface CreateTaskProps {
     onCancelCreation: () => void;
     defaultListName?: string;
     taskToEdit?: Task;
+    shouldHideBackButton?: boolean;
 }
 
-export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit }: CreateTaskProps) {
+export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit, shouldHideBackButton }: CreateTaskProps) {
     let [newTaskTitle, setNewTaskTitle] = useState<string>(taskToEdit?.title ?? "");
 
     let [newTaskDescription, setNewTaskDescription] = useState<string>(taskToEdit?.details ?? "");
@@ -85,7 +86,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
     return (
         <div className="verticalView">
-            <Header title="Create Task" onBackPressed={onCancelCreation} />
+            <Header title="Create Task" onBackPressed={onCancelCreation} shouldHideBackButton={shouldHideBackButton} />
             <form
                 onSubmit={(e) => {
                     e.preventDefault();

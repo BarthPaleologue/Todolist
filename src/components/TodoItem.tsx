@@ -38,7 +38,7 @@ export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemP
             <input type="checkbox" defaultChecked={task.isComplete} onChange={handleChangeComplete} />
             <div className="taskTextContainer" onClick={() => onEdit(task)}>
                 <p className="taskTitle">
-                    {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>} {task.title} 
+                    {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>} {task.title}
                 </p>
                 {task.date && <p className="taskDate">{task.date.toDateString()}</p>}
                 {task.details && (
@@ -50,7 +50,12 @@ export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemP
                 {task.sharedWith && <p className="taskSharedWith"> Shared with {task.sharedWith.join(", ")}</p>}
             </div>
             <div className="editTrashBlock">
-                <div className="trash" onClick={() => handleDelete(task)}></div>
+                <div
+                    className="trash"
+                    onClick={() => {
+                        if (window.confirm("Are you sure you want to delete this task?")) handleDelete(task);
+                    }}
+                ></div>
             </div>
         </li>
     );

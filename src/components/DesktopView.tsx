@@ -57,10 +57,10 @@ export function DesktopView({}: DesktopViewProps) {
                         setCurrentEditTask(undefined);
                     }}
                     onCancelCreation={() => {
-                        setCurrentListName(undefined);
                         setIsCreatingTask(false);
                         setCurrentEditTask(undefined);
                     }}
+                    shouldHideBackButton={true}
                     defaultListName={currentListName}
                     taskToEdit={currentEditTask}
                 />
