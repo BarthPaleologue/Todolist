@@ -6,6 +6,7 @@ import { Task } from "../task";
 import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
 import { IdleDesktopPanel } from "./IdleDesktopPanel";
 import { getDayTask, getTodaysTasks } from "../utils/taskFinding";
+import { AgendaView } from "./AgendaView";
 
 interface DesktopViewProps {}
 
@@ -69,6 +70,7 @@ export function DesktopView({}: DesktopViewProps) {
                     taskToEdit={currentEditTask}
                 />
             )}
+            {currentListName && !isCreatingTask && !currentEditTask && <AgendaView />}
             {!currentListName && !isCreatingTask && !currentEditTask && <IdleDesktopPanel />}
         </div>
     );
