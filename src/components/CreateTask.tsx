@@ -62,7 +62,8 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             date: startDate,
             isComplete: false,
             location: undefined,
-            sharedWith: undefined
+            sharedWith: undefined,
+            urgency: urgency
         };
 
         const todoList = loadTodosFromLocalStorage();

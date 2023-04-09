@@ -274,6 +274,33 @@ input[type="range" i] {
     line-height: 100%;
 }
 
+.listContainer li .taskTextContainer p .urgency {
+    border-radius: var(--border-radius);
+    padding: 2px 5px;
+    background: var(--main-hover-color);
+    font-weight: bold;
+}
+
+.listContainer li .taskTextContainer p .urgency1 {
+    color: rgb(255, 251, 0);
+}
+
+.listContainer li .taskTextContainer p .urgency2 {
+    color: rgb(81, 255, 0);
+}
+
+.listContainer li .taskTextContainer p .urgency3 {
+    color: rgb(255, 0, 242);
+}
+
+.listContainer li .taskTextContainer p .urgency4 {
+    color: rgb(255, 81, 0);
+}
+
+.listContainer li .taskTextContainer p .urgency5 {
+    color: rgb(255, 0, 0);
+}
+
 .listContainer li .taskTextContainer .taskTitle {
 }
 

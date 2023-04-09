@@ -19,9 +19,14 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
 
     const [lst_tasks, setListTask] = useState<Task[]>(lst_categories.flatMap((cat) => cat.tasks));
 
-    const taskToDisplay = lst_tasks.filter((task) => task.title.toLowerCase().includes(searchQuery));
+    const taskToDisplay = lst_tasks
+        .filter((task) => task.title.toLowerCase().includes(searchQuery))
+        .sort((taskA, taskB) => {
+            return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
+        });
+        
     const taskToday = lst_tasks.filter(
-                    (task) => `${task.date?.getFullYear()}/${(task.date?.getMonth() ?? 0) +1}/${task.date?.getDate()}` == `${currentDate.getFullYear()}/${currentDate.getMonth() +1}/${currentDate.getDate()}`);
+        (task) => `${task.date?.getFullYear()}/${(task.date?.getMonth() ?? 0) +1}/${task.date?.getDate()}` == `${currentDate.getFullYear()}/${currentDate.getMonth() +1}/${currentDate.getDate()}`);
 
     // Render all categories
     const newArr = lst_categories.map((cat) => {

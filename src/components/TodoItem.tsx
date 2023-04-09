@@ -13,6 +13,9 @@ interface TodoItemProps {
 export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemProps) {
     const [isComplete, setIsComplete] = useState(task.isComplete);
 
+    let urgencyString = "";
+    for (let i = 0; i < (task.urgency ?? 0); i++) urgencyString += "!";
+
     function handleChangeComplete() {
         setIsComplete(!isComplete);
         task.isComplete = !isComplete;
@@ -34,7 +37,9 @@ export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemP
         <li className={task.isComplete ? "finished" : ""}>
             <input type="checkbox" defaultChecked={task.isComplete} onChange={handleChangeComplete} />
             <div className="taskTextContainer" onClick={() => onEdit(task)}>
-                <p className="taskTitle">{task.title}</p>
+                <p className="taskTitle">
+                    {task.title} {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>}
+                </p>
                 {task.date && <p className="taskDate">{task.date.toDateString()}</p>}
                 {task.details && (
                     <p className="taskDetails" style={{ color: "grey" }}>
