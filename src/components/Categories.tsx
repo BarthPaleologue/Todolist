@@ -25,7 +25,6 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
             if (!clickRef.current.some((ref) => ref?.contains(e.target as Node))) {
-                // console.log('Clicked outside!');
                 setDropdown(-1);
             }
         }
@@ -44,7 +43,7 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
             return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
         });
 
-    const taskToday = getDayTask(new Date(), lst_tasks);
+    const taskToday = getDayTask(new Date(), lst_categories.flatMap((cat) => cat.tasks));
 
     // Render all categories
     const newArr = lst_categories.map((cat: TaskList, idx: number) => {
