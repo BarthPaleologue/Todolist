@@ -89,9 +89,11 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     else handleCreateTask();
                 }}
             >
+                <label htmlFor="title">Task title:</label>
                 <input
                     type="text"
-                    placeholder="What todo?"
+                    id="title"
+                    placeholder="Meet with John"
                     value={newTaskTitle}
                     onChange={(e) => {
                         setNewTaskTitle(e.target.value);
@@ -100,16 +102,20 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     autoFocus
                 />
 
+                <label htmlFor="description">Task description:</label>
                 <textarea
-                    placeholder="Description"
+                    placeholder="Discuss the new project"
+                    id="description"
                     value={newTaskDescription}
                     onChange={(e) => {
                         setNewTaskDescription(e.target.value);
                     }}
                 />
 
+                <label htmlFor="listName">List name:</label>
                 <select
                     value={listName}
+                    id="listName"
                     onChange={(e) => {
                         setListName(e.target.value);
                     }}
@@ -128,7 +134,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                 {listName === "New List" && (
                     <input
                         type="text"
-                        placeholder="New list name"
+                        placeholder="With John"
                         value={newListName}
                         onChange={(e) => {
                             setNewListName(e.target.value);
@@ -137,8 +143,10 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     />
                 )}
 
+                <label htmlFor="date">Date:</label>
                 <DatePicker
-                    placeholderText="Choose a date"
+                    placeholderText="Select a date"
+                    id="date"
                     value={startDate?.toDateString()}
                     onChange={(date) => {
                         if (date === null) throw new Error("Date is null");
@@ -146,9 +154,11 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     }}
                 />
 
+                <label htmlFor="location">Location:</label>
                 <input
                     type="text"
-                    placeholder="Location"
+                    id="location"
+                    placeholder="Central Park"
                     defaultValue={location}
                     onChange={(e) => {
                         setLocation(e.target.value);

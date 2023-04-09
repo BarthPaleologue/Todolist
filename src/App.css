@@ -28,7 +28,6 @@
     text-align: center;
     cursor: pointer;
     font-size: 120%;
-    
 }
 
 .backButtonIcon {
@@ -37,7 +36,6 @@
     width: 30px;
     margin-left: 10px;
 }
-
 
 .verticalView header h1 {
     text-align: center;
@@ -54,15 +52,19 @@
     display: flex;
     flex-direction: column;
     row-gap: 10px;
+    padding: 0 10px;
 }
 
 .verticalView input {
     display: block;
-    margin: 0 10px;
     padding: 10px;
     outline: none;
     border-radius: var(--border-radius);
     border: 1px solid grey;
+}
+
+.verticalView input[type="search"] {
+    margin: 0 10px;
 }
 
 .verticalView input:focus {
@@ -71,7 +73,6 @@
 
 .verticalView textarea {
     display: block;
-    margin: 0 10px;
     padding: 10px;
     outline: none;
     border-radius: var(--border-radius);
@@ -86,10 +87,15 @@
 
 .verticalView select {
     display: block;
-    margin: 0 10px;
     padding: 10px;
     outline: none;
     border-radius: var(--border-radius);
+    transition: var(--transition-duration);
+}
+
+.verticalView select:active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .verticalView ul {
