@@ -52,17 +52,17 @@ export function emptyLocalStorage(): void {
     localStorage.removeItem(TODO_KEY);
 }
 
-export function removeTaskListFromStorage(title: string){
+export function removeTaskListFromStorage(title: string) {
     const todos = loadTodosFromLocalStorage();
     saveTodosToLocalStorage(todos.filter((todo) => todo.title !== title));
 }
 
-export function clearCompletedTasksInCategory(title: string){
+export function clearCompletedTasksInCategory(title: string) {
     const todos = loadTodosFromLocalStorage();
     const index = todos.findIndex((todo) => todo.title === title);
-    if (index !== -1){
-        todos[index] = {title: todos[index].title, tasks: todos[index].tasks.filter((task) => !(task.isComplete))}
-    } 
+    if (index !== -1) {
+        todos[index] = { title: todos[index].title, tasks: todos[index].tasks.filter((task) => !task.isComplete) };
+    }
     saveTodosToLocalStorage(todos);
 }
 

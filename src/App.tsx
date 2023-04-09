@@ -49,7 +49,12 @@ function App() {
                 onCategoryPressed={(categoryName) => {
                     setCurrentListName(categoryName);
                     if (categoryName === TODAY) {
-                        setCurrentTasks(getDayTask(new Date(),loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
                     }
@@ -88,8 +93,13 @@ function App() {
             <CreateTask
                 onCreateTask={(task: Task, listName: string) => {
                     setCurrentListName(listName);
-                    if (listName === TODAY){
-                        setCurrentTasks(getDayTask(new Date(),loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                    if (listName === TODAY) {
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     }
@@ -97,8 +107,13 @@ function App() {
                 }}
                 onEditTask={(oldTask: Task, task: Task, listName: string) => {
                     setCurrentListName(listName);
-                    if (listName === TODAY){
-                        setCurrentTasks(getDayTask(new Date(),loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                    if (listName === TODAY) {
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     }

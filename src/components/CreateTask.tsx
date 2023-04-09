@@ -5,7 +5,7 @@ import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTod
 import { useState } from "react";
 import { Header } from "./Header";
 import { getIndexOfTaskInList } from "../utils/taskFinding";
-import {TODAY} from "./Categories";
+import { TODAY } from "./Categories";
 
 interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
@@ -40,7 +40,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
         let listTitle = listName;
         if (listName === TODAY) {
             const catNames = loadCategoriesNamesFromLocalStorage();
-            listTitle = (catNames.length > 0) ? catNames[0] : DEFAULT_LISTNAME;
+            listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
         }
 
         const list = todos.find((list) => list.title === (newListName ?? listTitle));
@@ -81,7 +81,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
         let listTitle = listName;
         if (listName === TODAY) {
             const catNames = loadCategoriesNamesFromLocalStorage();
-            listTitle = (catNames.length > 0) ? catNames[0] : DEFAULT_LISTNAME;
+            listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
         }
 
         const list = todoList.find((list) => list.title === (newListName ?? listTitle));
@@ -135,7 +135,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
                     <label htmlFor="listName">List name:</label>
                     <select
-                        value={ (loadCategoriesNamesFromLocalStorage().length === 0) ? "New List" : listName }
+                        value={loadCategoriesNamesFromLocalStorage().length === 0 ? "New List" : listName}
                         id="listName"
                         onChange={(e) => {
                             setListName(e.target.value);
