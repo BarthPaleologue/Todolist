@@ -2,14 +2,14 @@ import { useState } from "react";
 import Categories from "./Categories";
 import { CreateTask } from "./CreateTask";
 import { ListView } from "./ListView";
-import { Task, TaskList } from "../task";
+import { Task } from "../task";
 import { loadListFromLocalStorage } from "../utils/localStorage";
 import { IdleDesktopPanel } from "./IdleDesktopPanel";
 
 interface DesktopViewProps {}
 
 export function DesktopView({}: DesktopViewProps) {
-    const [currentTasks, setCurrentTasks] = useState<Task[] | undefined>(undefined);
+    const [currentTasks, setCurrentTasks] = useState<Task[]>([]);
     const [currentListName, setCurrentListName] = useState<string | undefined>(undefined);
     const [currentEditTask, setCurrentEditTask] = useState<Task | undefined>(undefined);
     const [isCreatingTask, setIsCreatingTask] = useState<boolean>(false);
@@ -18,7 +18,6 @@ export function DesktopView({}: DesktopViewProps) {
         <div className="desktopView">
             <Categories
                 onCreateTaskPressed={() => {
-                    setCurrentTasks(undefined);
                     setIsCreatingTask(true);
                 }}
                 onCategoryPressed={(listName) => {
@@ -33,8 +32,8 @@ export function DesktopView({}: DesktopViewProps) {
             {currentListName && (
                 <ListView
                     listName={currentListName}
+                    givenTasks={currentTasks}
                     onCreateTaskPressed={() => setIsCreatingTask(true)}
-                    onBackPressed={() => {}}
                     onRequireTaskEdit={(task: Task) => {
                         setCurrentEditTask(task);
                     }}
@@ -44,10 +43,12 @@ export function DesktopView({}: DesktopViewProps) {
                 <CreateTask
                     onCreateTask={(newTask: Task, listName: string) => {
                         setCurrentListName(listName);
+                        setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                         setIsCreatingTask(false);
                     }}
                     onEditTask={(oldTask: Task, newTask: Task, listName: string) => {
                         setCurrentListName(listName);
+                        setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                         setIsCreatingTask(false);
                         setCurrentEditTask(undefined);
                     }}

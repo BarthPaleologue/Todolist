@@ -4,7 +4,7 @@ import Categories from "./components/Categories";
 import { Presentation } from "./components/Presentation";
 import { CreateTask } from "./components/CreateTask";
 import { Task, TaskList } from "./task";
-import { emptyLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "./utils/localStorage";
+import { emptyLocalStorage, loadListFromLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "./utils/localStorage";
 import { ListView } from "./components/ListView";
 import { isTaskInList } from "./utils/taskFinding";
 import { DesktopView } from "./components/DesktopView";
@@ -39,6 +39,8 @@ function App() {
     // The current task edited (can be passed to the creation view)
     const [currentTask, setCurrentTask] = React.useState<Task | undefined>(undefined);
 
+    const [currentTasks, setCurrentTasks] = React.useState<Task[]>([]);
+
     const mobileViews: { [key in AppStatus]: React.ReactElement } = {
         [AppStatus.CATEGORY_VIEW_MOBILE]: (
             <Categories
@@ -48,6 +50,7 @@ function App() {
                 }}
                 onCategoryPressed={(categoryName) => {
                     setCurrentListName(categoryName);
+                    setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 onEditTaskRequested={(task) => {
@@ -62,6 +65,7 @@ function App() {
         [AppStatus.LIST_VIEW_MOBILE]: (
             <ListView
                 listName={currentListName ?? ""}
+                givenTasks={currentTasks}
                 onCreateTaskPressed={() => {
                     setCurrentTask(undefined);
                     setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
@@ -78,26 +82,11 @@ function App() {
         [AppStatus.CREATE_TASK_VIEW_MOBILE]: (
             <CreateTask
                 onCreateTask={(task: Task, listName: string) => {
-                    const todos = loadTodosFromLocalStorage();
-                    const list = todos.find((list) => list.title === listName);
-                    if (list) {
-                        list.tasks.push(task);
-                    } else {
-                        todos.push({ title: listName, tasks: [task] });
-                    }
-                    saveTodosToLocalStorage(todos);
+                    setCurrentListName(listName);
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 onEditTask={(oldTask: Task, task: Task, listName: string) => {
-                    const todos = loadTodosFromLocalStorage();
-                    const list = todos.find((list) => list.title === listName);
-                    if (list) {
-                        const taskIndex = list.tasks.findIndex((t) => t.title === task.title);
-                        if (taskIndex !== -1) {
-                            list.tasks[taskIndex] = task;
-                        }
-                    }
-                    saveTodosToLocalStorage(todos);
+                    setCurrentListName(listName);
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 taskToEdit={currentTask}
