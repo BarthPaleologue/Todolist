@@ -17,6 +17,11 @@ export function loadTodosFromLocalStorage(): TaskList[] {
     return todosJSON;
 }
 
+export function loadTasksFromLocalStorage(): Task[] {
+    const todos = loadTodosFromLocalStorage();
+    return todos.map((todo) => todo.tasks).flat();
+}
+
 export function loadCategoriesNamesFromLocalStorage(): string[] {
     const todos = loadTodosFromLocalStorage();
     return todos.map((todo) => todo.title);

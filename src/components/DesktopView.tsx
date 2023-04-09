@@ -1,16 +1,17 @@
 import { useState } from "react";
-import Categories from "./Categories";
+import Categories, { TODAY } from "./Categories";
 import { CreateTask } from "./CreateTask";
 import { ListView } from "./ListView";
 import { Task } from "../task";
-import { loadListFromLocalStorage } from "../utils/localStorage";
+import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
 import { IdleDesktopPanel } from "./IdleDesktopPanel";
+import { getDayTask, getTodaysTasks } from "../utils/taskFinding";
 
 interface DesktopViewProps {}
 
 export function DesktopView({}: DesktopViewProps) {
-    const [currentTasks, setCurrentTasks] = useState<Task[]>([]);
-    const [currentListName, setCurrentListName] = useState<string | undefined>(undefined);
+    const [currentTasks, setCurrentTasks] = useState<Task[]>(getTodaysTasks());
+    const [currentListName, setCurrentListName] = useState<string | undefined>(TODAY);
     const [currentEditTask, setCurrentEditTask] = useState<Task | undefined>(undefined);
     const [isCreatingTask, setIsCreatingTask] = useState<boolean>(false);
 
@@ -20,10 +21,13 @@ export function DesktopView({}: DesktopViewProps) {
                 onCreateTaskPressed={() => {
                     setIsCreatingTask(true);
                 }}
-                onCategoryPressed={(listName) => {
-                    const list = loadListFromLocalStorage(listName);
-                    setCurrentTasks(list.tasks);
-                    setCurrentListName(listName);
+                onCategoryPressed={(categoryName) => {
+                    setCurrentListName(categoryName);
+                    if (categoryName === TODAY) {
+                        setCurrentTasks(getTodaysTasks());
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
+                    }
                 }}
                 onEditTaskRequested={(task: Task) => {
                     setCurrentEditTask(task);

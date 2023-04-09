@@ -1,4 +1,5 @@
 import { Task, TaskList } from "../task";
+import { loadTasksFromLocalStorage } from "./localStorage";
 
 export function isTaskInList(task: Task, taskList: TaskList): boolean {
     return taskList.tasks.some((t) => t.title === task.title);
@@ -22,4 +23,10 @@ export function getDayTask(currentDate: Date, lst_tasks: Task[]): Task[] {
             `${task.date?.getFullYear()}/${(task.date?.getMonth() ?? 0) + 1}/${task.date?.getDate()}` ===
             `${currentDate.getFullYear()}/${currentDate.getMonth() + 1}/${currentDate.getDate()}`
     );
+}
+
+export function getTodaysTasks(): Task[] {
+    const currentDate = new Date();
+    const tasks = loadTasksFromLocalStorage();
+    return getDayTask(currentDate, tasks);
 }
