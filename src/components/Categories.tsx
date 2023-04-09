@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Task, TaskList } from "../task";
-import { loadTodosFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
+import { loadTodosFromLocalStorage, saveTaskListToLocalStorage, removeTaskListFromStorage, clearCompletedTasksInCategory } from "../utils/localStorage";
 import { TodoItem } from "./TodoItem";
 import { Header } from "./Header";
 import { getCategory, getDayTask } from "../utils/taskFinding";
@@ -17,9 +17,24 @@ export const TODAY = "Today";
 export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
-    const currentDate = new Date();
-
+    const [dropDown, setDropdown] = useState<number>(-1);
     const [lst_tasks, setListTask] = useState<Task[]>(lst_categories.flatMap((cat) => cat.tasks));
+
+    const clickRef = useRef<(HTMLDivElement | null)[]>([]);
+
+    useEffect( () => {
+            function handleClickOutside(e : MouseEvent) {
+                if (!clickRef.current.some(ref => ref?.contains(e.target as Node))) {
+                    // console.log('Clicked outside!');
+                    setDropdown(-1);
+                }
+            }
+        
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [clickRef]);
 
     const taskToDisplay = lst_tasks
         .filter((task) => task.title.toLowerCase().includes(searchQuery))
@@ -30,12 +45,25 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
     const taskToday = getDayTask(new Date(), lst_tasks);
 
     // Render all categories
-    const newArr = lst_categories.map((cat) => {
+    const newArr = lst_categories.map((cat: TaskList, idx: number) => {
         return (
-            <div key={cat.title} className="category-item" onClick={() => onCategoryPressed(cat.title)}>
-                {" "}
-                {cat.title}
-                <span className="category-length"> {cat.tasks.length} </span>
+            <div key={cat.title} className="category-item">
+                <div className="category-name"  onClick={() => onCategoryPressed(cat.title)}>
+                    {" "}
+                    {cat.title}
+                    <span className="category-length"> {cat.tasks.length} </span>
+                </div>
+                <div className="category-options" ref={ (el) => (clickRef.current[idx]=el)} onClick={() => (dropDown == idx) ? setDropdown(-1) : setDropdown(idx)}> ... 
+                    {(dropDown == idx) ? (
+                        <ul className="category-menu" onBlur={() => setDropdown(-1)}>
+                            <li className="menu-item" onClick={() => {clearCompletedTasksInCategory(cat.title); setLstCategories(loadTodosFromLocalStorage())}}>
+                                Remove cleared tasks </li>
+                            <li className="menu-item" onClick={() => {removeTaskListFromStorage(cat.title); setLstCategories(loadTodosFromLocalStorage())} }>
+                                Delete </li>
+                        </ul>
+                        ) : null
+                    }
+                </div>
             </div>
         );
     });
