@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Task, TaskList } from "../task";
 import { loadListFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { Header } from "./Header";
-import { TodoUnit } from "./TodoUnit";
+import { TodoItem } from "./TodoItem";
 
 interface ListViewProps {
     listName: string;
@@ -19,7 +19,7 @@ export function ListView({ listName, onCreateTaskPressed, onBackPressed, onRequi
             <Header title={listName} onBackPressed={onBackPressed} />
             <ul className="listContainer">
                 {tasks.map((task: Task, index: number) => (
-                    <TodoUnit
+                    <TodoItem
                         key={index}
                         onCompleteChange={() => {
                             saveTaskListToLocalStorage({ title: listName, tasks: tasks });
