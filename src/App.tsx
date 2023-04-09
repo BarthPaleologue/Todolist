@@ -1,12 +1,12 @@
 import React from "react";
 import "./App.css";
-import Categories from "./components/Categories";
+import {Categories, TODAY} from "./components/Categories";
 import { Presentation } from "./components/Presentation";
 import { CreateTask } from "./components/CreateTask";
 import { Task, TaskList } from "./task";
 import { emptyLocalStorage, loadListFromLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "./utils/localStorage";
 import { ListView } from "./components/ListView";
-import { isTaskInList } from "./utils/taskFinding";
+import { isTaskInList, getDayTask } from "./utils/taskFinding";
 import { DesktopView } from "./components/DesktopView";
 
 enum AppStatus {
@@ -50,7 +50,11 @@ function App() {
                 }}
                 onCategoryPressed={(categoryName) => {
                     setCurrentListName(categoryName);
-                    setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
+                    if (categoryName === TODAY) {
+                        setCurrentTasks(getDayTask(new Date(), loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
+                    }
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 onEditTaskRequested={(task) => {

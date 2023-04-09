@@ -3,7 +3,7 @@ import { Task, TaskList } from "../task";
 import { loadTodosFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { TodoItem } from "./TodoItem";
 import { Header } from "./Header";
-import { getCategory } from "../utils/taskFinding";
+import { getCategory, getDayTask } from "../utils/taskFinding";
 
 // Load localSotrage
 interface CategoriesProps {
@@ -12,7 +12,9 @@ interface CategoriesProps {
     onEditTaskRequested: (task: Task) => void;
 }
 
-const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
+export const TODAY = "Today";
+
+export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
     const currentDate = new Date();
@@ -24,9 +26,8 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
         .sort((taskA, taskB) => {
             return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
         });
-        
-    const taskToday = lst_tasks.filter(
-        (task) => `${task.date?.getFullYear()}/${(task.date?.getMonth() ?? 0) +1}/${task.date?.getDate()}` == `${currentDate.getFullYear()}/${currentDate.getMonth() +1}/${currentDate.getDate()}`);
+
+    const taskToday = getDayTask(new Date(), lst_tasks);
 
     // Render all categories
     const newArr = lst_categories.map((cat) => {
@@ -52,7 +53,7 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
             <div className="category-display">
                 {searchQuery.length == 0 && (
                     <div id="category-container">
-                        <div className="category-item">
+                        <div className="category-item" onClick={() => onCategoryPressed(TODAY)}>
                             Today
                             <span className="category-length"> {taskToday.length} </span>
                         </div>
