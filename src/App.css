@@ -93,6 +93,11 @@
     margin-bottom: 5px;
 }
 
+.verticalView label[aria-required="true"]::after {
+    content: " *";
+    color: red;
+}
+
 .verticalView input {
     display: block;
     padding: 10px;

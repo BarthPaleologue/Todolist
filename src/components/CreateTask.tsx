@@ -110,7 +110,9 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                 }}
             >
                 <section className="mainContainer">
-                    <label htmlFor="title">Task title:</label>
+                    <label htmlFor="title" aria-required>
+                        Task title:
+                    </label>
                     <input
                         type="text"
                         id="title"
@@ -133,7 +135,9 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         }}
                     />
 
-                    <label htmlFor="listName">List name:</label>
+                    <label htmlFor="listName" aria-required>
+                        List name:
+                    </label>
                     <select
                         value={loadCategoriesNamesFromLocalStorage().length === 0 ? "New List" : listName}
                         id="listName"
@@ -153,7 +157,11 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         <option value="New List">New List</option>
                     </select>
 
-                    {listName === "New List" && <label htmlFor="newListName">New list name:</label>}
+                    {listName === "New List" && (
+                        <label htmlFor="newListName" aria-required>
+                            New list name:
+                        </label>
+                    )}
                     {listName === "New List" && (
                         <input
                             type="text"
