@@ -5,6 +5,7 @@ import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTod
 import { useState } from "react";
 import { Header } from "./Header";
 import { getIndexOfTaskInList } from "../utils/taskFinding";
+import {TODAY} from "./Categories";
 
 interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
@@ -127,7 +128,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         }}
                         required
                     >
-                        {listName !== "New List" && <option value={listName}>{listName}</option>}
+                        {listName !== "New List" && listName !== TODAY && <option value={listName}>{listName}</option>}
                         {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
                             return (
                                 <option key={categoryName} value={categoryName}>
