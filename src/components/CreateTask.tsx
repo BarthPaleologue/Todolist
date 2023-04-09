@@ -72,7 +72,12 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
         const todoList = loadTodosFromLocalStorage();
 
-        const listTitle =  (listName === TODAY) ? DEFAULT_LISTNAME : listName ;
+        let listTitle = listName;
+        if (listName === TODAY) {
+            const catNames = loadCategoriesNamesFromLocalStorage();
+            listTitle = (catNames.length > 0) ? catNames[0] : DEFAULT_LISTNAME;
+        }
+
         const list = todoList.find((list) => list.title === (newListName ?? listTitle));
         if (list === undefined) {
             todoList.push({
