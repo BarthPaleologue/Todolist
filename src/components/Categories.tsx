@@ -18,7 +18,11 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
 
     const [lst_tasks, setListTask] = useState<Task[]>([]);
 
-    const taskToDisplay = lst_tasks.filter((task) => task.title.toLowerCase().includes(searchQuery));
+    const taskToDisplay = lst_tasks
+        .filter((task) => task.title.toLowerCase().includes(searchQuery))
+        .sort((taskA, taskB) => {
+            return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
+        });
 
     // Render all categories
     const newArr = lst_categories.map((cat) => {

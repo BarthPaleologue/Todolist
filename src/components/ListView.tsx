@@ -18,21 +18,25 @@ export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPres
         <div className="verticalView">
             <Header title={listName} onBackPressed={onBackPressed} shouldHideBackButton={onBackPressed === undefined} />
             <ul className="listContainer">
-                {givenTasks.map((task: Task, index: number) => (
-                    <TodoItem
-                        key={index}
-                        onCompleteChange={() => {
-                            saveTaskListToLocalStorage({ title: listName, tasks: givenTasks });
-                        }}
-                        onEdit={(task: Task) => {
-                            onRequireTaskEdit(task);
-                        }}
-                        onDelete={(list: TaskList) => {
-                            onDeleteTask(list.tasks);
-                        }}
-                        task={task}
-                    />
-                ))}
+                {givenTasks
+                    .sort((taskA, taskB) => {
+                        return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
+                    })
+                    .map((task: Task, index: number) => (
+                        <TodoItem
+                            key={index}
+                            onCompleteChange={() => {
+                                saveTaskListToLocalStorage({ title: listName, tasks: givenTasks });
+                            }}
+                            onEdit={(task: Task) => {
+                                onRequireTaskEdit(task);
+                            }}
+                            onDelete={(list: TaskList) => {
+                                onDeleteTask(list.tasks);
+                            }}
+                            task={task}
+                        />
+                    ))}
             </ul>
             <div className="buttonBlock">
                 <button onClick={onCreateTaskPressed}>New Task</button>
