@@ -170,7 +170,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     }}
                 />
 
-                <label htmlFor="urgency">Urgency: {urgency}</label>
+                <label htmlFor="urgency">Priority: {urgency}</label>
                 <input
                     type="range"
                     id="urgency"
