@@ -49,12 +49,7 @@ function App() {
                 onCategoryPressed={(categoryName) => {
                     setCurrentListName(categoryName);
                     if (categoryName === TODAY) {
-                        setCurrentTasks(
-                            getDayTask(
-                                new Date(),
-                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
-                            )
-                        );
+                        setCurrentTasks(getDayTask(new Date(),loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
                     }
@@ -93,7 +88,11 @@ function App() {
             <CreateTask
                 onCreateTask={(task: Task, listName: string) => {
                     setCurrentListName(listName);
-                    setCurrentTasks(loadListFromLocalStorage(listName).tasks);
+                    if (listName === TODAY){
+                        setCurrentTasks(getDayTask(new Date(),loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(listName).tasks);
+                    }
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 onEditTask={(oldTask: Task, task: Task, listName: string) => {

@@ -16,6 +16,8 @@ interface CreateTaskProps {
     shouldHideBackButton?: boolean;
 }
 
+export const DEFAULT_LISTNAME = "Other";
+
 export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit, shouldHideBackButton }: CreateTaskProps) {
     let [newTaskTitle, setNewTaskTitle] = useState<string>(taskToEdit?.title ?? "");
 
@@ -70,10 +72,11 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
         const todoList = loadTodosFromLocalStorage();
 
-        const list = todoList.find((list) => list.title === (newListName ?? listName));
+        const listTitle =  (listName === TODAY) ? DEFAULT_LISTNAME : listName ;
+        const list = todoList.find((list) => list.title === (newListName ?? listTitle));
         if (list === undefined) {
             todoList.push({
-                title: newListName ?? listName,
+                title: newListName ?? listTitle,
                 tasks: [task]
             });
         } else {
@@ -121,7 +124,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
                     <label htmlFor="listName">List name:</label>
                     <select
-                        value={listName}
+                        value={ (listName !== TODAY) ? listName : DEFAULT_LISTNAME }
                         id="listName"
                         onChange={(e) => {
                             setListName(e.target.value);
