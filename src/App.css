@@ -50,8 +50,16 @@
 .verticalView form {
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
     padding: 0 10px;
+}
+
+.verticalView label:nth-child(1) {
+    margin-top: 0;
+}
+
+.verticalView label {
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .verticalView input {
@@ -111,6 +119,10 @@
 .verticalView .react-datepicker__input-container input {
     flex: 1;
     border-radius: var(--border-radius);
+}
+
+input[type="range" i] {
+    padding: 0 0 0 5px;
 }
 
 .verticalView .buttonBlock {

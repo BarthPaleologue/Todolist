@@ -27,6 +27,8 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
     let [newListName, setNewListName] = useState<string | undefined>(undefined);
 
+    let [urgency, setUrgency] = useState<number>(taskToEdit?.urgency ?? 0);
+
     function handleEditTask() {
         if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
 
@@ -41,7 +43,8 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             date: startDate,
             isComplete: false,
             location: location,
-            sharedWith: undefined
+            sharedWith: undefined,
+            urgency: urgency
         };
 
         list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
@@ -119,6 +122,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     onChange={(e) => {
                         setListName(e.target.value);
                     }}
+                    required
                 >
                     {listName !== "New List" && <option value={listName}>{listName}</option>}
                     {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
@@ -162,6 +166,18 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     defaultValue={location}
                     onChange={(e) => {
                         setLocation(e.target.value);
+                    }}
+                />
+
+                <label htmlFor="urgency">Urgency: {urgency}</label>
+                <input
+                    type="range"
+                    id="urgency"
+                    min="0"
+                    max="5"
+                    value={urgency}
+                    onChange={(e) => {
+                        setUrgency(parseInt(e.target.value));
                     }}
                 />
 
