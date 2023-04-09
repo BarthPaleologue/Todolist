@@ -37,7 +37,13 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
         if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
 
         const todos = loadTodosFromLocalStorage();
-        const list = todos.find((list) => list.title === (newListName ?? listName));
+        let listTitle = listName;
+        if (listName === TODAY) {
+            const catNames = loadCategoriesNamesFromLocalStorage();
+            listTitle = (catNames.length > 0) ? catNames[0] : DEFAULT_LISTNAME;
+        }
+
+        const list = todos.find((list) => list.title === (newListName ?? listTitle));
 
         if (list === undefined) throw new Error("List is undefined");
 
@@ -129,7 +135,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
                     <label htmlFor="listName">List name:</label>
                     <select
-                        value={ (listName !== TODAY) ? listName : DEFAULT_LISTNAME }
+                        value={ (loadCategoriesNamesFromLocalStorage().length === 0) ? "New List" : listName }
                         id="listName"
                         onChange={(e) => {
                             setListName(e.target.value);

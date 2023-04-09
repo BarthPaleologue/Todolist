@@ -9,7 +9,7 @@ export function getIndexOfTaskInList(task: Task, taskList: TaskList): number {
 }
 
 export function getCategory(task: Task, category: TaskList[]) : TaskList {
-    const result =  category.find( taskList => isTaskInList(task, taskList) );
+    const result =  category.find( (taskList) => isTaskInList(task, taskList) );
     if (result) {
         return result;
     }

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Task, TaskList } from "../task";
-import { saveTaskListToLocalStorage } from "../utils/localStorage";
+import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { Header } from "./Header";
 import { TodoItem } from "./TodoItem";
+import { TODAY } from "./Categories";
+import { getCategory } from "../utils/taskFinding";
 
 interface ListViewProps {
     listName: string;
@@ -26,7 +28,12 @@ export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPres
                         <TodoItem
                             key={index}
                             onCompleteChange={() => {
-                                saveTaskListToLocalStorage({ title: listName, tasks: givenTasks });
+                                if (listName === TODAY) {
+                                    const taskList = getCategory(task, loadTodosFromLocalStorage());
+                                    saveTaskListToLocalStorage({ title: taskList.title, tasks: givenTasks });
+                                } else {
+                                    saveTaskListToLocalStorage({ title: listName, tasks: givenTasks });
+                                }
                             }}
                             onEdit={(task: Task) => {
                                 onRequireTaskEdit(task);
