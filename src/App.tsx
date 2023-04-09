@@ -97,7 +97,11 @@ function App() {
                 }}
                 onEditTask={(oldTask: Task, task: Task, listName: string) => {
                     setCurrentListName(listName);
-                    setCurrentTasks(loadListFromLocalStorage(listName).tasks);
+                    if (listName === TODAY){
+                        setCurrentTasks(getDayTask(new Date(),loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)));
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(listName).tasks);
+                    }
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 taskToEdit={currentTask}
