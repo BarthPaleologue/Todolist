@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Task, TaskList } from "../task";
-import { loadListFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
+import { saveTaskListToLocalStorage } from "../utils/localStorage";
 import { Header } from "./Header";
 import { TodoItem } from "./TodoItem";
 
@@ -10,9 +10,10 @@ interface ListViewProps {
     onCreateTaskPressed: () => void;
     onBackPressed?: () => void;
     onRequireTaskEdit: (task: Task) => void;
+    onDeleteTask: (tasks: Task[]) => void;
 }
 
-export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPressed, onRequireTaskEdit }: ListViewProps) {
+export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPressed, onRequireTaskEdit, onDeleteTask }: ListViewProps) {
     return (
         <div className="verticalView">
             <Header title={listName} onBackPressed={onBackPressed} shouldHideBackButton={onBackPressed === undefined} />
@@ -27,7 +28,7 @@ export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPres
                             onRequireTaskEdit(task);
                         }}
                         onDelete={(list: TaskList) => {
-                            //setTasks(list.tasks)
+                            onDeleteTask(list.tasks);
                         }}
                         task={task}
                     />

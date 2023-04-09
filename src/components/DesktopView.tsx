@@ -36,6 +36,10 @@ export function DesktopView({}: DesktopViewProps) {
                     onCreateTaskPressed={() => setIsCreatingTask(true)}
                     onRequireTaskEdit={(task: Task) => {
                         setCurrentEditTask(task);
+                        setIsCreatingTask(true);
+                    }}
+                    onDeleteTask={(tasks: Task[]) => {
+                        setCurrentTasks(tasks);
                     }}
                 />
             )}

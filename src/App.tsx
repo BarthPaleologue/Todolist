@@ -77,16 +77,21 @@ function App() {
                     setCurrentTask(task);
                     setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
                 }}
+                onDeleteTask={(tasks) => {
+                    setCurrentTasks(tasks);
+                }}
             />
         ),
         [AppStatus.CREATE_TASK_VIEW_MOBILE]: (
             <CreateTask
                 onCreateTask={(task: Task, listName: string) => {
                     setCurrentListName(listName);
+                    setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 onEditTask={(oldTask: Task, task: Task, listName: string) => {
                     setCurrentListName(listName);
+                    setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     setAppStatus(AppStatus.LIST_VIEW_MOBILE);
                 }}
                 taskToEdit={currentTask}
