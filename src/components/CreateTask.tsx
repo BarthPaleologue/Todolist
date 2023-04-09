@@ -135,7 +135,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
                     <label htmlFor="listName">List name:</label>
                     <select
-                        value={ (listName !== TODAY) ? listName : DEFAULT_LISTNAME }
+                        value={ (loadCategoriesNamesFromLocalStorage().length === 0) ? "New List" : listName }
                         id="listName"
                         onChange={(e) => {
                             setListName(e.target.value);
