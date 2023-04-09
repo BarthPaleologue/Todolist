@@ -38,7 +38,7 @@ export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemP
             <input type="checkbox" defaultChecked={task.isComplete} onChange={handleChangeComplete} />
             <div className="taskTextContainer" onClick={() => onEdit(task)}>
                 <p className="taskTitle">
-                    {task.title} {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>}
+                    {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>} {task.title} 
                 </p>
                 {task.date && <p className="taskDate">{task.date.toDateString()}</p>}
                 {task.details && (
