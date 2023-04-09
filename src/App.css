@@ -242,7 +242,7 @@
     border: 1px solid white;
 }
 
-.listContainer li input[type="checkbox"]:checked {
+.listContainer li.finished input[type="checkbox"] {
     background-color: #ffe425;
     border: 1px solid white;
 }
