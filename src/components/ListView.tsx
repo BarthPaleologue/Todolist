@@ -12,7 +12,7 @@ interface ListViewProps {
 }
 
 export function ListView({ listName, onCreateTaskPressed, onBackPressed, onRequireTaskEdit }: ListViewProps) {
-    const [tasks, setTasks] = useState<Task[]>(loadListFromLocalStorage(listName));
+    const [tasks, setTasks] = useState<Task[]>(loadListFromLocalStorage(listName).tasks);
 
     return (
         <div className="verticalView">

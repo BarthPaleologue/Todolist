@@ -22,14 +22,11 @@ export function loadCategoriesNamesFromLocalStorage(): string[] {
     return todos.map((todo) => todo.title);
 }
 
-export function loadListFromLocalStorage(title: string): Task[] {
+export function loadListFromLocalStorage(title: string): TaskList {
     const todos = loadTodosFromLocalStorage();
     const todo = todos.find((todo) => todo.title === title);
-    if (!todo) {
-        console.log("No todo found with title: " + title);
-        return [];
-    }
-    return todo.tasks;
+    if (!todo) throw new Error("TaskList not found");
+    return todo;
 }
 
 export function saveTodosToLocalStorage(todos: TaskList[]): void {

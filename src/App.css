@@ -222,6 +222,10 @@
     text-decoration: line-through;
 }
 
+.listContainer li:hover {
+    background-color: var(--main-hover-color);
+}
+
 .listContainer li input[type="checkbox"] {
     width: 20px;
     height: 20px;
@@ -250,6 +254,7 @@
     text-align: left;
     row-gap: 5px;
     padding: 5px 0;
+    cursor: pointer;
 }
 
 .listContainer li .taskTextContainer p {
@@ -303,4 +308,21 @@
 .listContainer li .trash:hover,
 .listContainer li .edit:hover {
     background-color: rgba(0, 0, 0, 0.3);
+}
+
+.desktopView {
+    display: grid;
+    grid-template-columns: 30% 35% 35%;
+    width: 100vw;
+}
+
+.desktopView .idleDesktopPanel {
+    grid-column: span 2;
+}
+
+.desktopView .idleDesktopPanel .idleDesktopPanelText {
+    display: flex;
+    flex: auto;
+    align-items: center;
+    justify-content: center;
 }
