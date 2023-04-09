@@ -15,10 +15,13 @@ interface CategoriesProps {
 const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
+    const currentDate = new Date();
 
-    const [lst_tasks, setListTask] = useState<Task[]>([]);
+    const [lst_tasks, setListTask] = useState<Task[]>(lst_categories.flatMap((cat) => cat.tasks));
 
     const taskToDisplay = lst_tasks.filter((task) => task.title.toLowerCase().includes(searchQuery));
+    const taskToday = lst_tasks.filter(
+                    (task) => `${task.date?.getFullYear()}/${(task.date?.getMonth() ?? 0) +1}/${task.date?.getDate()}` == `${currentDate.getFullYear()}/${currentDate.getMonth() +1}/${currentDate.getDate()}`);
 
     // Render all categories
     const newArr = lst_categories.map((cat) => {
@@ -31,6 +34,7 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
         );
     });
 
+    
     return (
         <div className="verticalView">
             <Header title="Tasks" shouldHideBackButton={true} />
@@ -45,7 +49,7 @@ const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequeste
                     <div id="category-container">
                         <div className="category-item">
                             Today
-                            <span className="category-length"> 1 </span>
+                            <span className="category-length"> {taskToday.length} </span>
                         </div>
                         <div id="category-list">{newArr}</div>
                     </div>
