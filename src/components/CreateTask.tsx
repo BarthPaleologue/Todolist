@@ -94,95 +94,97 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     else handleCreateTask();
                 }}
             >
-                <label htmlFor="title">Task title:</label>
-                <input
-                    type="text"
-                    id="title"
-                    placeholder="Meet with John"
-                    value={newTaskTitle}
-                    onChange={(e) => {
-                        setNewTaskTitle(e.target.value);
-                    }}
-                    required
-                    autoFocus
-                />
-
-                <label htmlFor="description">Task description:</label>
-                <textarea
-                    placeholder="Discuss the new project"
-                    id="description"
-                    value={newTaskDescription}
-                    onChange={(e) => {
-                        setNewTaskDescription(e.target.value);
-                    }}
-                />
-
-                <label htmlFor="listName">List name:</label>
-                <select
-                    value={listName}
-                    id="listName"
-                    onChange={(e) => {
-                        setListName(e.target.value);
-                    }}
-                    required
-                >
-                    {listName !== "New List" && <option value={listName}>{listName}</option>}
-                    {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
-                        return (
-                            <option key={categoryName} value={categoryName}>
-                                {categoryName}
-                            </option>
-                        );
-                    })}
-                    <option value="New List">New List</option>
-                </select>
-
-                {listName === "New List" && (
+                <section className="mainContainer">
+                    <label htmlFor="title">Task title:</label>
                     <input
                         type="text"
-                        placeholder="With John"
-                        value={newListName}
+                        id="title"
+                        placeholder="Meet with John"
+                        value={newTaskTitle}
                         onChange={(e) => {
-                            setNewListName(e.target.value);
+                            setNewTaskTitle(e.target.value);
                         }}
                         required
+                        autoFocus
                     />
-                )}
 
-                <label htmlFor="date">Date:</label>
-                <DatePicker
-                    placeholderText="Select a date"
-                    id="date"
-                    value={startDate?.toDateString()}
-                    onChange={(date) => {
-                        if (date === null) throw new Error("Date is null");
-                        setStartDate(date);
-                    }}
-                />
+                    <label htmlFor="description">Task description:</label>
+                    <textarea
+                        placeholder="Discuss the new project"
+                        id="description"
+                        value={newTaskDescription}
+                        onChange={(e) => {
+                            setNewTaskDescription(e.target.value);
+                        }}
+                    />
 
-                <label htmlFor="location">Location:</label>
-                <input
-                    type="text"
-                    id="location"
-                    placeholder="Central Park"
-                    defaultValue={location}
-                    onChange={(e) => {
-                        setLocation(e.target.value);
-                    }}
-                />
+                    <label htmlFor="listName">List name:</label>
+                    <select
+                        value={listName}
+                        id="listName"
+                        onChange={(e) => {
+                            setListName(e.target.value);
+                        }}
+                        required
+                    >
+                        {listName !== "New List" && <option value={listName}>{listName}</option>}
+                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
+                            return (
+                                <option key={categoryName} value={categoryName}>
+                                    {categoryName}
+                                </option>
+                            );
+                        })}
+                        <option value="New List">New List</option>
+                    </select>
 
-                <label htmlFor="urgency">Priority: {urgency}</label>
-                <input
-                    type="range"
-                    id="urgency"
-                    min="0"
-                    max="5"
-                    value={urgency}
-                    onChange={(e) => {
-                        setUrgency(parseInt(e.target.value));
-                    }}
-                />
+                    {listName === "New List" && <label htmlFor="newListName">New list name:</label>}
+                    {listName === "New List" && (
+                        <input
+                            type="text"
+                            placeholder="With John"
+                            value={newListName}
+                            onChange={(e) => {
+                                setNewListName(e.target.value);
+                            }}
+                            required
+                        />
+                    )}
 
+                    <label htmlFor="date">Date:</label>
+                    <DatePicker
+                        placeholderText="Select a date"
+                        id="date"
+                        value={startDate?.toDateString()}
+                        onChange={(date) => {
+                            if (date === null) throw new Error("Date is null");
+                            setStartDate(date);
+                        }}
+                    />
+
+                    <label htmlFor="location">Location:</label>
+                    <input
+                        type="text"
+                        id="location"
+                        placeholder="Central Park"
+                        defaultValue={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                        }}
+                    />
+
+                    <label htmlFor="urgency">Priority: {urgency}</label>
+                    <input
+                        type="range"
+                        id="urgency"
+                        min="0"
+                        max="5"
+                        value={urgency}
+                        onChange={(e) => {
+                            setUrgency(parseInt(e.target.value));
+                        }}
+                    />
+                </section>
                 <div className="buttonBlock">
                     <button type="reset" onClick={onCancelCreation}>
                         Cancel
