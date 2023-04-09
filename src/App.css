@@ -47,10 +47,18 @@
     width: 250px;
 }
 
-.verticalView form {
+.verticalView .mainContainer {
     display: flex;
     flex-direction: column;
     padding: 0 10px;
+    flex: auto;
+    justify-content: flex-start;
+}
+
+.verticalView form {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .verticalView label:nth-child(1) {
@@ -126,7 +134,7 @@ input[type="range" i] {
 }
 
 .verticalView .buttonBlock {
-    position: absolute;
+    position: sticky;
     bottom: 20px;
     right: 0;
     left: 0;
@@ -164,6 +172,10 @@ input[type="range" i] {
 
 .category-header {
     text-align: center;
+}
+
+#category-container {
+    margin-top: 10px;
 }
 
 #category-list {

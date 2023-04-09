@@ -17,7 +17,7 @@ export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPres
     return (
         <div className="verticalView">
             <Header title={listName} onBackPressed={onBackPressed} shouldHideBackButton={onBackPressed === undefined} />
-            <ul className="listContainer">
+            <ul className="listContainer mainContainer">
                 {givenTasks
                     .sort((taskA, taskB) => {
                         return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
