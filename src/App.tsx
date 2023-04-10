@@ -111,7 +111,8 @@ function App() {
                 taskToEdit={currentTask}
                 defaultListName={currentListName}
                 onCancelCreation={() => {
-                    setMobileState(MobileState.LIST_VIEW);
+                    if (currentListName) setMobileState(MobileState.LIST_VIEW);
+                    else setMobileState(MobileState.CATEGORY_VIEW);
                 }}
             />
         ),
