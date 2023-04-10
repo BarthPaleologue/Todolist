@@ -45,6 +45,13 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
         }
 
+        const oldTaskList = getCategory(taskToEdit, todos);
+        if (oldTaskList.title !== (newListName ?? listTitle)) {
+            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
+            saveTaskListToLocalStorage(oldTaskList);
+        }
+
+
         const list = todos.find((list) => list.title === (newListName ?? listTitle));
         const newTask: Task = {
             title: newTaskTitle,
@@ -58,15 +65,12 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
         if (list === undefined){
             // throw new Error("List is undefined");
-            const oldTaskList = getCategory(taskToEdit, todos);
-            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
-            saveTaskListToLocalStorage(oldTaskList);
             saveTaskListToLocalStorage({title: newListName ?? listName, tasks: [newTask]});
         }
         else {
             list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
             list.tasks.push(newTask);
-            saveTodosToLocalStorage(todos);
+            saveTaskListToLocalStorage(list);
         }
 
         onEditTask(taskToEdit, newTask, newListName ?? listName);

@@ -71,6 +71,13 @@ export function clearCompletedTasksInCategory(title: string) {
     saveTodosToLocalStorage(todos);
 }
 
+export function renameCategory(oldName: string, newName: string){
+    const newList = loadListFromLocalStorage(oldName);
+    newList.title = newName;
+    removeTaskListFromStorage(oldName);
+    saveTaskListToLocalStorage(newList);
+}
+
 export function populateLocalStorage(): void {
     // populates local storage with some data for testing
     const todos = [

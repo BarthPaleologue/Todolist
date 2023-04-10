@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Task, TaskList } from "../task";
-import { loadTodosFromLocalStorage, saveTaskListToLocalStorage, removeTaskListFromStorage, clearCompletedTasksInCategory } from "../utils/localStorage";
+import { loadTodosFromLocalStorage, saveTaskListToLocalStorage, removeTaskListFromStorage, clearCompletedTasksInCategory, renameCategory } from "../utils/localStorage";
 import { TodoItem } from "./TodoItem";
 import { Header } from "./Header";
 import { getCategory, getDayTask } from "../utils/taskFinding";
@@ -70,6 +70,13 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                                 }}
                             >
                                 Remove cleared tasks{" "}
+                            </li>
+                            <li
+                                className="menu-item"
+                                onClick={() => {
+                                    console.log("Rename Category");
+                                }}>
+                                Rename
                             </li>
                             <li
                                 className="menu-item"
