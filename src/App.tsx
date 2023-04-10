@@ -22,14 +22,19 @@ const MOBILE_WIDTH_THRESHOLD = 768;
 function App() {
     const [isOnMobile, setIsOnMobile] = React.useState(window.innerWidth < MOBILE_WIDTH_THRESHOLD);
 
-    window.addEventListener("resize", () => {
-        const newIsOnMobile = window.innerWidth < MOBILE_WIDTH_THRESHOLD;
-        if (newIsOnMobile !== isOnMobile) {
-            setIsOnMobile(newIsOnMobile);
-            if (newIsOnMobile) setAppStatus(AppStatus.FIRST_PRESENTATION_MOBILE);
-            else setAppStatus(AppStatus.DESKTOP_VIEW);
-        }
-    });
+    // when the app is resized, we need to update the isOnMobile state
+    React.useEffect(() => {
+        const handleResize = () => {
+            setIsOnMobile(window.innerWidth < MOBILE_WIDTH_THRESHOLD);
+            if (isOnMobile && appStatus === AppStatus.DESKTOP_VIEW) {
+                setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+            } else if (!isOnMobile && appStatus !== AppStatus.DESKTOP_VIEW) {
+                setAppStatus(AppStatus.DESKTOP_VIEW);
+            }
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const [appStatus, setAppStatus] = React.useState(isOnMobile ? AppStatus.FIRST_PRESENTATION_MOBILE : AppStatus.DESKTOP_VIEW);
 
