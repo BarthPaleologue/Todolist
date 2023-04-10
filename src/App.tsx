@@ -26,6 +26,8 @@ function App() {
         const newIsOnMobile = window.innerWidth < MOBILE_WIDTH_THRESHOLD;
         if (newIsOnMobile !== isOnMobile) {
             setIsOnMobile(newIsOnMobile);
+            if (newIsOnMobile) setAppStatus(AppStatus.FIRST_PRESENTATION_MOBILE);
+            else setAppStatus(AppStatus.DESKTOP_VIEW);
         }
     });
 
