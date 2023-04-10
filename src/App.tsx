@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import Categories from "./components/Categories";
+import { Categories, TODAY } from "./components/Categories";
 import { Presentation } from "./components/Presentation";
 import { CreateTask } from "./components/CreateTask";
 import { Task, TaskList } from "./task";
-import { emptyLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "./utils/localStorage";
+import { emptyLocalStorage, loadListFromLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "./utils/localStorage";
 import { ListView } from "./components/ListView";
-import { isTaskInList } from "./utils/taskFinding";
+import { isTaskInList, getDayTask } from "./utils/taskFinding";
+import { DesktopView } from "./components/DesktopView";
+import { BrowserView, MobileView } from "react-device-detect";
 
-enum AppStatus {
-    CATEGORY_VIEW_MOBILE,
-    LIST_VIEW_MOBILE,
-    CREATE_TASK_VIEW_MOBILE,
-    VIEW_DESKTOP,
-    FIRST_PRESENTATION_MOBILE
+enum MobileState {
+    CATEGORY_VIEW = "CATEGORY_VIEW_MOBILE",
+    LIST_VIEW = "LIST_VIEW_MOBILE",
+    CREATE_TASK_VIEW = "CREATE_TASK_VIEW_MOBILE",
+    FIRST_PRESENTATION = "FIRST_PRESENTATION_MOBILE"
 }
 
 function App() {
-    const [appStatus, setAppStatus] = React.useState(AppStatus.FIRST_PRESENTATION_MOBILE);
+    const [mobileState, setMobileState] = useState(MobileState.FIRST_PRESENTATION);
 
     // The current list when in list view (can be passed to the creation view)
     const [currentListName, setCurrentListName] = React.useState<string | undefined>(undefined);
@@ -25,70 +26,112 @@ function App() {
     // The current task edited (can be passed to the creation view)
     const [currentTask, setCurrentTask] = React.useState<Task | undefined>(undefined);
 
-    const isOnMobile = window.innerWidth < 768;
+    const [currentTasks, setCurrentTasks] = React.useState<Task[]>([]);
+
+    const mobileViews: { [key in MobileState]: React.ReactElement } = {
+        [MobileState.CATEGORY_VIEW]: (
+            <Categories
+                onCreateTaskPressed={() => {
+                    setCurrentTask(undefined);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
+                }}
+                onCategoryPressed={(categoryName) => {
+                    setCurrentListName(categoryName);
+                    if (categoryName === TODAY) {
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
+                    }
+                    setMobileState(MobileState.LIST_VIEW);
+                }}
+                onEditTaskRequested={(task) => {
+                    const todos = loadTodosFromLocalStorage();
+                    const listName = todos.find((list) => isTaskInList(task, list))?.title;
+                    setCurrentListName(listName);
+                    setCurrentTask(task);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
+                }}
+            />
+        ),
+        [MobileState.LIST_VIEW]: (
+            <ListView
+                listName={currentListName ?? ""}
+                givenTasks={currentTasks}
+                onCreateTaskPressed={() => {
+                    setCurrentTask(undefined);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
+                }}
+                onBackPressed={() => {
+                    setCurrentListName(undefined);
+                    setMobileState(MobileState.CATEGORY_VIEW);
+                }}
+                onRequireTaskEdit={(task) => {
+                    setCurrentTask(task);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
+                }}
+                onDeleteTask={(tasks) => {
+                    setCurrentTasks(tasks);
+                }}
+            />
+        ),
+        [MobileState.CREATE_TASK_VIEW]: (
+            <CreateTask
+                onCreateTask={(task: Task, listName: string) => {
+                    setCurrentListName(listName);
+                    if (listName === TODAY) {
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(listName).tasks);
+                    }
+                    setMobileState(MobileState.LIST_VIEW);
+                }}
+                onEditTask={(oldTask: Task, task: Task, listName: string) => {
+                    setCurrentListName(listName);
+                    if (listName === TODAY) {
+                        setCurrentTasks(
+                            getDayTask(
+                                new Date(),
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
+                    } else {
+                        setCurrentTasks(loadListFromLocalStorage(listName).tasks);
+                    }
+                    setMobileState(MobileState.LIST_VIEW);
+                }}
+                taskToEdit={currentTask}
+                defaultListName={currentListName}
+                onCancelCreation={() => {
+                    if (currentListName) setMobileState(MobileState.LIST_VIEW);
+                    else setMobileState(MobileState.CATEGORY_VIEW);
+                }}
+            />
+        ),
+        [MobileState.FIRST_PRESENTATION]: (
+            <Presentation
+                onOK={() => {
+                    setMobileState(MobileState.CATEGORY_VIEW);
+                }}
+            />
+        )
+    };
 
     return (
         <div className="App">
-            {
-                {
-                    [AppStatus.CATEGORY_VIEW_MOBILE]: (
-                        <Categories
-                            onCreateTaskPressed={() => {
-                                setCurrentTask(undefined);
-                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
-                            }}
-                            onCategoryPressed={(categoryName) => {
-                                setCurrentListName(categoryName);
-                                setAppStatus(AppStatus.LIST_VIEW_MOBILE);
-                            }}
-                            onEditTaskRequested={(task) => {
-                                const todos = loadTodosFromLocalStorage();
-                                const listName = todos.find((list) => isTaskInList(task, list))?.title;
-                                setCurrentListName(listName);
-                                setCurrentTask(task);
-                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
-                            }}
-                        />
-                    ),
-                    [AppStatus.LIST_VIEW_MOBILE]: (
-                        <ListView
-                            listName={currentListName ?? ""}
-                            onCreateTaskPressed={() => {
-                                setCurrentTask(undefined);
-                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
-                            }}
-                            onBackPressed={() => {
-                                setCurrentListName(undefined);
-                                setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
-                            }}
-                            onRequireTaskEdit={(task) => {
-                                setCurrentTask(task);
-                                setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
-                            }}
-                        />
-                    ),
-                    [AppStatus.CREATE_TASK_VIEW_MOBILE]: (
-                        <CreateTask
-                            onCreateTask={(newTask: Task, listName: string) => {
-                                setCurrentListName(listName);
-                                setAppStatus(AppStatus.LIST_VIEW_MOBILE);
-                            }}
-                            onEditTask={(oldTask: Task, newTask: Task, listName: string) => {
-                                setCurrentListName(listName);
-                                setAppStatus(AppStatus.LIST_VIEW_MOBILE);
-                            }}
-                            onCancelCreation={() => {
-                                setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
-                                setCurrentListName(undefined);
-                            }}
-                            defaultListName={currentListName}
-                            taskToEdit={currentTask}
-                        />
-                    ),
-                    [AppStatus.VIEW_DESKTOP]: <div>View desktop</div>,
-                    [AppStatus.FIRST_PRESENTATION_MOBILE]: <Presentation onOK={() => setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE)} />
-                }[appStatus]
-            }
+            <BrowserView>
+                <DesktopView />
+            </BrowserView>
+            <MobileView>{mobileViews[mobileState]}</MobileView>
         </div>
     );
 }

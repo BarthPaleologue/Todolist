@@ -1,10 +1,11 @@
 import DatePicker from "react-datepicker";
-import { Task } from "../task";
+import { Task, TaskList } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
-import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
+import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTaskListToLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
 import { useState } from "react";
 import { Header } from "./Header";
-import { getIndexOfTaskInList } from "../utils/taskFinding";
+import { getCategory, getIndexOfTaskInList } from "../utils/taskFinding";
+import { TODAY } from "./Categories";
 
 interface CreateTaskProps {
     onCreateTask: (task: Task, listName: string) => void;
@@ -12,9 +13,12 @@ interface CreateTaskProps {
     onCancelCreation: () => void;
     defaultListName?: string;
     taskToEdit?: Task;
+    shouldHideBackButton?: boolean;
 }
 
-export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit }: CreateTaskProps) {
+export const DEFAULT_LISTNAME = "Other";
+
+export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit, shouldHideBackButton }: CreateTaskProps) {
     let [newTaskTitle, setNewTaskTitle] = useState<string>(taskToEdit?.title ?? "");
 
     let [newTaskDescription, setNewTaskDescription] = useState<string>(taskToEdit?.details ?? "");
@@ -27,29 +31,49 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
     let [newListName, setNewListName] = useState<string | undefined>(undefined);
 
+    let [urgency, setUrgency] = useState<number>(taskToEdit?.urgency ?? 0);
+
     function handleEditTask() {
         if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
 
+
         const todos = loadTodosFromLocalStorage();
-        const list = todos.find((list) => list.title === (newListName ?? listName));
 
-        if (list === undefined) throw new Error("List is undefined");
+        let listTitle = listName;
+        if (listName === TODAY) {
+            const catNames = loadCategoriesNamesFromLocalStorage();
+            listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
+        }
 
+        const oldTaskList = getCategory(taskToEdit, todos);
+        if (oldTaskList.title !== (newListName ?? listTitle)) {
+            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
+            saveTaskListToLocalStorage(oldTaskList);
+        }
+
+
+        const list = todos.find((list) => list.title === (newListName ?? listTitle));
         const newTask: Task = {
             title: newTaskTitle,
             details: newTaskDescription,
             date: startDate,
             isComplete: false,
             location: location,
-            sharedWith: undefined
+            sharedWith: undefined,
+            urgency: urgency
         };
 
-        list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
-        list.tasks.push(newTask);
+        if (list === undefined){
+            // throw new Error("List is undefined");
+            saveTaskListToLocalStorage({title: newListName ?? listName, tasks: [newTask]});
+        }
+        else {
+            list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
+            list.tasks.push(newTask);
+            saveTaskListToLocalStorage(list);
+        }
 
-        saveTodosToLocalStorage(todos);
-
-        onEditTask(taskToEdit, newTask, listName);
+        onEditTask(taskToEdit, newTask, newListName ?? listName);
     }
 
     function handleCreateTask() {
@@ -59,15 +83,22 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             date: startDate,
             isComplete: false,
             location: undefined,
-            sharedWith: undefined
+            sharedWith: undefined,
+            urgency: urgency
         };
 
         const todoList = loadTodosFromLocalStorage();
 
-        const list = todoList.find((list) => list.title === (newListName ?? listName));
+        let listTitle = listName;
+        if (listName === TODAY) {
+            const catNames = loadCategoriesNamesFromLocalStorage();
+            listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
+        }
+
+        const list = todoList.find((list) => list.title === (newListName ?? listTitle));
         if (list === undefined) {
             todoList.push({
-                title: newListName ?? listName,
+                title: newListName ?? listTitle,
                 tasks: [task]
             });
         } else {
@@ -81,7 +112,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
     return (
         <div className="verticalView">
-            <Header title="Create Task" onBackPressed={onCancelCreation} />
+            <Header title="Create Task" onBackPressed={onCancelCreation} shouldHideBackButton={shouldHideBackButton} />
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -89,72 +120,104 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     else handleCreateTask();
                 }}
             >
-                <input
-                    type="text"
-                    placeholder="What todo?"
-                    value={newTaskTitle}
-                    onChange={(e) => {
-                        setNewTaskTitle(e.target.value);
-                    }}
-                    required
-                    autoFocus
-                />
-
-                <textarea
-                    placeholder="Description"
-                    value={newTaskDescription}
-                    onChange={(e) => {
-                        setNewTaskDescription(e.target.value);
-                    }}
-                />
-
-                <select
-                    value={listName}
-                    onChange={(e) => {
-                        setListName(e.target.value);
-                    }}
-                >
-                    {listName !== "New List" && <option value={listName}>{listName}</option>}
-                    {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
-                        return (
-                            <option key={categoryName} value={categoryName}>
-                                {categoryName}
-                            </option>
-                        );
-                    })}
-                    <option value="New List">New List</option>
-                </select>
-
-                {listName === "New List" && (
+                <section className="mainContainer">
+                    <label htmlFor="title" aria-required>
+                        Task title:
+                    </label>
                     <input
                         type="text"
-                        placeholder="New list name"
-                        value={newListName}
+                        id="title"
+                        placeholder="Meet with John"
+                        value={newTaskTitle}
                         onChange={(e) => {
-                            setNewListName(e.target.value);
+                            setNewTaskTitle(e.target.value);
                         }}
                         required
+                        autoFocus
                     />
-                )}
 
-                <DatePicker
-                    placeholderText="Choose a date"
-                    value={startDate?.toDateString()}
-                    onChange={(date) => {
-                        if (date === null) throw new Error("Date is null");
-                        setStartDate(date);
-                    }}
-                />
+                    <label htmlFor="description">Task description:</label>
+                    <textarea
+                        placeholder="Discuss the new project"
+                        id="description"
+                        value={newTaskDescription}
+                        onChange={(e) => {
+                            setNewTaskDescription(e.target.value);
+                        }}
+                    />
 
-                <input
-                    type="text"
-                    placeholder="Location"
-                    defaultValue={location}
-                    onChange={(e) => {
-                        setLocation(e.target.value);
-                    }}
-                />
+                    <label htmlFor="listName" aria-required>
+                        List name:
+                    </label>
+                    <select
+                        value={loadCategoriesNamesFromLocalStorage().length === 0 ? "New List" : listName}
+                        id="listName"
+                        onChange={(e) => {
+                            setListName(e.target.value);
+                        }}
+                        required
+                    >
+                        {listName !== "New List" && listName !== TODAY && <option value={listName}>{listName}</option>}
+                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => 
+                            ( (categoryName !== listName) && <option key={categoryName} value={categoryName}>
+                                     {categoryName}
+                                    </option>
+                            )
+                        )}
+                        <option value="New List">New List</option>
+                    </select>
 
+                    {listName === "New List" && (
+                        <label htmlFor="newListName" aria-required>
+                            New list name:
+                        </label>
+                    )}
+                    {listName === "New List" && (
+                        <input
+                            type="text"
+                            placeholder="With John"
+                            value={newListName}
+                            onChange={(e) => {
+                                setNewListName(e.target.value);
+                            }}
+                            required
+                        />
+                    )}
+
+                    <label htmlFor="date">Date:</label>
+                    <DatePicker
+                        placeholderText="Select a date"
+                        id="date"
+                        value={startDate?.toDateString()}
+                        onChange={(date) => {
+                            if (date === null) throw new Error("Date is null");
+                            setStartDate(date);
+                        }}
+                    />
+
+                    <label htmlFor="location">Location:</label>
+                    <input
+                        type="text"
+                        id="location"
+                        placeholder="Central Park"
+                        defaultValue={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                        }}
+                    />
+
+                    <label htmlFor="urgency">Priority: {urgency}</label>
+                    <input
+                        type="range"
+                        id="urgency"
+                        min="0"
+                        max="5"
+                        value={urgency}
+                        onChange={(e) => {
+                            setUrgency(parseInt(e.target.value));
+                        }}
+                    />
+                </section>
                 <div className="buttonBlock">
                     <button type="reset" onClick={onCancelCreation}>
                         Cancel

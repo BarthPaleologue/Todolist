@@ -1,4 +1,5 @@
 :root {
+    --header-height: 100px;
     --border-radius: 5px;
     --main-color: #115905;
     --main-color-light: #1f7c07;
@@ -6,18 +7,33 @@
     --transition-duration: 0.2s;
 }
 
+/** scrollbar **/
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: green;
+    border-radius: var(--border-radius);
+}
+
 .verticalView {
-    row-gap: 10px;
     display: flex;
+    row-gap: 10px;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - 20px);
     position: relative;
 }
 
 .verticalView header {
     background-color: var(--main-color);
     color: white;
-    height: 100px;
+    min-height: var(--header-height);
+    max-height: var(--header-height);
     padding: 0 10px;
     display: grid;
     grid-template-columns: 70px auto 70px;
@@ -30,8 +46,16 @@
     font-size: 120%;
 }
 
+.backButtonIcon {
+    background: url("./assets/back_button.png") no-repeat center center / cover;
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+}
+
 .verticalView header h1 {
     text-align: center;
+    margin-block: 0;
 }
 
 .verticalView .logo {
@@ -40,20 +64,51 @@
     width: 250px;
 }
 
-.verticalView form {
-    height: 100%;
+.verticalView .mainContainer {
     display: flex;
     flex-direction: column;
+    padding: 0 10px;
+    flex: auto;
+    justify-content: flex-start;
+}
+
+.verticalView form {
+    flex: auto;
+    display: flex;
     row-gap: 10px;
+    min-height: calc(100vh - var(--header-height) - 35px);
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.verticalView form .mainContainer {
+    overflow-y: auto;
+}
+
+.verticalView label:nth-child(1) {
+    margin-top: 0;
+}
+
+.verticalView label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.verticalView label[aria-required="true"]::after {
+    content: " *";
+    color: red;
 }
 
 .verticalView input {
     display: block;
-    margin: 0 10px;
     padding: 10px;
     outline: none;
     border-radius: var(--border-radius);
     border: 1px solid grey;
+}
+
+.verticalView input[type="search"] {
+    margin: 0 10px;
 }
 
 .verticalView input:focus {
@@ -62,13 +117,13 @@
 
 .verticalView textarea {
     display: block;
-    margin: 0 10px;
     padding: 10px;
     outline: none;
     border-radius: var(--border-radius);
     border: 1px solid grey;
     font-family: sans-serif;
     resize: none;
+    min-height: 50px;
 }
 
 .verticalView textarea:focus {
@@ -77,10 +132,15 @@
 
 .verticalView select {
     display: block;
-    margin: 0 10px;
     padding: 10px;
     outline: none;
     border-radius: var(--border-radius);
+    transition: var(--transition-duration);
+}
+
+.verticalView select:active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .verticalView ul {
@@ -99,11 +159,11 @@
     border-radius: var(--border-radius);
 }
 
+input[type="range" i] {
+    padding: 0 0 0 5px;
+}
+
 .verticalView .buttonBlock {
-    position: absolute;
-    bottom: 20px;
-    right: 0;
-    left: 0;
     display: flex;
     width: 100%;
     justify-content: space-evenly;
@@ -140,6 +200,10 @@
     text-align: center;
 }
 
+#category-container {
+    margin-top: 10px;
+}
+
 #category-list {
     row-gap: 10px;
     display: flex;
@@ -149,6 +213,7 @@
 }
 
 .category-item {
+    display: flex;
     padding: 0.5em;
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
@@ -157,12 +222,34 @@
 
 .category-length {
     position: absolute;
+    right: 20%;
+    text-align: right;
+}
+
+.category-name {
+    width: 80%;
+}
+
+.category-options {
+    position: absolute;
     right: 10%;
     text-align: right;
 }
 
+.category-options .category-menu {
+    position: relative;
+    font-size: 70%;
+    text-align: right;
+    background-color: white;
+    z-index: 3;
+    border: 1px solid black;
+    right: -20%;
+    padding: 0.5em;
+}
+
 .category-display {
     overflow-y: auto;
+    margin-top: 10px;
 }
 
 .category-item:hover {
@@ -189,7 +276,7 @@
 
 .listContainer li {
     width: 100%;
-    min-height: 50px;
+    min-height: fit-content;
     background-color: var(--main-color);
     color: white;
     border-radius: var(--border-radius);
@@ -204,8 +291,13 @@
 
 .listContainer li.finished {
     background-color: var(--main-hover-color);
-    opacity: 0.5;
+    opacity: 0.8;
     text-decoration: line-through;
+    filter: brightness(0.5);
+}
+
+.listContainer li:hover {
+    background-color: var(--main-hover-color);
 }
 
 .listContainer li input[type="checkbox"] {
@@ -224,8 +316,8 @@
     border: 1px solid white;
 }
 
-.listContainer li input[type="checkbox"]:checked {
-    background-color: white;
+.listContainer li.finished input[type="checkbox"] {
+    background-color: #ffe425;
     border: 1px solid white;
 }
 
@@ -236,11 +328,39 @@
     text-align: left;
     row-gap: 5px;
     padding: 5px 0;
+    cursor: pointer;
 }
 
 .listContainer li .taskTextContainer p {
     margin-block: 0;
     line-height: 100%;
+}
+
+.listContainer li .taskTextContainer p .urgency {
+    border-radius: var(--border-radius);
+    padding: 2px 5px;
+    background: var(--main-hover-color);
+    font-weight: bold;
+}
+
+.listContainer li .taskTextContainer p .urgency1 {
+    color: rgb(255, 251, 0);
+}
+
+.listContainer li .taskTextContainer p .urgency2 {
+    color: rgb(81, 255, 0);
+}
+
+.listContainer li .taskTextContainer p .urgency3 {
+    color: rgb(255, 0, 242);
+}
+
+.listContainer li .taskTextContainer p .urgency4 {
+    color: rgb(255, 81, 0);
+}
+
+.listContainer li .taskTextContainer p .urgency5 {
+    color: rgb(255, 0, 0);
 }
 
 .listContainer li .taskTextContainer .taskTitle {
@@ -269,11 +389,12 @@
 
 .listContainer li .trash,
 .listContainer li .edit {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0);
     background-size: cover;
+    filter: invert(0.8) sepia(1);
     border-radius: var(--border-radius);
     transition: var(--transition-duration);
 }
@@ -288,5 +409,22 @@
 
 .listContainer li .trash:hover,
 .listContainer li .edit:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.desktopView {
+    display: grid;
+    grid-template-columns: 30% 35% 35%;
+    width: 100vw;
+}
+
+.desktopView .idleDesktopPanel {
+    grid-column: span 2;
+}
+
+.desktopView .idleDesktopPanel .idleDesktopPanelText {
+    display: flex;
+    flex: auto;
+    align-items: center;
+    justify-content: center;
 }

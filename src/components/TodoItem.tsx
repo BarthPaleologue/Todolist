@@ -3,15 +3,18 @@ import { Task, TaskList } from "../task";
 import { loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
 import { getIndexOfTaskInList, isTaskInList } from "../utils/taskFinding";
 
-interface TodoUnitProps {
+interface TodoItemProps {
     task: Task;
     onCompleteChange: (task: Task) => void;
     onEdit: (task: Task) => void;
     onDelete: (list: TaskList) => void;
 }
 
-export function TodoUnit({ task, onCompleteChange, onEdit, onDelete }: TodoUnitProps) {
+export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemProps) {
     const [isComplete, setIsComplete] = useState(task.isComplete);
+
+    let urgencyString = "";
+    for (let i = 0; i < (task.urgency ?? 0); i++) urgencyString += "!";
 
     function handleChangeComplete() {
         setIsComplete(!isComplete);
@@ -33,8 +36,10 @@ export function TodoUnit({ task, onCompleteChange, onEdit, onDelete }: TodoUnitP
     return (
         <li className={task.isComplete ? "finished" : ""}>
             <input type="checkbox" defaultChecked={task.isComplete} onChange={handleChangeComplete} />
-            <div className="taskTextContainer">
-                <p className="taskTitle">{task.title}</p>
+            <div className="taskTextContainer" onClick={() => onEdit(task)}>
+                <p className="taskTitle">
+                    {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>} {task.title}
+                </p>
                 {task.date && <p className="taskDate">{task.date.toDateString()}</p>}
                 {task.details && (
                     <p className="taskDetails" style={{ color: "grey" }}>
@@ -45,8 +50,12 @@ export function TodoUnit({ task, onCompleteChange, onEdit, onDelete }: TodoUnitP
                 {task.sharedWith && <p className="taskSharedWith"> Shared with {task.sharedWith.join(", ")}</p>}
             </div>
             <div className="editTrashBlock">
-                <div className="edit" onClick={() => onEdit(task)}></div>
-                <div className="trash" onClick={() => handleDelete(task)}></div>
+                <div
+                    className="trash"
+                    onClick={() => {
+                        if (window.confirm("Are you sure you want to delete this task?")) handleDelete(task);
+                    }}
+                ></div>
             </div>
         </li>
     );

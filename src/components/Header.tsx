@@ -9,7 +9,7 @@ export const Header = ({ title, shouldHideBackButton, onBackPressed }: HeaderPro
         <header>
             {!shouldHideBackButton && (
                 <div className="backButton" onClick={onBackPressed}>
-                    &lt; Back
+                    <div className="backButtonIcon"> </div>
                 </div>
             )}
             {shouldHideBackButton && <div className="backButton" />}

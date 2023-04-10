@@ -17,19 +17,21 @@ export function loadTodosFromLocalStorage(): TaskList[] {
     return todosJSON;
 }
 
+export function loadTasksFromLocalStorage(): Task[] {
+    const todos = loadTodosFromLocalStorage();
+    return todos.map((todo) => todo.tasks).flat();
+}
+
 export function loadCategoriesNamesFromLocalStorage(): string[] {
     const todos = loadTodosFromLocalStorage();
     return todos.map((todo) => todo.title);
 }
 
-export function loadListFromLocalStorage(title: string): Task[] {
+export function loadListFromLocalStorage(title: string): TaskList {
     const todos = loadTodosFromLocalStorage();
     const todo = todos.find((todo) => todo.title === title);
-    if (!todo) {
-        console.log("No todo found with title: " + title);
-        return [];
-    }
-    return todo.tasks;
+    if (!todo) throw new Error("TaskList not found");
+    return todo;
 }
 
 export function saveTodosToLocalStorage(todos: TaskList[]): void {
@@ -53,6 +55,27 @@ export function saveTaskListToLocalStorage(taskList: TaskList): void {
 
 export function emptyLocalStorage(): void {
     localStorage.removeItem(TODO_KEY);
+}
+
+export function removeTaskListFromStorage(title: string) {
+    const todos = loadTodosFromLocalStorage();
+    saveTodosToLocalStorage(todos.filter((todo) => todo.title !== title));
+}
+
+export function clearCompletedTasksInCategory(title: string) {
+    const todos = loadTodosFromLocalStorage();
+    const index = todos.findIndex((todo) => todo.title === title);
+    if (index !== -1) {
+        todos[index] = { title: todos[index].title, tasks: todos[index].tasks.filter((task) => !task.isComplete) };
+    }
+    saveTodosToLocalStorage(todos);
+}
+
+export function renameCategory(oldName: string, newName: string){
+    const newList = loadListFromLocalStorage(oldName);
+    newList.title = newName;
+    removeTaskListFromStorage(oldName);
+    saveTaskListToLocalStorage(newList);
 }
 
 export function populateLocalStorage(): void {

@@ -4,6 +4,7 @@ export interface Task {
     isComplete: boolean;
     date?: Date;
     location?: string;
+    urgency?: number;
     sharedWith?: string[];
 }
 
