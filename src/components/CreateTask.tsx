@@ -1,7 +1,7 @@
 import DatePicker from "react-datepicker";
-import { Task } from "../task";
+import { Task, TaskList } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
-import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
+import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTaskListToLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
 import { useState } from "react";
 import { Header } from "./Header";
 import { getCategory, getIndexOfTaskInList } from "../utils/taskFinding";
@@ -38,7 +38,6 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
 
         const todos = loadTodosFromLocalStorage();
-        const oldTaskList = getCategory(taskToEdit, todos);
 
         let listTitle = listName;
         if (listName === TODAY) {
@@ -46,15 +45,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
         }
 
-        if (oldTaskList.title !== (newListName ?? listTitle)) {
-            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
-        }
-
-
         const list = todos.find((list) => list.title === (newListName ?? listTitle));
-
-        if (list === undefined) throw new Error("List is undefined");
-
         const newTask: Task = {
             title: newTaskTitle,
             details: newTaskDescription,
@@ -65,12 +56,20 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             urgency: urgency
         };
 
-        list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
-        list.tasks.push(newTask);
+        if (list === undefined){
+            // throw new Error("List is undefined");
+            const oldTaskList = getCategory(taskToEdit, todos);
+            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
+            saveTaskListToLocalStorage(oldTaskList);
+            saveTaskListToLocalStorage({title: newListName ?? listName, tasks: [newTask]});
+        }
+        else {
+            list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
+            list.tasks.push(newTask);
+            saveTodosToLocalStorage(todos);
+        }
 
-        saveTodosToLocalStorage(todos);
-
-        onEditTask(taskToEdit, newTask, listName);
+        onEditTask(taskToEdit, newTask, newListName ?? listName);
     }
 
     function handleCreateTask() {
