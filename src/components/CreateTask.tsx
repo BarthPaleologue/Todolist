@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
 import { useState } from "react";
 import { Header } from "./Header";
-import { getIndexOfTaskInList } from "../utils/taskFinding";
+import { getCategory, getIndexOfTaskInList } from "../utils/taskFinding";
 import { TODAY } from "./Categories";
 
 interface CreateTaskProps {
@@ -36,12 +36,20 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
     function handleEditTask() {
         if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
 
+
         const todos = loadTodosFromLocalStorage();
+        const oldTaskList = getCategory(taskToEdit, todos);
+
         let listTitle = listName;
         if (listName === TODAY) {
             const catNames = loadCategoriesNamesFromLocalStorage();
             listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
         }
+
+        if (oldTaskList.title !== (newListName ?? listTitle)) {
+            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
+        }
+
 
         const list = todos.find((list) => list.title === (newListName ?? listTitle));
 
