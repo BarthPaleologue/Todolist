@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Categories, TODAY } from "./components/Categories";
 import { Presentation } from "./components/Presentation";
@@ -8,35 +8,17 @@ import { emptyLocalStorage, loadListFromLocalStorage, loadTodosFromLocalStorage,
 import { ListView } from "./components/ListView";
 import { isTaskInList, getDayTask } from "./utils/taskFinding";
 import { DesktopView } from "./components/DesktopView";
+import { BrowserView, MobileView } from "react-device-detect";
 
-enum AppStatus {
-    CATEGORY_VIEW_MOBILE = "CATEGORY_VIEW_MOBILE",
-    LIST_VIEW_MOBILE = "LIST_VIEW_MOBILE",
-    CREATE_TASK_VIEW_MOBILE = "CREATE_TASK_VIEW_MOBILE",
-    FIRST_PRESENTATION_MOBILE = "FIRST_PRESENTATION_MOBILE",
-    DESKTOP_VIEW = "DESKTOP_VIEW"
+enum MobileState {
+    CATEGORY_VIEW = "CATEGORY_VIEW_MOBILE",
+    LIST_VIEW = "LIST_VIEW_MOBILE",
+    CREATE_TASK_VIEW = "CREATE_TASK_VIEW_MOBILE",
+    FIRST_PRESENTATION = "FIRST_PRESENTATION_MOBILE"
 }
 
-const MOBILE_WIDTH_THRESHOLD = 768;
-
 function App() {
-    const [isOnMobile, setIsOnMobile] = React.useState(window.innerWidth < MOBILE_WIDTH_THRESHOLD);
-
-    // when the app is resized, we need to update the isOnMobile state
-    React.useEffect(() => {
-        const handleResize = () => {
-            setIsOnMobile(window.innerWidth < MOBILE_WIDTH_THRESHOLD);
-            if (isOnMobile && appStatus === AppStatus.DESKTOP_VIEW) {
-                setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
-            } else if (!isOnMobile && appStatus !== AppStatus.DESKTOP_VIEW) {
-                setAppStatus(AppStatus.DESKTOP_VIEW);
-            }
-        };
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    const [appStatus, setAppStatus] = React.useState(isOnMobile ? AppStatus.FIRST_PRESENTATION_MOBILE : AppStatus.DESKTOP_VIEW);
+    const [mobileState, setMobileState] = useState(MobileState.FIRST_PRESENTATION);
 
     // The current list when in list view (can be passed to the creation view)
     const [currentListName, setCurrentListName] = React.useState<string | undefined>(undefined);
@@ -46,12 +28,12 @@ function App() {
 
     const [currentTasks, setCurrentTasks] = React.useState<Task[]>([]);
 
-    const mobileViews: { [key in AppStatus]: React.ReactElement } = {
-        [AppStatus.CATEGORY_VIEW_MOBILE]: (
+    const mobileViews: { [key in MobileState]: React.ReactElement } = {
+        [MobileState.CATEGORY_VIEW]: (
             <Categories
                 onCreateTaskPressed={() => {
                     setCurrentTask(undefined);
-                    setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
                 }}
                 onCategoryPressed={(categoryName) => {
                     setCurrentListName(categoryName);
@@ -65,38 +47,38 @@ function App() {
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
                     }
-                    setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                    setMobileState(MobileState.LIST_VIEW);
                 }}
                 onEditTaskRequested={(task) => {
                     const todos = loadTodosFromLocalStorage();
                     const listName = todos.find((list) => isTaskInList(task, list))?.title;
                     setCurrentListName(listName);
                     setCurrentTask(task);
-                    setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
                 }}
             />
         ),
-        [AppStatus.LIST_VIEW_MOBILE]: (
+        [MobileState.LIST_VIEW]: (
             <ListView
                 listName={currentListName ?? ""}
                 givenTasks={currentTasks}
                 onCreateTaskPressed={() => {
                     setCurrentTask(undefined);
-                    setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
                 }}
                 onBackPressed={() => {
-                    setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+                    setMobileState(MobileState.CATEGORY_VIEW);
                 }}
                 onRequireTaskEdit={(task) => {
                     setCurrentTask(task);
-                    setAppStatus(AppStatus.CREATE_TASK_VIEW_MOBILE);
+                    setMobileState(MobileState.CREATE_TASK_VIEW);
                 }}
                 onDeleteTask={(tasks) => {
                     setCurrentTasks(tasks);
                 }}
             />
         ),
-        [AppStatus.CREATE_TASK_VIEW_MOBILE]: (
+        [MobileState.CREATE_TASK_VIEW]: (
             <CreateTask
                 onCreateTask={(task: Task, listName: string) => {
                     setCurrentListName(listName);
@@ -110,7 +92,7 @@ function App() {
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     }
-                    setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                    setMobileState(MobileState.LIST_VIEW);
                 }}
                 onEditTask={(oldTask: Task, task: Task, listName: string) => {
                     setCurrentListName(listName);
@@ -124,26 +106,32 @@ function App() {
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     }
-                    setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                    setMobileState(MobileState.LIST_VIEW);
                 }}
                 taskToEdit={currentTask}
                 defaultListName={currentListName}
                 onCancelCreation={() => {
-                    setAppStatus(AppStatus.LIST_VIEW_MOBILE);
+                    setMobileState(MobileState.LIST_VIEW);
                 }}
             />
         ),
-        [AppStatus.FIRST_PRESENTATION_MOBILE]: (
+        [MobileState.FIRST_PRESENTATION]: (
             <Presentation
                 onOK={() => {
-                    setAppStatus(AppStatus.CATEGORY_VIEW_MOBILE);
+                    setMobileState(MobileState.CATEGORY_VIEW);
                 }}
             />
-        ),
-        [AppStatus.DESKTOP_VIEW]: <DesktopView />
+        )
     };
 
-    return <div className="App">{mobileViews[appStatus]}</div>;
+    return (
+        <div className="App">
+            <BrowserView>
+                <DesktopView />
+            </BrowserView>
+            <MobileView>{mobileViews[mobileState]}</MobileView>
+        </div>
+    );
 }
 
 export default App;
