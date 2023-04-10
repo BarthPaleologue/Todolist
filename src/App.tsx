@@ -67,6 +67,7 @@ function App() {
                     setMobileState(MobileState.CREATE_TASK_VIEW);
                 }}
                 onBackPressed={() => {
+                    setCurrentListName(undefined);
                     setMobileState(MobileState.CATEGORY_VIEW);
                 }}
                 onRequireTaskEdit={(task) => {
