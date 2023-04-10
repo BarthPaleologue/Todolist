@@ -55,6 +55,7 @@
 
 .verticalView header h1 {
     text-align: center;
+    margin-block: 0;
 }
 
 .verticalView .logo {
@@ -275,7 +276,7 @@ input[type="range" i] {
 
 .listContainer li {
     width: 100%;
-    min-height: 50px;
+    min-height: fit-content;
     background-color: var(--main-color);
     color: white;
     border-radius: var(--border-radius);

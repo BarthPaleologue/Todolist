@@ -36,7 +36,7 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
     }, [clickRef]);
 
     const taskToDisplay = lst_tasks
-        .filter((task) => task.title.toLowerCase().includes(searchQuery))
+        .filter((task) => task.title.toLowerCase().includes(searchQuery.toLowerCase()))
         .sort((taskA, taskB) => {
             if (taskA.isComplete && !taskB.isComplete) return 1;
             if (!taskA.isComplete && taskB.isComplete) return -1;

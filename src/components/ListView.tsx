@@ -22,6 +22,8 @@ export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPres
             <ul className="listContainer mainContainer">
                 {givenTasks
                     .sort((taskA, taskB) => {
+                        if (taskA.isComplete && !taskB.isComplete) return 1;
+                        if (!taskA.isComplete && taskB.isComplete) return -1;
                         return (taskB.urgency ?? 0) - (taskA.urgency ?? 0);
                     })
                     .map((task: Task, index: number) => (

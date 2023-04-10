@@ -3,10 +3,17 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Helmet } from "react-helmet";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
     <React.StrictMode>
+        <Helmet>
+            <meta charSet="utf-8" />
+            <title>Todos!</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <meta name="description" content="Todos! is a simple todo app that helps you organize your tasks." />
+        </Helmet>
         <App />
     </React.StrictMode>
 );
