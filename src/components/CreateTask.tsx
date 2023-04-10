@@ -68,7 +68,10 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             saveTaskListToLocalStorage({title: newListName ?? listName, tasks: [newTask]});
         }
         else {
-            list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
+            const idx = getIndexOfTaskInList(taskToEdit, list);
+            if (idx > -1){
+                list.tasks.splice(idx, 1);
+            }
             list.tasks.push(newTask);
             saveTaskListToLocalStorage(list);
         }

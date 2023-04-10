@@ -19,6 +19,8 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
     const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
     const [dropDown, setDropdown] = useState<number>(-1);
     const [lst_tasks, setListTask] = useState<Task[]>(lst_categories.flatMap((cat) => cat.tasks));
+    const [renamedCategory, setRenamedCategory] = useState<string>("");
+    let [newCategoryName, setNewCategoryName] = useState<string>("");
 
     const clickRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -35,6 +37,14 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
         };
     }, [clickRef]);
 
+    function onRenameCategory(oldTitle: string){
+        if (newCategoryName.trim().length > 0){
+            renameCategory(oldTitle, newCategoryName);
+            setLstCategories(loadTodosFromLocalStorage());
+        }
+        setRenamedCategory("");
+    }
+
     const taskToDisplay = lst_tasks
         .filter((task) => task.title.toLowerCase().includes(searchQuery.toLowerCase()))
         .sort((taskA, taskB) => {
@@ -50,6 +60,23 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
 
     // Render all categories
     const newArr = lst_categories.map((cat: TaskList, idx: number) => {
+        if (cat.title === renamedCategory) {
+           return (
+            <div key={cat.title} className="category-item">
+                <input
+                    className="category-name"
+                    type="text"
+                    value={newCategoryName}
+                    placeholder={cat.title}
+                    onFocus={() => setNewCategoryName(cat.title)}
+                    onChange={(e) => { setNewCategoryName(e.target.value)}}
+                    onBlur={() => onRenameCategory(cat.title) }
+                    onKeyDown={(e) => (e.key === 'Enter' && onRenameCategory(cat.title))}
+                    autoFocus
+                />
+            </div>
+           ) 
+        }
         return (
             <div key={cat.title} className="category-item">
                 <div className="category-name" onClick={() => onCategoryPressed(cat.title)}>
@@ -74,9 +101,9 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                             <li
                                 className="menu-item"
                                 onClick={() => {
-                                    console.log("Rename Category");
+                                    setRenamedCategory(cat.title);
                                 }}>
-                                Rename
+                                Rename{" "}
                             </li>
                             <li
                                 className="menu-item"
