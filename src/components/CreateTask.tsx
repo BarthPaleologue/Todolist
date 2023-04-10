@@ -147,13 +147,12 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         required
                     >
                         {listName !== "New List" && listName !== TODAY && <option value={listName}>{listName}</option>}
-                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
-                            return (
-                                <option key={categoryName} value={categoryName}>
-                                    {categoryName}
-                                </option>
-                            );
-                        })}
+                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => 
+                            ( (categoryName !== listName) && <option key={categoryName} value={categoryName}>
+                                     {categoryName}
+                                    </option>
+                            )
+                        )}
                         <option value="New List">New List</option>
                     </select>
 
