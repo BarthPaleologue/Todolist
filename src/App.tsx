@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
+import "./App.scss";
 import { Categories, TODAY } from "./components/Categories";
 import { Presentation } from "./components/Presentation";
 import { CreateTask } from "./components/CreateTask";

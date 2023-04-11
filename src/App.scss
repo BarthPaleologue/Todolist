@@ -1,9 +1,13 @@
+$main-color: #115905; /* bleu: #313054, teal: #054959 */
+$main-color-light: lighten($main-color, 10%);
+$main-hover-color: darken($main-color, 10%);
+
 :root {
     --header-height: 100px;
     --border-radius: 5px;
-    --main-color: #115905;
-    --main-color-light: #1f7c07;
-    --main-hover-color: #0a3503;
+    --main-color: #{$main-color};
+    --main-color-light: #{$main-color-light};
+    --main-hover-color: #{$main-hover-color};
     --transition-duration: 0.2s;
 }
 
@@ -28,35 +32,8 @@
     flex-direction: column;
     height: calc(100vh - 20px);
     position: relative;
-}
 
-.verticalView header {
-    background-color: var(--main-color);
-    color: white;
-    min-height: var(--header-height);
-    max-height: var(--header-height);
-    padding: 0 10px;
-    display: grid;
-    grid-template-columns: 70px auto 70px;
-    align-items: center;
-}
-
-.verticalView header .backButton {
-    text-align: center;
-    cursor: pointer;
-    font-size: 120%;
-}
-
-.backButtonIcon {
-    background: url("./assets/back_button.png") no-repeat center center / cover;
-    height: 30px;
-    width: 30px;
-    margin-left: 10px;
-}
-
-.verticalView header h1 {
-    text-align: center;
-    margin-block: 0;
+    @import "./Header.scss";
 }
 
 .verticalView .logo {
@@ -168,24 +145,24 @@ input[type="range" i] {
     display: flex;
     width: 100%;
     justify-content: space-evenly;
-}
 
-.verticalView .buttonBlock button {
-    flex: 1;
-    max-width: 200px;
-    background: var(--main-color);
-    color: white;
-    outline: none;
-    margin: 0 10px;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    border: 1px solid gray;
-    transition: var(--transition-duration);
-}
+    button {
+        flex: 1;
+        max-width: 200px;
+        background: var(--main-color);
+        color: white;
+        outline: none;
+        margin: 0 10px;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: var(--border-radius);
+        border: 1px solid gray;
+        transition: var(--transition-duration);
 
-.verticalView .buttonBlock button:hover {
-    background: var(--main-hover-color);
+        &:hover {
+            background: var(--main-hover-color);
+        }
+    }
 }
 
 .categoryView {
@@ -288,17 +265,17 @@ input[type="range" i] {
     box-sizing: border-box;
     box-shadow: var(--box-shadow);
     transition: var(--transition-duration);
-}
 
-.listContainer li.finished {
-    background-color: var(--main-hover-color);
-    opacity: 0.8;
-    text-decoration: line-through;
-    filter: brightness(0.5);
-}
+    &.finished {
+        background-color: var(--main-hover-color);
+        opacity: 0.8;
+        text-decoration: line-through;
+        filter: brightness(0.5);
+    }
 
-.listContainer li:hover {
-    background-color: var(--main-hover-color);
+    &:hover {
+        background-color: var(--main-hover-color);
+    }
 }
 
 .listContainer li input[type="checkbox"] {
@@ -310,11 +287,11 @@ input[type="range" i] {
     border: 1px solid white;
     outline: none;
     transition: var(--transition-duration);
-}
 
-.listContainer li input[type="checkbox"]:hover {
-    background-color: var(--main-color-light);
-    border: 1px solid white;
+    &:hover {
+        background-color: var(--main-color-light);
+        border: 1px solid white;
+    }
 }
 
 .listContainer li.finished input[type="checkbox"] {
@@ -335,36 +312,33 @@ input[type="range" i] {
 .listContainer li .taskTextContainer p {
     margin-block: 0;
     line-height: 100%;
-}
 
-.listContainer li .taskTextContainer p .urgency {
-    border-radius: var(--border-radius);
-    padding: 2px 5px;
-    background: var(--main-hover-color);
-    font-weight: bold;
-}
+    .urgency {
+        border-radius: var(--border-radius);
+        padding: 2px 5px;
+        background: var(--main-hover-color);
+        font-weight: bold;
+    }
 
-.listContainer li .taskTextContainer p .urgency1 {
-    color: rgb(255, 251, 0);
-}
+    .urgency1 {
+        color: rgb(255, 251, 0);
+    }
 
-.listContainer li .taskTextContainer p .urgency2 {
-    color: rgb(81, 255, 0);
-}
+    .urgency2 {
+        color: rgb(81, 255, 0);
+    }
 
-.listContainer li .taskTextContainer p .urgency3 {
-    color: rgb(255, 0, 242);
-}
+    .urgency3 {
+        color: rgb(255, 0, 242);
+    }
 
-.listContainer li .taskTextContainer p .urgency4 {
-    color: rgb(255, 81, 0);
-}
+    .urgency4 {
+        color: rgb(255, 81, 0);
+    }
 
-.listContainer li .taskTextContainer p .urgency5 {
-    color: rgb(255, 0, 0);
-}
-
-.listContainer li .taskTextContainer .taskTitle {
+    .urgency5 {
+        color: rgb(255, 0, 0);
+    }
 }
 
 .listContainer li .taskTextContainer .taskDate {
@@ -398,6 +372,10 @@ input[type="range" i] {
     filter: invert(0.8) sepia(1);
     border-radius: var(--border-radius);
     transition: var(--transition-duration);
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
 }
 
 .listContainer li .trash {
@@ -406,11 +384,6 @@ input[type="range" i] {
 
 .listContainer li .edit {
     background: url("./assets/edit.png") no-repeat center center / cover;
-}
-
-.listContainer li .trash:hover,
-.listContainer li .edit:hover {
-    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .desktopView {
