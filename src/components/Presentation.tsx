@@ -9,7 +9,7 @@ export function Presentation({ onOK }: { onOK: () => void }) {
             <Header title="Welcome to Todos!" shouldHideBackButton={true} />
             <section className="mainContainer">
                 <img className="logo" src={logo} />
-                <ul>
+                <ul className="listContainer">
                     <li>Click on the "+" button at the button to add a category</li>
                     <li>Click on a category to display its tasks</li>
                     <li>Click on your photo to edit your profile</li>

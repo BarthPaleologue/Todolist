@@ -63,13 +63,13 @@ $main-hover-color: darken($main-color, 10%);
     overflow-y: auto;
 }
 
-.verticalView label:nth-child(1) {
-    margin-top: 0;
-}
-
 .verticalView label {
     margin-top: 10px;
     margin-bottom: 5px;
+
+    &:nth-child(1) {
+        margin-top: 0;
+    }
 }
 
 .verticalView label[aria-required="true"]::after {
@@ -83,14 +83,14 @@ $main-hover-color: darken($main-color, 10%);
     outline: none;
     border-radius: var(--border-radius);
     border: 1px solid grey;
+
+    &:focus {
+        border: 1px solid black;
+    }
 }
 
 .verticalView input[type="search"] {
     margin: 0 10px;
-}
-
-.verticalView input:focus {
-    border: 1px solid black;
 }
 
 .verticalView textarea {
@@ -102,10 +102,10 @@ $main-hover-color: darken($main-color, 10%);
     font-family: sans-serif;
     resize: none;
     min-height: 50px;
-}
 
-.verticalView textarea:focus {
-    border: 1px solid black;
+    &:focus {
+        border: 1px solid black;
+    }
 }
 
 .verticalView select {
@@ -114,27 +114,19 @@ $main-hover-color: darken($main-color, 10%);
     outline: none;
     border-radius: var(--border-radius);
     transition: var(--transition-duration);
-}
 
-.verticalView select:active {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.verticalView ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: center;
-    line-height: 1.5em;
+    &:active {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 }
 
 .verticalView .react-datepicker__input-container {
     display: flex;
-}
-
-.verticalView .react-datepicker__input-container input {
-    flex: 1;
-    border-radius: var(--border-radius);
+    input {
+        flex: 1;
+        border-radius: var(--border-radius);
+    }
 }
 
 input[type="range" i] {
@@ -196,6 +188,10 @@ input[type="range" i] {
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
     cursor: pointer;
+
+    &:hover {
+        background-color: rgba(128, 128, 128, 0.5);
+    }
 }
 
 .category-length {
@@ -212,26 +208,22 @@ input[type="range" i] {
     position: absolute;
     right: 10%;
     text-align: right;
-}
 
-.category-options .category-menu {
-    position: relative;
-    font-size: 70%;
-    text-align: right;
-    background-color: white;
-    z-index: 3;
-    border: 1px solid black;
-    right: -20%;
-    padding: 0.5em;
+    .category-menu {
+        position: relative;
+        font-size: 70%;
+        text-align: right;
+        background-color: white;
+        z-index: 3;
+        border: 1px solid black;
+        right: -20%;
+        padding: 0.5em;
+    }
 }
 
 .category-display {
     overflow-y: auto;
     margin-top: 10px;
-}
-
-.category-item:hover {
-    background-color: rgba(128, 128, 128, 0.5);
 }
 
 #new-category:hover {
