@@ -1,10 +1,10 @@
 import DatePicker from "react-datepicker";
-import { Task } from "../task";
+import { Task, TaskList } from "../task";
 import "react-datepicker/dist/react-datepicker.css";
-import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
+import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTaskListToLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
 import { useState } from "react";
 import { Header } from "./Header";
-import { getIndexOfTaskInList } from "../utils/taskFinding";
+import { getCategory, getIndexOfTaskInList } from "../utils/taskFinding";
 import { TODAY } from "./Categories";
 
 interface CreateTaskProps {
@@ -36,17 +36,23 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
     function handleEditTask() {
         if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
 
+
         const todos = loadTodosFromLocalStorage();
+
         let listTitle = listName;
         if (listName === TODAY) {
             const catNames = loadCategoriesNamesFromLocalStorage();
             listTitle = catNames.length > 0 ? catNames[0] : DEFAULT_LISTNAME;
         }
 
+        const oldTaskList = getCategory(taskToEdit, todos);
+        if (oldTaskList.title !== (newListName ?? listTitle)) {
+            oldTaskList.tasks.splice(getIndexOfTaskInList(taskToEdit, oldTaskList), 1);
+            saveTaskListToLocalStorage(oldTaskList);
+        }
+
+
         const list = todos.find((list) => list.title === (newListName ?? listTitle));
-
-        if (list === undefined) throw new Error("List is undefined");
-
         const newTask: Task = {
             title: newTaskTitle,
             details: newTaskDescription,
@@ -57,12 +63,20 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             urgency: urgency
         };
 
-        list.tasks.splice(getIndexOfTaskInList(taskToEdit, list), 1);
-        list.tasks.push(newTask);
+        if (list === undefined){
+            // throw new Error("List is undefined");
+            saveTaskListToLocalStorage({title: newListName ?? listName, tasks: [newTask]});
+        }
+        else {
+            const idx = getIndexOfTaskInList(taskToEdit, list);
+            if (idx > -1){
+                list.tasks.splice(idx, 1);
+            }
+            list.tasks.push(newTask);
+            saveTaskListToLocalStorage(list);
+        }
 
-        saveTodosToLocalStorage(todos);
-
-        onEditTask(taskToEdit, newTask, listName);
+        onEditTask(taskToEdit, newTask, newListName ?? listName);
     }
 
     function handleCreateTask() {
@@ -147,13 +161,12 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         required
                     >
                         {listName !== "New List" && listName !== TODAY && <option value={listName}>{listName}</option>}
-                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => {
-                            return (
-                                <option key={categoryName} value={categoryName}>
-                                    {categoryName}
-                                </option>
-                            );
-                        })}
+                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => 
+                            ( (categoryName !== listName) && <option key={categoryName} value={categoryName}>
+                                     {categoryName}
+                                    </option>
+                            )
+                        )}
                         <option value="New List">New List</option>
                     </select>
 
