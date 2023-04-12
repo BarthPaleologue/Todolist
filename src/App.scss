@@ -9,6 +9,7 @@ $main-hover-color: darken($main-color, 10%);
     --main-color-light: #{$main-color-light};
     --main-hover-color: #{$main-hover-color};
     --transition-duration: 0.2s;
+    overflow-x: hidden;
 }
 
 /** scrollbar **/
@@ -184,10 +185,12 @@ input[type="range" i] {
 
 .category-item {
     display: flex;
-    padding: 0.5em;
+    padding: 0 10px;
+    height: 40px;
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
     cursor: pointer;
+    align-items: center;
 
     &:hover {
         background-color: rgba(128, 128, 128, 0.5);
@@ -397,4 +400,9 @@ input[type="range" i] {
     flex: auto;
     align-items: center;
     justify-content: center;
+}
+
+.presentation li {
+    display: block;
+    text-align: center;
 }
