@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { Categories, TODAY } from "./Categories";
 import { Presentation } from "./Presentation";
 import { CreateTask } from "./CreateTask";
-import { Task, TaskList } from "../task";
-import { emptyLocalStorage, loadListFromLocalStorage, loadTodosFromLocalStorage, populateLocalStorage, saveTodosToLocalStorage } from "../utils/localStorage";
+import { Task } from "../task";
+import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
 import { ListView } from "./ListView";
 import { isTaskInList, getDayTask } from "../utils/taskFinding";
-import { DesktopView } from "./DesktopView";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 enum MobileState {
@@ -56,6 +55,8 @@ export function SmartphoneView() {
                     setCurrentTask(task);
                     setMobileState(MobileState.CREATE_TASK_VIEW);
                 }}
+                onCategoryRemoved={() => {}}
+                onCategoryClearCompleted={() => {}}
             />
         ),
         [MobileState.LIST_VIEW]: (

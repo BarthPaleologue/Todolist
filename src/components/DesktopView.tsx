@@ -3,9 +3,9 @@ import Categories, { TODAY } from "./Categories";
 import { CreateTask } from "./CreateTask";
 import { ListView } from "./ListView";
 import { Task } from "../task";
-import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
+import { loadListFromLocalStorage } from "../utils/localStorage";
 import { IdleDesktopPanel } from "./IdleDesktopPanel";
-import { getDayTask, getTodaysTasks } from "../utils/taskFinding";
+import { getTodaysTasks } from "../utils/taskFinding";
 import { AgendaView } from "./AgendaView";
 import { toast } from "react-toastify";
 
@@ -33,6 +33,18 @@ export function DesktopView({}: DesktopViewProps) {
                 }}
                 onEditTaskRequested={(task: Task) => {
                     setCurrentEditTask(task);
+                }}
+                onCategoryRemoved={(categoryName: string) => {
+                    if (categoryName === currentListName) {
+                        setCurrentListName(undefined);
+                        setCurrentTasks([]);
+                    }
+                }}
+                onCategoryClearCompleted={(categoryName: string) => {
+                    if (categoryName === currentListName) {
+                        const tasks = loadListFromLocalStorage(categoryName).tasks;
+                        setCurrentTasks(tasks);
+                    }
                 }}
             />
             {currentListName && (

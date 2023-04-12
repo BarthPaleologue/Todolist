@@ -1,20 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Task, TaskList } from "../task";
 import { loadTodosFromLocalStorage, saveTaskListToLocalStorage, removeTaskListFromStorage, clearCompletedTasksInCategory, renameCategory } from "../utils/localStorage";
 import { TodoItem } from "./TodoItem";
 import { Header } from "./Header";
 import { getCategory, getDayTask } from "../utils/taskFinding";
+import { toast } from "react-toastify";
 
 // Load localSotrage
 interface CategoriesProps {
     onCreateTaskPressed: () => void;
     onCategoryPressed: (category: string) => void;
     onEditTaskRequested: (task: Task) => void;
+    onCategoryRemoved: (category: string) => void;
+    onCategoryClearCompleted: (category: string) => void;
 }
 
 export const TODAY = "Today";
 
-export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested }: CategoriesProps) => {
+export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested, onCategoryRemoved, onCategoryClearCompleted }: CategoriesProps) => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
     const [dropDown, setDropdown] = useState<number>(-1);
@@ -37,12 +40,13 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
         };
     }, [clickRef]);
 
-    function onRenameCategory(oldTitle: string){
-        if (newCategoryName.trim().length > 0){
+    function onRenameCategory(oldTitle: string) {
+        if (newCategoryName.trim().length > 0) {
             renameCategory(oldTitle, newCategoryName);
             setLstCategories(loadTodosFromLocalStorage());
         }
         setRenamedCategory("");
+        toast.success("Category renamed");
     }
 
     const taskToDisplay = lst_tasks
@@ -61,21 +65,23 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
     // Render all categories
     const newArr = lst_categories.map((cat: TaskList, idx: number) => {
         if (cat.title === renamedCategory) {
-           return (
-            <div key={cat.title} className="category-item">
-                <input
-                    className="category-name"
-                    type="text"
-                    value={newCategoryName}
-                    placeholder={cat.title}
-                    onFocus={() => setNewCategoryName(cat.title)}
-                    onChange={(e) => { setNewCategoryName(e.target.value)}}
-                    onBlur={() => onRenameCategory(cat.title) }
-                    onKeyDown={(e) => (e.key === 'Enter' && onRenameCategory(cat.title))}
-                    autoFocus
-                />
-            </div>
-           ) 
+            return (
+                <div key={cat.title} className="category-item">
+                    <input
+                        className="category-name"
+                        type="text"
+                        value={newCategoryName}
+                        placeholder={cat.title}
+                        onFocus={() => setNewCategoryName(cat.title)}
+                        onChange={(e) => {
+                            setNewCategoryName(e.target.value);
+                        }}
+                        onBlur={() => onRenameCategory(cat.title)}
+                        onKeyDown={(e) => e.key === "Enter" && onRenameCategory(cat.title)}
+                        autoFocus
+                    />
+                </div>
+            );
         }
         return (
             <div key={cat.title} className="category-item">
@@ -94,6 +100,10 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                                 onClick={() => {
                                     clearCompletedTasksInCategory(cat.title);
                                     setLstCategories(loadTodosFromLocalStorage());
+
+                                    onCategoryClearCompleted(cat.title);
+
+                                    toast.success("Cleared completed tasks");
                                 }}
                             >
                                 Remove cleared tasks{" "}
@@ -102,7 +112,8 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                                 className="menu-item"
                                 onClick={() => {
                                     setRenamedCategory(cat.title);
-                                }}>
+                                }}
+                            >
                                 Rename{" "}
                             </li>
                             <li
@@ -110,6 +121,10 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                                 onClick={() => {
                                     removeTaskListFromStorage(cat.title);
                                     setLstCategories(loadTodosFromLocalStorage());
+
+                                    onCategoryRemoved(cat.title);
+
+                                    toast.success("Category deleted");
                                 }}
                             >
                                 Delete{" "}
