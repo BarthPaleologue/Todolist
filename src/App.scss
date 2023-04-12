@@ -100,7 +100,7 @@ $main-hover-color: darken($main-color, 10%);
     outline: none;
     border-radius: var(--border-radius);
     border: 1px solid grey;
-    font-family: sans-serif;
+    font-family: "Source Sans Pro ", sans-serif;
     resize: none;
     min-height: 50px;
 
@@ -211,17 +211,30 @@ input[type="range" i] {
     position: absolute;
     right: 10%;
     text-align: right;
+    justify-content: center;
+}
 
-    .category-menu {
-        position: relative;
-        font-size: 70%;
-        text-align: right;
-        background-color: white;
-        z-index: 3;
-        border: 1px solid black;
-        right: -20%;
-        padding: 0.5em;
-    }
+.more-icon {
+    padding-left: 25px;
+    background: url("./assets/more.png") no-repeat center center / cover;
+    background-size: 20px;
+    opacity: 0.8;
+}
+
+.category-options ul {
+    list-style-type: none;
+}
+
+
+.category-menu {
+    position: relative;
+    font-size: 70%;
+    text-align: right;
+    background-color: white;
+    z-index: 3;
+    border: 1px solid black;
+    right: -20%;
+    padding: 0.5em;
 }
 
 .category-display {
@@ -241,7 +254,7 @@ input[type="range" i] {
     flex-direction: column;
     justify-content: center;
     row-gap: 5px;
-    font-family: sans-serif;
+    font-family: "Source Sans Pro ", sans-serif;
     font-size: 120%;
     align-content: center;
     overflow-y: auto;
