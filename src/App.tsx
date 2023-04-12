@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.scss";
 import { Categories, TODAY } from "./components/Categories";
 import { Presentation } from "./components/Presentation";
@@ -9,6 +9,9 @@ import { ListView } from "./components/ListView";
 import { isTaskInList, getDayTask } from "./utils/taskFinding";
 import { DesktopView } from "./components/DesktopView";
 import { BrowserView, MobileView } from "react-device-detect";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 enum MobileState {
     CATEGORY_VIEW = "CATEGORY_VIEW_MOBILE",
@@ -108,12 +111,15 @@ function App() {
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                     }
                     setMobileState(MobileState.LIST_VIEW);
+                    toast.success("Task edited successfully");
                 }}
                 taskToEdit={currentTask}
                 defaultListName={currentListName}
                 onCancelCreation={() => {
                     if (currentListName) setMobileState(MobileState.LIST_VIEW);
                     else setMobileState(MobileState.CATEGORY_VIEW);
+
+                    toast.info("Task creation cancelled");
                 }}
             />
         ),
@@ -131,7 +137,10 @@ function App() {
             <BrowserView>
                 <DesktopView />
             </BrowserView>
-            <MobileView>{mobileViews[mobileState]}</MobileView>
+            <MobileView>
+                {mobileViews[mobileState]}
+                <ToastContainer autoClose={1000} hideProgressBar={true} position="top-center" />
+            </MobileView>
         </div>
     );
 }

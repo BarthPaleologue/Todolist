@@ -7,6 +7,7 @@ import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/lo
 import { IdleDesktopPanel } from "./IdleDesktopPanel";
 import { getDayTask, getTodaysTasks } from "../utils/taskFinding";
 import { AgendaView } from "./AgendaView";
+import { ToastContainer, toast } from "react-toastify";
 
 interface DesktopViewProps {}
 
@@ -54,16 +55,22 @@ export function DesktopView({}: DesktopViewProps) {
                         setCurrentListName(listName);
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                         setIsCreatingTask(false);
+
+                        toast.success("Task created!");
                     }}
                     onEditTask={(oldTask: Task, newTask: Task, listName: string) => {
                         setCurrentListName(listName);
                         setCurrentTasks(loadListFromLocalStorage(listName).tasks);
                         setIsCreatingTask(false);
                         setCurrentEditTask(undefined);
+
+                        toast.success("Task edited!");
                     }}
                     onCancelCreation={() => {
                         setIsCreatingTask(false);
                         setCurrentEditTask(undefined);
+
+                        toast.info("Task creation cancelled");
                     }}
                     shouldHideBackButton={true}
                     defaultListName={currentListName}
@@ -72,6 +79,8 @@ export function DesktopView({}: DesktopViewProps) {
             )}
             {currentListName && !isCreatingTask && !currentEditTask && <AgendaView />}
             {!currentListName && !isCreatingTask && !currentEditTask && <IdleDesktopPanel />}
+
+            <ToastContainer autoClose={1000} hideProgressBar={true} position="top-center" />
         </div>
     );
 }

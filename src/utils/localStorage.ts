@@ -30,7 +30,7 @@ export function loadCategoriesNamesFromLocalStorage(): string[] {
 export function loadListFromLocalStorage(title: string): TaskList {
     const todos = loadTodosFromLocalStorage();
     const todo = todos.find((todo) => todo.title === title);
-    if (!todo) throw new Error("TaskList not found");
+    if (!todo) throw new Error("TaskList not found:" + title);
     return todo;
 }
 

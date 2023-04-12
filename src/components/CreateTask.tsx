@@ -36,7 +36,6 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
     function handleEditTask() {
         if (taskToEdit === undefined) throw new Error("Task to edit is undefined");
 
-
         const todos = loadTodosFromLocalStorage();
 
         let listTitle = listName;
@@ -51,7 +50,6 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             saveTaskListToLocalStorage(oldTaskList);
         }
 
-
         const list = todos.find((list) => list.title === (newListName ?? listTitle));
         const newTask: Task = {
             title: newTaskTitle,
@@ -63,13 +61,12 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
             urgency: urgency
         };
 
-        if (list === undefined){
+        if (list === undefined) {
             // throw new Error("List is undefined");
-            saveTaskListToLocalStorage({title: newListName ?? listName, tasks: [newTask]});
-        }
-        else {
+            saveTaskListToLocalStorage({ title: newListName ?? listName, tasks: [newTask] });
+        } else {
             const idx = getIndexOfTaskInList(taskToEdit, list);
-            if (idx > -1){
+            if (idx > -1) {
                 list.tasks.splice(idx, 1);
             }
             list.tasks.push(newTask);
@@ -153,7 +150,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         List name:
                     </label>
                     <select
-                        value={loadCategoriesNamesFromLocalStorage().length === 0 ? "New List" : listName}
+                        value={loadCategoriesNamesFromLocalStorage().length === 0 || listName === "Today" ? "New List" : listName}
                         id="listName"
                         onChange={(e) => {
                             setListName(e.target.value);
@@ -161,11 +158,13 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         required
                     >
                         {listName !== "New List" && listName !== TODAY && <option value={listName}>{listName}</option>}
-                        {loadCategoriesNamesFromLocalStorage().map((categoryName) => 
-                            ( (categoryName !== listName) && <option key={categoryName} value={categoryName}>
-                                     {categoryName}
+                        {loadCategoriesNamesFromLocalStorage().map(
+                            (categoryName) =>
+                                categoryName !== listName && (
+                                    <option key={categoryName} value={categoryName}>
+                                        {categoryName}
                                     </option>
-                            )
+                                )
                         )}
                         <option value="New List">New List</option>
                     </select>
