@@ -92,7 +92,7 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                 </div>
                 <div className="category-options" ref={(el) => (clickRef.current[idx] = el)} onClick={() => (dropDown == idx ? setDropdown(-1) : setDropdown(idx))}>
                     {" "}
-                    ...
+                    <span className="more-icon">  </span>
                     {dropDown == idx ? (
                         <ul className="category-menu" onBlur={() => setDropdown(-1)}>
                             <li

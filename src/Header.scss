@@ -11,14 +11,21 @@ header {
     .backButton {
         text-align: center;
         cursor: pointer;
-        font-size: 120%;
+        font-size: 80%;
     }
 
     .backButtonIcon {
-        background: url("./assets/back_button.png") no-repeat center center / cover;
+        background: url("./assets/back_button.png") no-repeat top center / cover;
         height: 30px;
         width: 30px;
         margin-left: 10px;
+        display: block;
+    }
+
+    .backButtonText{
+        padding-top: 30px;
+        padding-left: 0.5em;
+        display: block;
     }
 
     h1 {
