@@ -101,7 +101,9 @@ export function DesktopView({}: DesktopViewProps) {
                                 loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
                             )
                         );
-                        setCurrentListName(date.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }));
+                        setCurrentListName(
+                            date.toDateString() === new Date().toDateString() ? TODAY : date.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })
+                        );
                     }}
                 />
             )}
