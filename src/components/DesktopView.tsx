@@ -3,9 +3,9 @@ import Categories, { TODAY } from "./Categories";
 import { CreateTask } from "./CreateTask";
 import { ListView } from "./ListView";
 import { Task } from "../task";
-import { loadListFromLocalStorage } from "../utils/localStorage";
+import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
 import { IdleDesktopPanel } from "./IdleDesktopPanel";
-import { getTodaysTasks } from "../utils/taskFinding";
+import { getDayTask, getTodaysTasks } from "../utils/taskFinding";
 import { AgendaView } from "./AgendaView";
 import { toast } from "react-toastify";
 
@@ -92,7 +92,19 @@ export function DesktopView({}: DesktopViewProps) {
                     taskToEdit={currentEditTask}
                 />
             )}
-            {currentListName && !isCreatingTask && !currentEditTask && <AgendaView />}
+            {currentListName && !isCreatingTask && !currentEditTask && (
+                <AgendaView
+                    onDateChange={(date) => {
+                        setCurrentTasks(
+                            getDayTask(
+                                date,
+                                loadTodosFromLocalStorage().flatMap((cat) => cat.tasks)
+                            )
+                        );
+                        setCurrentListName(date.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" }));
+                    }}
+                />
+            )}
             {!currentListName && !isCreatingTask && !currentEditTask && <IdleDesktopPanel />}
         </div>
     );

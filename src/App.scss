@@ -225,7 +225,6 @@ input[type="range" i] {
     list-style-type: none;
 }
 
-
 .category-menu {
     position: relative;
     font-size: 70%;
@@ -418,4 +417,9 @@ input[type="range" i] {
 .presentation li {
     display: block;
     text-align: center;
+}
+
+.mainContainer.agendaContainer {
+    justify-content: center;
+    align-items: center;
 }
