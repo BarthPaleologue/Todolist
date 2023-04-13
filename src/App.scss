@@ -158,6 +158,14 @@ input[type="range" i] {
     }
 }
 
+.emptyListMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
 .categoryView {
     margin: 20px;
     display: flex;

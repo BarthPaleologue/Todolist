@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Task, TaskList } from "../task";
-import { loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
+import { existsCategory, loadCategoriesNamesFromLocalStorage, loadTodosFromLocalStorage, saveTaskListToLocalStorage } from "../utils/localStorage";
 import { Header } from "./Header";
 import { TodoItem } from "./TodoItem";
 import { TODAY } from "./Categories";
@@ -20,6 +20,11 @@ export function ListView({ listName, givenTasks, onCreateTaskPressed, onBackPres
         <div className="verticalView">
             <Header title={listName} onBackPressed={onBackPressed} shouldHideBackButton={onBackPressed === undefined} />
             <ul className="listContainer mainContainer">
+                {givenTasks.length === 0 && (
+                    <p className="emptyListMessage">
+                        {listName === TODAY ? "Nothing to do today!" : existsCategory(listName) ? "You have no tasks in this list" : "You have no tasks on this day"}
+                    </p>
+                )}
                 {givenTasks
                     .sort((taskA, taskB) => {
                         if (taskA.isComplete && !taskB.isComplete) return 1;

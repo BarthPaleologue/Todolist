@@ -83,6 +83,10 @@ export function renameCategory(oldName: string, newName: string) {
     saveTaskListToLocalStorage(newList);
 }
 
+export function existsCategory(title: string): boolean {
+    return loadCategoriesNamesFromLocalStorage().includes(title);
+}
+
 export function populateLocalStorage(): void {
     // populates local storage with some data for testing
     const todos = [
