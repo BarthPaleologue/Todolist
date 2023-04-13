@@ -87,8 +87,6 @@ export function DesktopView({}: DesktopViewProps) {
                     onCancelCreation={() => {
                         setIsCreatingTask(false);
                         setCurrentEditTask(undefined);
-
-                        toast.info("Task creation cancelled");
                     }}
                     shouldHideBackButton={true}
                     defaultListName={currentListName}
@@ -106,7 +104,7 @@ export function DesktopView({}: DesktopViewProps) {
                             )
                         );
                         setCurrentListName(
-                            date.toDateString() === new Date().toDateString() ? TODAY : date.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })
+                            date.toDateString() === new Date().toDateString() ? TODAY : date.toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" })
                         );
                         setCurrentAgendaDate(date);
                     }}
