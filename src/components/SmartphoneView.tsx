@@ -118,8 +118,6 @@ export function SmartphoneView() {
                 onCancelCreation={() => {
                     if (currentListName) setMobileState(MobileState.LIST_VIEW);
                     else setMobileState(MobileState.CATEGORY_VIEW);
-
-                    toast.info("Task creation cancelled");
                 }}
             />
         ),
