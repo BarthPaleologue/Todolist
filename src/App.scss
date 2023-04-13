@@ -423,3 +423,13 @@ input[type="range" i] {
     justify-content: center;
     align-items: center;
 }
+
+.mainContainer.agendaContainer .busyDay {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.react-calendar__tile--active {
+    background-color: var(--main-color) !important;
+    color: white;
+}
