@@ -12,7 +12,7 @@ export function Presentation({ onOK }: { onOK: () => void }) {
                 <ul className="listContainer presentation">
                     <li>Manage your tasks easily!</li>
                     <li>To get started, press "Let's go!" then press "New Task". It's that easy</li>
-                    <li>You can edit a task by clicking on it.</li>
+                    <li>You can edit a task by pressing it.</li>
                 </ul>
             </section>
             <div className="buttonBlock">
