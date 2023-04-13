@@ -176,49 +176,68 @@ input[type="range" i] {
 }
 
 #category-list {
-    row-gap: 10px;
+    row-gap: 5px;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 10px 5px;
     height: calc(100% - 320px);
 }
 
 .category-item {
-    display: flex;
-    padding: 0 10px;
-    height: 40px;
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
+    display: grid;
+    grid-template-columns: auto 25px 25px;
+
+    &.category-today {
+        grid-template-columns: auto 25px;
+    }
+
     cursor: pointer;
     align-items: center;
+    align-content: center;
+
+    color: white;
+    background: var(--main-color);
+    border-radius: var(--border-radius);
+
+    column-gap: 5px;
+    padding: 5px 10px;
+
+    transition: var(--transition-duration);
 
     &:hover {
-        background-color: rgba(128, 128, 128, 0.5);
+        background-color: var(--main-hover-color);
+    }
+
+    p {
+        margin-block: 0;
+        padding: 5px 0;
     }
 }
 
 .category-length {
-    position: absolute;
-    right: 20%;
-    text-align: right;
+    text-align: center;
 }
 
 .category-name {
-    width: 80%;
 }
 
 .category-options {
     position: absolute;
-    right: 10%;
-    text-align: right;
-    justify-content: center;
+    right: 50px;
 }
 
 .more-icon {
-    padding-left: 25px;
     background: url("./assets/more.png") no-repeat center center / cover;
     background-size: 20px;
     opacity: 0.8;
+    height: 100%;
+    filter: invert(1);
+    border-radius: var(--border-radius);
+
+    &:hover {
+        opacity: 1;
+        background-color: white;
+    }
 }
 
 .category-options ul {
@@ -227,13 +246,40 @@ input[type="range" i] {
 
 .category-menu {
     position: relative;
-    font-size: 70%;
-    text-align: right;
-    background-color: white;
+    font-size: 80%;
+    line-height: 1.5em;
+    text-align: center;
+    background-color: var(--main-color);
+    border-radius: var(--border-radius);
     z-index: 3;
-    border: 1px solid black;
-    right: -20%;
-    padding: 0.5em;
+    padding: 0;
+
+    margin: 0;
+
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 1);
+
+    li {
+        padding: 0.5em;
+        cursor: pointer;
+        border-radius: var(--border-radius);
+        transition: var(--transition-duration);
+
+        &:hover {
+            background-color: var(--main-hover-color);
+        }
+    }
+
+    &::before {
+        /** Right Arrow */
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+        border-width: 1em;
+        border-style: solid;
+        border-color: transparent transparent transparent var(--main-color);
+    }
 }
 
 .category-display {

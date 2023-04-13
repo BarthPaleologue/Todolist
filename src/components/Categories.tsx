@@ -93,16 +93,19 @@ export const Categories = ({
         }
         return (
             <div key={cat.title} className="category-item">
-                <div className="category-name" onClick={() => onCategoryPressed(cat.title)}>
-                    {" "}
+                <p className="category-name" onClick={() => onCategoryPressed(cat.title)}>
                     {cat.title}
-                    <span className="category-length"> {cat.tasks.length} </span>
-                </div>
+                </p>
+                <p className="category-length"> {cat.tasks.length} </p>
+                <div
+                    className="more-icon"
+                    onClick={() => {
+                        setDropdown(idx);
+                    }}
+                ></div>
                 <div className="category-options" ref={(el) => (clickRef.current[idx] = el)} onClick={() => (dropDown == idx ? setDropdown(-1) : setDropdown(idx))}>
-                    {" "}
-                    <span className="more-icon"> </span>
                     {dropDown == idx ? (
-                        <ul className="category-menu" onBlur={() => setDropdown(-1)}>
+                        <ul className="category-menu">
                             <li
                                 className="menu-item"
                                 onClick={() => {
@@ -157,7 +160,7 @@ export const Categories = ({
                 <div className="category-display">
                     {searchQuery.length == 0 && (
                         <div id="category-container">
-                            <div className="category-item" onClick={() => onCategoryPressed(TODAY)}>
+                            <div className="category-item category-today" onClick={() => onCategoryPressed(TODAY)}>
                                 Today
                                 <span className="category-length"> {taskToday.length} </span>
                             </div>
