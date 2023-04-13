@@ -12,7 +12,7 @@ export function AgendaView({ onDateChange }: AgendaViewProps) {
             <Header title="Agenda" shouldHideBackButton={true} />
 
             <div className="mainContainer agendaContainer">
-                <Calendar onChange={(value) => onDateChange(value as Date)} />
+                <Calendar locale="en-GB" onChange={(value) => onDateChange(value as Date)} />
             </div>
         </div>
     );
