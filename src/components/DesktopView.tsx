@@ -46,6 +46,7 @@ export function DesktopView({}: DesktopViewProps) {
                         setCurrentTasks(tasks);
                     }
                 }}
+                shouldHideNewTaskButton={true}
             />
             {currentListName && (
                 <ListView

@@ -13,11 +13,19 @@ interface CategoriesProps {
     onEditTaskRequested: (task: Task) => void;
     onCategoryRemoved: (category: string) => void;
     onCategoryClearCompleted: (category: string) => void;
+    shouldHideNewTaskButton?: boolean;
 }
 
 export const TODAY = "Today";
 
-export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskRequested, onCategoryRemoved, onCategoryClearCompleted }: CategoriesProps) => {
+export const Categories = ({
+    onCreateTaskPressed,
+    onCategoryPressed,
+    onEditTaskRequested,
+    onCategoryRemoved,
+    onCategoryClearCompleted,
+    shouldHideNewTaskButton
+}: CategoriesProps) => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [lst_categories, setLstCategories] = useState<TaskList[]>(loadTodosFromLocalStorage());
     const [dropDown, setDropdown] = useState<number>(-1);
@@ -92,7 +100,7 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                 </div>
                 <div className="category-options" ref={(el) => (clickRef.current[idx] = el)} onClick={() => (dropDown == idx ? setDropdown(-1) : setDropdown(idx))}>
                     {" "}
-                    <span className="more-icon">  </span>
+                    <span className="more-icon"> </span>
                     {dropDown == idx ? (
                         <ul className="category-menu" onBlur={() => setDropdown(-1)}>
                             <li
@@ -177,9 +185,11 @@ export const Categories = ({ onCreateTaskPressed, onCategoryPressed, onEditTaskR
                     )}
                 </div>
             </section>
-            <div className="buttonBlock">
-                <button onClick={onCreateTaskPressed}>New Task</button>
-            </div>
+            {!(shouldHideNewTaskButton ?? false) && (
+                <div className="buttonBlock">
+                    <button onClick={onCreateTaskPressed}>New Task</button>
+                </div>
+            )}
         </div>
     );
 };
