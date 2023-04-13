@@ -375,7 +375,6 @@ input[type="range" i] {
 
 .listContainer li .taskTextContainer p {
     margin-block: 0;
-    line-height: 100%;
 
     .urgency {
         border-radius: var(--border-radius);
@@ -414,12 +413,15 @@ input[type="range" i] {
 
 .listContainer li .taskTextContainer .taskDetails {
     font-size: 70%;
+    line-height: 1.5em;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .listContainer li .taskTextContainer .taskLocation {
     font-size: 70%;
     background: url("./assets/location.png") no-repeat center left / contain;
     padding-left: 20px;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .listContainer li .taskTextContainer .taskSharedWith {

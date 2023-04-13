@@ -193,6 +193,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
 
                     <label htmlFor="date">Date:</label>
                     <DatePicker
+                        autoComplete="off"
                         placeholderText="Select a date"
                         id="date"
                         isClearable

@@ -41,11 +41,7 @@ export function TodoItem({ task, onCompleteChange, onEdit, onDelete }: TodoItemP
                     {(task.urgency ?? 0) > 0 && <span className={"urgency urgency" + (task.urgency ?? 0)}>{urgencyString}</span>} {task.title}
                 </p>
                 {task.date && <p className="taskDate">{task.date.toDateString()}</p>}
-                {task.details && (
-                    <p className="taskDetails" style={{ color: "grey" }}>
-                        {task.details}
-                    </p>
-                )}
+                {task.details && <p className="taskDetails">{task.details}</p>}
                 {task.location && <p className="taskLocation">At {task.location}</p>}
                 {task.sharedWith && <p className="taskSharedWith"> Shared with {task.sharedWith.join(", ")}</p>}
             </div>
