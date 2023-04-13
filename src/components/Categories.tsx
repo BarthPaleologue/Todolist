@@ -161,7 +161,7 @@ export const Categories = ({
                     {searchQuery.length == 0 && (
                         <div id="category-container">
                             <div className="category-item category-today" onClick={() => onCategoryPressed(TODAY)}>
-                                Today
+                                <p>Today</p>
                                 <span className="category-length"> {taskToday.length} </span>
                             </div>
                             <div id="category-list">{newArr}</div>
