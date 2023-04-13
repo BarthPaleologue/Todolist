@@ -2,6 +2,8 @@ import { Task, TaskList } from "../task";
 
 export const TODO_KEY = "todo_lists";
 
+export const ACCEPT_KEY = "accept";
+
 export function loadTodosFromLocalStorage(): TaskList[] {
     const todos = localStorage.getItem(TODO_KEY);
     if (todos === null) console.log("No todos found in local storage");
@@ -85,6 +87,14 @@ export function renameCategory(oldName: string, newName: string) {
 
 export function existsCategory(title: string): boolean {
     return loadCategoriesNamesFromLocalStorage().includes(title);
+}
+
+export function hasAcceptedTerms(): boolean {
+    return localStorage.getItem(ACCEPT_KEY) === "true";
+}
+
+export function setAcceptedTerms(value: boolean): void {
+    localStorage.setItem(ACCEPT_KEY, value.toString());
 }
 
 export function populateLocalStorage(): void {

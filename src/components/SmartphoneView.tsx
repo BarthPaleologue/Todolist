@@ -3,7 +3,7 @@ import { Categories, TODAY } from "./Categories";
 import { Presentation } from "./Presentation";
 import { CreateTask } from "./CreateTask";
 import { Task } from "../task";
-import { loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
+import { hasAcceptedTerms, loadListFromLocalStorage, loadTodosFromLocalStorage } from "../utils/localStorage";
 import { ListView } from "./ListView";
 import { isTaskInList, getDayTask } from "../utils/taskFinding";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ enum MobileState {
 }
 
 export function SmartphoneView() {
-    const [mobileState, setMobileState] = useState(MobileState.FIRST_PRESENTATION);
+    const [mobileState, setMobileState] = useState(!hasAcceptedTerms() ? MobileState.FIRST_PRESENTATION : MobileState.CATEGORY_VIEW);
 
     // The current list when in list view (can be passed to the creation view)
     const [currentListName, setCurrentListName] = React.useState<string | undefined>(undefined);

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import logo from "../assets/logo.png";
 import { Header } from "./Header";
+import { setAcceptedTerms } from "../utils/localStorage";
 
 export function Presentation({ onOK }: { onOK: () => void }) {
     return (
@@ -16,7 +17,13 @@ export function Presentation({ onOK }: { onOK: () => void }) {
                 </ul>
             </section>
             <div className="buttonBlock">
-                <button onClick={onOK} style={{ width: "50px" }}>
+                <button
+                    onClick={() => {
+                        setAcceptedTerms(true);
+                        onOK();
+                    }}
+                    style={{ width: "50px" }}
+                >
                     Let's go!
                 </button>
             </div>

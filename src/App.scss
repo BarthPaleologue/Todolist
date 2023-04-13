@@ -312,6 +312,7 @@ input[type="range" i] {
     font-family: "Source Sans Pro ", sans-serif;
     font-size: 120%;
     align-content: center;
+    align-items: center;
     overflow-y: auto;
 }
 
@@ -473,6 +474,9 @@ input[type="range" i] {
 .presentation li {
     display: block;
     text-align: center;
+    max-width: 500px;
+    padding: 10px 5px;
+    user-select: none;
 }
 
 .mainContainer.agendaContainer {
