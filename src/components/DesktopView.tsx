@@ -16,6 +16,7 @@ export function DesktopView({}: DesktopViewProps) {
     const [currentListName, setCurrentListName] = useState<string | undefined>(TODAY);
     const [currentEditTask, setCurrentEditTask] = useState<Task | undefined>(undefined);
     const [isCreatingTask, setIsCreatingTask] = useState<boolean>(false);
+    const [currentAgendaDate, setCurrentAgendaDate] = useState<Date | undefined>(undefined);
 
     return (
         <div className="desktopView">
@@ -27,8 +28,10 @@ export function DesktopView({}: DesktopViewProps) {
                     setCurrentListName(categoryName);
                     if (categoryName === TODAY) {
                         setCurrentTasks(getTodaysTasks());
+                        setCurrentAgendaDate(new Date());
                     } else {
                         setCurrentTasks(loadListFromLocalStorage(categoryName).tasks);
+                        setCurrentAgendaDate(undefined);
                     }
                 }}
                 onEditTaskRequested={(task: Task) => {
@@ -90,6 +93,7 @@ export function DesktopView({}: DesktopViewProps) {
                     shouldHideBackButton={true}
                     defaultListName={currentListName}
                     taskToEdit={currentEditTask}
+                    defaultDate={currentAgendaDate}
                 />
             )}
             {currentListName && !isCreatingTask && !currentEditTask && (
@@ -104,6 +108,7 @@ export function DesktopView({}: DesktopViewProps) {
                         setCurrentListName(
                             date.toDateString() === new Date().toDateString() ? TODAY : date.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })
                         );
+                        setCurrentAgendaDate(date);
                     }}
                 />
             )}

@@ -12,22 +12,27 @@ interface CreateTaskProps {
     onEditTask: (oldTask: Task, newTask: Task, listName: string) => void;
     onCancelCreation: () => void;
     defaultListName?: string;
+    defaultDate?: Date;
     taskToEdit?: Task;
     shouldHideBackButton?: boolean;
 }
 
 export const DEFAULT_LISTNAME = "Other";
 
-export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, taskToEdit, shouldHideBackButton }: CreateTaskProps) {
+export const NEW_LISTNAME = "New List";
+
+export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, defaultListName, defaultDate, taskToEdit, shouldHideBackButton }: CreateTaskProps) {
     let [newTaskTitle, setNewTaskTitle] = useState<string>(taskToEdit?.title ?? "");
 
     let [newTaskDescription, setNewTaskDescription] = useState<string>(taskToEdit?.details ?? "");
 
-    let [startDate, setStartDate] = useState<Date | undefined>(taskToEdit?.date ?? undefined);
+    let [startDate, setStartDate] = useState<Date | undefined>(taskToEdit?.date ?? defaultDate ?? undefined);
 
     let [location, setLocation] = useState<string | undefined>(taskToEdit?.location ?? undefined);
 
-    let [listName, setListName] = useState<string>(defaultListName ?? "New List");
+    const listNames = loadCategoriesNamesFromLocalStorage();
+
+    let [listName, setListName] = useState<string>(listNames.includes(defaultListName ?? NEW_LISTNAME) ? defaultListName ?? NEW_LISTNAME : NEW_LISTNAME);
 
     let [newListName, setNewListName] = useState<string | undefined>(undefined);
 
@@ -157,7 +162,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                         }}
                         required
                     >
-                        {listName !== "New List" && listName !== TODAY && <option value={listName}>{listName}</option>}
+                        {listName !== NEW_LISTNAME && listName !== TODAY && <option value={listName}>{listName}</option>}
                         {loadCategoriesNamesFromLocalStorage().map(
                             (categoryName) =>
                                 categoryName !== listName && (
@@ -166,15 +171,15 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                                     </option>
                                 )
                         )}
-                        <option value="New List">New List</option>
+                        <option value={NEW_LISTNAME}>{NEW_LISTNAME}</option>
                     </select>
 
-                    {listName === "New List" && (
+                    {listName === NEW_LISTNAME && (
                         <label htmlFor="newListName" aria-required>
                             New list name:
                         </label>
                     )}
-                    {listName === "New List" && (
+                    {listName === NEW_LISTNAME && (
                         <input
                             type="text"
                             placeholder="With John"
@@ -190,6 +195,7 @@ export function CreateTask({ onCreateTask, onEditTask, onCancelCreation, default
                     <DatePicker
                         placeholderText="Select a date"
                         id="date"
+                        isClearable
                         value={startDate?.toDateString()}
                         onChange={(date) => {
                             if (date === null) throw new Error("Date is null");
