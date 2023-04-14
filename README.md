@@ -1,3 +1,36 @@
+
+# TODO List - IGR203
+
+Members:
+- Barthélemy Paléologue
+- Sammy Rasamimanana
+- Daniel Zhou
+- Adrien Coutelle
+
+## To start the application
+
+Get to the project repository and type `npm start`
+
+## How to use the application
+
+### Generalities
+
+The application has beend divided into several visual and geographical parts, whether you're on desktop or mobile. On the former, you will be able to visualize both general parts and more precise ones.
+By this, it means that you are able to select which group of tasks you want, but also every specific task, the former being at the leftmost column and the latter in the middle
+
+On the desktop version, there is also an agenda. The user can select a day they want on the calendar and get the respective tasks assigned to this day.
+
+### Deal with tasks
+
+When the user wants to create a task (after clicking on new task), the rightmost column gets replaced with a form with both optionnal and necessary informations to complete. The same form can be used to modify a task should it needs to be.
+The filled informations will have consequences on the behaviour of the application with respect to these. For instance, high priority tasks will be displayed first.
+
+Whenever a change happened, there will be a popup so the user can be asured that it happened.
+
+To add a new task category, this can also be done in the same rightmost task editing menu.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -48,34 +81,3 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Logo
 
 Green color : #115905
-
-# TODO List - IGR203
-
-Members:
-- Barthélemy Paléologue
-- Sammy Rasamimanana
-- Daniel Zhou
-- Adrien Coutelle
-
-## To start the application
-
-Get to the project repository and type `npm start`
-
-## How to use the application
-
-### Generalities
-
-The application has beend divided into several visual and geographical parts, whether you're on desktop or mobile. On the former, you will be able to visualize both general parts and more precise ones.
-By this, it means that you are able to select which group of tasks you want, but also every specific task, the former being at the leftmost column and the latter in the middle
-
-On the desktop version, there is also an agenda. The user can select a day they want on the calendar and get the respective tasks assigned to this day.
-
-### Deal with tasks
-
-When the user wants to create a task (after clicking on new task), the rightmost column gets replaced with a form with both optionnal and necessary informations to complete. The same form can be used to modify a task should it needs to be.
-The filled informations will have consequences on the behaviour of the application with respect to these. For instance, high priority tasks will be displayed first.
-
-Whenever a change happened, there will be a popup so the user can be asured that it happened.
-
-To add a new task category, this can also be done in the same rightmost task editing menu.
-
